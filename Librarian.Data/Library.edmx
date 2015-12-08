@@ -1,0 +1,959 @@
+﻿<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+<!-- EF Runtime content -->
+<edmx:Runtime>
+<!-- SSDL content -->
+<edmx:StorageModels>
+<Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Suffix" Type="nvarchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="AuthorItem">
+          <Key>
+            <PropertyRef Name="AuthorID" />
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="AuthorID" Type="bigint" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Barcode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Card">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Copy">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EditionID" Type="bigint" Nullable="false" />
+          <Property Name="PatronID" Type="bigint" />
+          <Property Name="CheckedOut" Type="datetime" />
+          <Property Name="DueDate" Type="datetime" />
+          <Property Name="Added" Type="datetime" Nullable="false" />
+          <Property Name="Num" Type="int" />
+          <Property Name="Deleted" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DeletedCopy">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="Withdrawn" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Edition">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="ISBN" Type="nchar" MaxLength="13" />
+          <Property Name="LU_CoverType" Type="int" />
+          <Property Name="Copyright" Type="int" />
+          <Property Name="PublisherID" Type="bigint" />
+          <Property Name="Added" Type="datetime" Nullable="false" />
+          <Property Name="LU_Language" Type="int" />
+        </EntityType>
+        <EntityType Name="ImmediateReprints">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="MediaTypeID" Type="int" Nullable="false" />
+          <Property Name="CallNum" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Location" Type="int" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="4000" />
+          <Property Name="LastCheckedOut" Type="datetime" />
+          <Property Name="TimesCheckedOut" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="Reference" Type="bit" Nullable="false" />
+          <Property Name="Restricted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemSubject">
+          <Key>
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="LU_Subject" />
+          </Key>
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="LU_Subject" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lookup">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="LookupName" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="LookupName" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MediaType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="MaxID" Type="bigint" Nullable="false" />
+          <Property Name="MinID" Type="bigint" Nullable="false" />
+          <Property Name="LastIDPrinted" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NewIDs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patron">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="25" />
+          <Property Name="LU_PatronType" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="256" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StateProvince" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="12" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="25" />
+          <Property Name="Blocked" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Publisher">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="512" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="StateProvince" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="12" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="Reprint">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="Now" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reserve">
+          <Key>
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="PatronID" />
+          </Key>
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="PatronID" Type="bigint" Nullable="false" />
+          <Property Name="Reserved" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpineIDs">
+          <Key>
+            <PropertyRef Name="CopyID" />
+          </Key>
+          <Property Name="CopyID" Type="int" Nullable="false" />
+          <Property Name="Num" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AuthorItem_Author">
+          <End Role="Author" Type="Self.Author" Multiplicity="1" />
+          <End Role="AuthorItem" Type="Self.AuthorItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AuthorItem">
+              <PropertyRef Name="AuthorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AuthorItem_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="AuthorItem" Type="Self.AuthorItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AuthorItem">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Copy_Edition">
+          <End Role="Edition" Type="Self.Edition" Multiplicity="1" />
+          <End Role="Copy" Type="Self.Copy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Edition">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Copy">
+              <PropertyRef Name="EditionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Copy_Patron">
+          <End Role="Patron" Type="Self.Patron" Multiplicity="0..1" />
+          <End Role="Copy" Type="Self.Copy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patron">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Copy">
+              <PropertyRef Name="PatronID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeletedCopy_Copy">
+          <End Role="Copy" Type="Self.Copy" Multiplicity="1" />
+          <End Role="DeletedCopy" Type="Self.DeletedCopy" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Copy">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DeletedCopy">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Edition_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Edition" Type="Self.Edition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Edition">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Edition_Publisher">
+          <End Role="Publisher" Type="Self.Publisher" Multiplicity="0..1" />
+          <End Role="Edition" Type="Self.Edition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publisher">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Edition">
+              <PropertyRef Name="PublisherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_MediaType">
+          <End Role="MediaType" Type="Self.MediaType" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MediaType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="MediaTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSubject_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemSubject" Type="Self.ItemSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ItemSubject">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reserve_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Reserve" Type="Self.Reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Reserve">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reserve_Patron">
+          <End Role="Patron" Type="Self.Patron" Multiplicity="1" />
+          <End Role="Reserve" Type="Self.Reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patron">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Reserve">
+              <PropertyRef Name="PatronID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LibraryModelStoreContainer">
+          <EntitySet Name="Author" EntityType="Self.Author" store:Type="Tables" />
+          <EntitySet Name="AuthorItem" EntityType="Self.AuthorItem" store:Type="Tables" />
+          <EntitySet Name="Barcode" EntityType="Self.Barcode" store:Type="Tables" />
+          <EntitySet Name="Card" EntityType="Self.Card" store:Type="Tables" />
+          <EntitySet Name="Copy" EntityType="Self.Copy" store:Type="Tables" />
+          <EntitySet Name="DeletedCopy" EntityType="Self.DeletedCopy" store:Type="Tables" />
+          <EntitySet Name="Edition" EntityType="Self.Edition" store:Type="Tables" />
+          <EntitySet Name="ImmediateReprints" EntityType="Self.ImmediateReprints" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" store:Type="Tables" />
+          <EntitySet Name="ItemSubject" EntityType="Self.ItemSubject" store:Type="Tables" />
+          <EntitySet Name="Lookup" EntityType="Self.Lookup" store:Type="Tables" />
+          <EntitySet Name="MediaType" EntityType="Self.MediaType" store:Type="Tables" />
+          <EntitySet Name="NewIDs" EntityType="Self.NewIDs" store:Type="Tables" />
+          <EntitySet Name="Patron" EntityType="Self.Patron" store:Type="Tables" />
+          <EntitySet Name="Publisher" EntityType="Self.Publisher" store:Type="Tables" />
+          <EntitySet Name="Reprint" EntityType="Self.Reprint" store:Type="Tables" />
+          <EntitySet Name="Reserve" EntityType="Self.Reserve" store:Type="Tables" />
+          <EntitySet Name="SpineIDs" EntityType="Self.SpineIDs" store:Type="Tables" />
+          <AssociationSet Name="FK_AuthorItem_Author" Association="Self.FK_AuthorItem_Author">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="AuthorItem" EntitySet="AuthorItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AuthorItem_Item" Association="Self.FK_AuthorItem_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="AuthorItem" EntitySet="AuthorItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Copy_Edition" Association="Self.FK_Copy_Edition">
+            <End Role="Edition" EntitySet="Edition" />
+            <End Role="Copy" EntitySet="Copy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Copy_Patron" Association="Self.FK_Copy_Patron">
+            <End Role="Patron" EntitySet="Patron" />
+            <End Role="Copy" EntitySet="Copy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeletedCopy_Copy" Association="Self.FK_DeletedCopy_Copy">
+            <End Role="Copy" EntitySet="Copy" />
+            <End Role="DeletedCopy" EntitySet="DeletedCopy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Edition_Item" Association="Self.FK_Edition_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="Edition" EntitySet="Edition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Edition_Publisher" Association="Self.FK_Edition_Publisher">
+            <End Role="Publisher" EntitySet="Publisher" />
+            <End Role="Edition" EntitySet="Edition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_MediaType" Association="Self.FK_Item_MediaType">
+            <End Role="MediaType" EntitySet="MediaType" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSubject_Item" Association="Self.FK_ItemSubject_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemSubject" EntitySet="ItemSubject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reserve_Item" Association="Self.FK_Reserve_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="Reserve" EntitySet="Reserve" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reserve_Patron" Association="Self.FK_Reserve_Patron">
+            <End Role="Patron" EntitySet="Patron" />
+            <End Role="Reserve" EntitySet="Reserve" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+<!-- CSDL content -->
+<edmx:ConceptualModels>
+<Schema Namespace="LibraryModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="LibraryEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Authors" EntityType="LibraryModel.Author" />
+          <EntitySet Name="Barcodes" EntityType="LibraryModel.Barcode" />
+          <EntitySet Name="Cards" EntityType="LibraryModel.Card" />
+          <EntitySet Name="Copies" EntityType="LibraryModel.Copy" />
+          <EntitySet Name="DeletedCopies" EntityType="LibraryModel.DeletedCopy" />
+          <EntitySet Name="Editions" EntityType="LibraryModel.Edition" />
+          <EntitySet Name="ImmediateReprints" EntityType="LibraryModel.ImmediateReprint" />
+          <EntitySet Name="Items" EntityType="LibraryModel.Item" />
+          <EntitySet Name="ItemSubjects" EntityType="LibraryModel.ItemSubject" />
+          <EntitySet Name="Lookups" EntityType="LibraryModel.Lookup" />
+          <EntitySet Name="MediaTypes" EntityType="LibraryModel.MediaType" />
+          <EntitySet Name="NewIDs" EntityType="LibraryModel.NewID" />
+          <EntitySet Name="Patrons" EntityType="LibraryModel.Patron" />
+          <EntitySet Name="Publishers" EntityType="LibraryModel.Publisher" />
+          <EntitySet Name="Reprints" EntityType="LibraryModel.Reprint" />
+          <EntitySet Name="Reserves" EntityType="LibraryModel.Reserve" />
+          <EntitySet Name="SpineIDs" EntityType="LibraryModel.SpineID" />
+          <AssociationSet Name="FK_Copy_Edition" Association="LibraryModel.FK_Copy_Edition">
+            <End Role="Edition" EntitySet="Editions" />
+            <End Role="Copy" EntitySet="Copies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Copy_Patron" Association="LibraryModel.FK_Copy_Patron">
+            <End Role="Patron" EntitySet="Patrons" />
+            <End Role="Copy" EntitySet="Copies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeletedCopy_Copy" Association="LibraryModel.FK_DeletedCopy_Copy">
+            <End Role="Copy" EntitySet="Copies" />
+            <End Role="DeletedCopy" EntitySet="DeletedCopies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Edition_Item" Association="LibraryModel.FK_Edition_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="Edition" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_MediaType" Association="LibraryModel.FK_Item_MediaType">
+            <End Role="MediaType" EntitySet="MediaTypes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSubject_Item" Association="LibraryModel.FK_ItemSubject_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemSubject" EntitySet="ItemSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reserve_Item" Association="LibraryModel.FK_Reserve_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="Reserve" EntitySet="Reserves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reserve_Patron" Association="LibraryModel.FK_Reserve_Patron">
+            <End Role="Patron" EntitySet="Patrons" />
+            <End Role="Reserve" EntitySet="Reserves" />
+          </AssociationSet>
+          <AssociationSet Name="AuthorItem" Association="LibraryModel.AuthorItem">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Edition_Publisher" Association="LibraryModel.FK_Edition_Publisher">
+            <End Role="Publisher" EntitySet="Publishers" />
+            <End Role="Edition" EntitySet="Editions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Suffix" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Items" Relationship="LibraryModel.AuthorItem" FromRole="Author" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Barcode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Card">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Copy">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EditionID" Type="Int64" Nullable="false" />
+          <Property Name="PatronID" Type="Int64" />
+          <Property Name="CheckedOut" Type="DateTime" Precision="3" />
+          <Property Name="DueDate" Type="DateTime" Precision="3" />
+          <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Num" Type="Int32" />
+          <Property Name="Deleted" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Edition" Relationship="LibraryModel.FK_Copy_Edition" FromRole="Copy" ToRole="Edition" />
+          <NavigationProperty Name="Patron" Relationship="LibraryModel.FK_Copy_Patron" FromRole="Copy" ToRole="Patron" />
+          <NavigationProperty Name="DeletedCopy" Relationship="LibraryModel.FK_DeletedCopy_Copy" FromRole="Copy" ToRole="DeletedCopy" />
+        </EntityType>
+        <EntityType Name="DeletedCopy">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="Withdrawn" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Copy" Relationship="LibraryModel.FK_DeletedCopy_Copy" FromRole="DeletedCopy" ToRole="Copy" />
+        </EntityType>
+        <EntityType Name="Edition">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="ISBN" Type="String" MaxLength="13" FixedLength="true" Unicode="true" />
+          <Property Name="LU_CoverType" Type="Int32" />
+          <Property Name="Copyright" Type="Int32" />
+          <Property Name="PublisherID" Type="Int64" />
+          <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LU_Language" Type="Int32" />
+          <NavigationProperty Name="Copies" Relationship="LibraryModel.FK_Copy_Edition" FromRole="Edition" ToRole="Copy" />
+          <NavigationProperty Name="Item" Relationship="LibraryModel.FK_Edition_Item" FromRole="Edition" ToRole="Item" />
+          <NavigationProperty Name="Publisher" Relationship="LibraryModel.FK_Edition_Publisher" FromRole="Edition" ToRole="Publisher" />
+        </EntityType>
+        <EntityType Name="ImmediateReprint">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="MediaTypeID" Type="Int32" Nullable="false" />
+          <Property Name="CallNum" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="Int32" Nullable="false" />
+          <Property Name="Summary" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="LastCheckedOut" Type="DateTime" Precision="3" />
+          <Property Name="TimesCheckedOut" Type="Int32" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Reference" Type="Boolean" Nullable="false" />
+          <Property Name="Restricted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Editions" Relationship="LibraryModel.FK_Edition_Item" FromRole="Item" ToRole="Edition" />
+          <NavigationProperty Name="MediaType" Relationship="LibraryModel.FK_Item_MediaType" FromRole="Item" ToRole="MediaType" />
+          <NavigationProperty Name="ItemSubjects" Relationship="LibraryModel.FK_ItemSubject_Item" FromRole="Item" ToRole="ItemSubject" />
+          <NavigationProperty Name="Reserves" Relationship="LibraryModel.FK_Reserve_Item" FromRole="Item" ToRole="Reserve" />
+          <NavigationProperty Name="Authors" Relationship="LibraryModel.AuthorItem" FromRole="Item" ToRole="Author" />
+        </EntityType>
+        <EntityType Name="ItemSubject">
+          <Key>
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="LU_Subject" />
+          </Key>
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="LU_Subject" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Item" Relationship="LibraryModel.FK_ItemSubject_Item" FromRole="ItemSubject" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Lookup">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="LookupName" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="LookupName" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MediaType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="MaxID" Type="Int64" Nullable="false" />
+          <Property Name="MinID" Type="Int64" Nullable="false" />
+          <Property Name="LastIDPrinted" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Items" Relationship="LibraryModel.FK_Item_MediaType" FromRole="MediaType" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="NewID">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patron">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="LU_PatronType" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StateProvince" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Blocked" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Copies" Relationship="LibraryModel.FK_Copy_Patron" FromRole="Patron" ToRole="Copy" />
+          <NavigationProperty Name="Reserves" Relationship="LibraryModel.FK_Reserve_Patron" FromRole="Patron" ToRole="Reserve" />
+        </EntityType>
+        <EntityType Name="Publisher">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StateProvince" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Editions" Relationship="LibraryModel.FK_Edition_Publisher" FromRole="Publisher" ToRole="Edition" />
+        </EntityType>
+        <EntityType Name="Reprint">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="Now" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reserve">
+          <Key>
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="PatronID" />
+          </Key>
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="PatronID" Type="Int64" Nullable="false" />
+          <Property Name="Reserved" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Item" Relationship="LibraryModel.FK_Reserve_Item" FromRole="Reserve" ToRole="Item" />
+          <NavigationProperty Name="Patron" Relationship="LibraryModel.FK_Reserve_Patron" FromRole="Reserve" ToRole="Patron" />
+        </EntityType>
+        <EntityType Name="SpineID">
+          <Key>
+            <PropertyRef Name="CopyID" />
+          </Key>
+          <Property Name="CopyID" Type="Int32" Nullable="false" />
+          <Property Name="Num" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Copy_Edition">
+          <End Type="LibraryModel.Edition" Role="Edition" Multiplicity="1" />
+          <End Type="LibraryModel.Copy" Role="Copy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Edition">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Copy">
+              <PropertyRef Name="EditionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Copy_Patron">
+          <End Type="LibraryModel.Patron" Role="Patron" Multiplicity="0..1" />
+          <End Type="LibraryModel.Copy" Role="Copy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patron">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Copy">
+              <PropertyRef Name="PatronID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeletedCopy_Copy">
+          <End Type="LibraryModel.Copy" Role="Copy" Multiplicity="1" />
+          <End Type="LibraryModel.DeletedCopy" Role="DeletedCopy" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Copy">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DeletedCopy">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Edition_Item">
+          <End Type="LibraryModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="LibraryModel.Edition" Role="Edition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Edition">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_MediaType">
+          <End Type="LibraryModel.MediaType" Role="MediaType" Multiplicity="1" />
+          <End Type="LibraryModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MediaType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="MediaTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSubject_Item">
+          <End Type="LibraryModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="LibraryModel.ItemSubject" Role="ItemSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ItemSubject">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reserve_Item">
+          <End Type="LibraryModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="LibraryModel.Reserve" Role="Reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Reserve">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reserve_Patron">
+          <End Type="LibraryModel.Patron" Role="Patron" Multiplicity="1" />
+          <End Type="LibraryModel.Reserve" Role="Reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patron">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Reserve">
+              <PropertyRef Name="PatronID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AuthorItem">
+          <End Type="LibraryModel.Author" Role="Author" Multiplicity="*" />
+          <End Type="LibraryModel.Item" Role="Item" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Edition_Publisher">
+          <End Type="LibraryModel.Publisher" Role="Publisher" Multiplicity="0..1" />
+          <End Type="LibraryModel.Edition" Role="Edition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publisher">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Edition">
+              <PropertyRef Name="PublisherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+</Schema>
+</edmx:ConceptualModels>
+<!-- C-S mapping content -->
+<edmx:Mappings>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="LibraryModelStoreContainer" CdmEntityContainer="LibraryEntities">
+          <EntitySetMapping Name="Authors">
+            <EntityTypeMapping TypeName="LibraryModel.Author">
+              <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="Suffix" ColumnName="Suffix" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Barcodes">
+            <EntityTypeMapping TypeName="LibraryModel.Barcode">
+              <MappingFragment StoreEntitySet="Barcode">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cards">
+            <EntityTypeMapping TypeName="LibraryModel.Card">
+              <MappingFragment StoreEntitySet="Card">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Copies">
+            <EntityTypeMapping TypeName="LibraryModel.Copy">
+              <MappingFragment StoreEntitySet="Copy">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="Added" ColumnName="Added" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="CheckedOut" ColumnName="CheckedOut" />
+                <ScalarProperty Name="PatronID" ColumnName="PatronID" />
+                <ScalarProperty Name="EditionID" ColumnName="EditionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeletedCopies">
+            <EntityTypeMapping TypeName="LibraryModel.DeletedCopy">
+              <MappingFragment StoreEntitySet="DeletedCopy">
+                <ScalarProperty Name="Withdrawn" ColumnName="Withdrawn" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Editions">
+            <EntityTypeMapping TypeName="LibraryModel.Edition">
+              <MappingFragment StoreEntitySet="Edition">
+                <ScalarProperty Name="LU_Language" ColumnName="LU_Language" />
+                <ScalarProperty Name="Added" ColumnName="Added" />
+                <ScalarProperty Name="PublisherID" ColumnName="PublisherID" />
+                <ScalarProperty Name="Copyright" ColumnName="Copyright" />
+                <ScalarProperty Name="LU_CoverType" ColumnName="LU_CoverType" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ImmediateReprints">
+            <EntityTypeMapping TypeName="LibraryModel.ImmediateReprint">
+              <MappingFragment StoreEntitySet="ImmediateReprints">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="LibraryModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="Restricted" ColumnName="Restricted" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="TimesCheckedOut" ColumnName="TimesCheckedOut" />
+                <ScalarProperty Name="LastCheckedOut" ColumnName="LastCheckedOut" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="CallNum" ColumnName="CallNum" />
+                <ScalarProperty Name="MediaTypeID" ColumnName="MediaTypeID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemSubjects">
+            <EntityTypeMapping TypeName="LibraryModel.ItemSubject">
+              <MappingFragment StoreEntitySet="ItemSubject">
+                <ScalarProperty Name="LU_Subject" ColumnName="LU_Subject" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lookups">
+            <EntityTypeMapping TypeName="LibraryModel.Lookup">
+              <MappingFragment StoreEntitySet="Lookup">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="LookupName" ColumnName="LookupName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MediaTypes">
+            <EntityTypeMapping TypeName="LibraryModel.MediaType">
+              <MappingFragment StoreEntitySet="MediaType">
+                <ScalarProperty Name="LastIDPrinted" ColumnName="LastIDPrinted" />
+                <ScalarProperty Name="MinID" ColumnName="MinID" />
+                <ScalarProperty Name="MaxID" ColumnName="MaxID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NewIDs">
+            <EntityTypeMapping TypeName="LibraryModel.NewID">
+              <MappingFragment StoreEntitySet="NewIDs">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patrons">
+            <EntityTypeMapping TypeName="LibraryModel.Patron">
+              <MappingFragment StoreEntitySet="Patron">
+                <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="StateProvince" ColumnName="StateProvince" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="LU_PatronType" ColumnName="LU_PatronType" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Publishers">
+            <EntityTypeMapping TypeName="LibraryModel.Publisher">
+              <MappingFragment StoreEntitySet="Publisher">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="StateProvince" ColumnName="StateProvince" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reprints">
+            <EntityTypeMapping TypeName="LibraryModel.Reprint">
+              <MappingFragment StoreEntitySet="Reprint">
+                <ScalarProperty Name="Now" ColumnName="Now" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reserves">
+            <EntityTypeMapping TypeName="LibraryModel.Reserve">
+              <MappingFragment StoreEntitySet="Reserve">
+                <ScalarProperty Name="Reserved" ColumnName="Reserved" />
+                <ScalarProperty Name="PatronID" ColumnName="PatronID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpineIDs">
+            <EntityTypeMapping TypeName="LibraryModel.SpineID">
+              <MappingFragment StoreEntitySet="SpineIDs">
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="CopyID" ColumnName="CopyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AuthorItem" TypeName="LibraryModel.AuthorItem" StoreEntitySet="AuthorItem">
+            <EndProperty Name="Item">
+              <ScalarProperty Name="ID" ColumnName="ItemID" />
+            </EndProperty>
+            <EndProperty Name="Author">
+              <ScalarProperty Name="ID" ColumnName="AuthorID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+</Mapping>
+</edmx:Mappings>
+</edmx:Runtime>
+<!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+<edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+<Connection><DesignerInfoPropertySet><DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" /></DesignerInfoPropertySet></Connection>
+<edmx:Options><DesignerInfoPropertySet><DesignerProperty Name="ValidateOnBuild" Value="True" /><DesignerProperty Name="EnablePluralization" Value="True" /><DesignerProperty Name="IncludeForeignKeysInModel" Value="True" /><DesignerProperty Name="UseLegacyProvider" Value="False" /><DesignerProperty Name="CodeGenerationStrategy" Value="None" /></DesignerInfoPropertySet></edmx:Options>
+<edmx:Diagrams >
+      <Diagram DiagramId="ec008836bea842ffb1f98fa9b6b07487" Name="Diagram1">
+        <EntityTypeShape EntityType="LibraryModel.Author" Width="1.5" PointX="0.5" PointY="4.375" />
+        <EntityTypeShape EntityType="LibraryModel.Barcode" Width="1.5" PointX="0.5" PointY="8.5" />
+        <EntityTypeShape EntityType="LibraryModel.Card" Width="1.5" PointX="2.5" PointY="8.5" />
+        <EntityTypeShape EntityType="LibraryModel.Copy" Width="1.5" PointX="7.25" PointY="4.75" />
+        <EntityTypeShape EntityType="LibraryModel.DeletedCopy" Width="1.5" PointX="9.5" PointY="5.5" />
+        <EntityTypeShape EntityType="LibraryModel.Edition" Width="1.5" PointX="5" PointY="4.75" />
+        <EntityTypeShape EntityType="LibraryModel.ImmediateReprint" Width="1.5" PointX="9.5" PointY="8.5" />
+        <EntityTypeShape EntityType="LibraryModel.Item" Width="1.5" PointX="2.75" PointY="3" />
+        <EntityTypeShape EntityType="LibraryModel.ItemSubject" Width="1.5" PointX="5" PointY="2.5" />
+        <EntityTypeShape EntityType="LibraryModel.Lookup" Width="1.5" PointX="10.5" PointY="0.5" />
+        <EntityTypeShape EntityType="LibraryModel.MediaType" Width="1.5" PointX="0.5" PointY="1" />
+        <EntityTypeShape EntityType="LibraryModel.NewID" Width="1.5" PointX="0.5" PointY="10.5" />
+        <EntityTypeShape EntityType="LibraryModel.Patron" Width="1.5" PointX="5.75" PointY="9.5" />
+        <EntityTypeShape EntityType="LibraryModel.Publisher" Width="1.5" PointX="2.5" PointY="10.5" />
+        <EntityTypeShape EntityType="LibraryModel.Reprint" Width="1.5" PointX="8.5" PointY="10.5" />
+        <EntityTypeShape EntityType="LibraryModel.Reserve" Width="1.5" PointX="8" PointY="1.125" />
+        <EntityTypeShape EntityType="LibraryModel.SpineID" Width="1.5" PointX="10.5" PointY="10.5" />
+        <AssociationConnector Association="LibraryModel.FK_Copy_Edition" />
+        <AssociationConnector Association="LibraryModel.FK_Copy_Patron" />
+        <AssociationConnector Association="LibraryModel.FK_DeletedCopy_Copy" />
+        <AssociationConnector Association="LibraryModel.FK_Edition_Item" />
+        <AssociationConnector Association="LibraryModel.FK_Item_MediaType" />
+        <AssociationConnector Association="LibraryModel.FK_ItemSubject_Item" />
+        <AssociationConnector Association="LibraryModel.FK_Reserve_Item" />
+        <AssociationConnector Association="LibraryModel.FK_Reserve_Patron" />
+        <AssociationConnector Association="LibraryModel.AuthorItem" />
+        <AssociationConnector Association="LibraryModel.FK_Edition_Publisher" />
+      </Diagram>
+    </edmx:Diagrams>
+</edmx:Designer></edmx:Edmx>
