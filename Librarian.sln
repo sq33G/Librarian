@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrarianHost", "LibrarianH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Librarian.Data", "Librarian.Data\Librarian.Data.csproj", "{7587F6AE-F0D1-4EF0-A815-EA50777888D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Librarian.Logic", "Librarian.Logic\Librarian.Logic.csproj", "{EFEEDCC9-291A-4BB6-AED4-30936CC18AA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{7587F6AE-F0D1-4EF0-A815-EA50777888D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7587F6AE-F0D1-4EF0-A815-EA50777888D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7587F6AE-F0D1-4EF0-A815-EA50777888D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFEEDCC9-291A-4BB6-AED4-30936CC18AA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFEEDCC9-291A-4BB6-AED4-30936CC18AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFEEDCC9-291A-4BB6-AED4-30936CC18AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFEEDCC9-291A-4BB6-AED4-30936CC18AA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

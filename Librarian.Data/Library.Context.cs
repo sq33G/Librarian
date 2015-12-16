@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Library.Data
+namespace Librarian.Data
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class LibraryEntities : DbContext
+    public partial class LibraryDataContext : DbContext
     {
-        public LibraryEntities()
-            : base("name=LibraryEntities")
+        public LibraryDataContext()
+            : base("name=LibraryDataContext")
         {
         }
     

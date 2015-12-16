@@ -12,6 +12,8 @@ namespace TestSelfHost
         static void Main(string[] args)
         {
             FireUp.Go();
+
+            Console.ReadKey();
         }
     }
 }

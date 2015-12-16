@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -127,20 +131,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MappingConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Code\AngularHelper.cs" />
+    <Compile Include="Code\LibraryViewPage.cs" />
+    <Compile Include="Controllers\AuthorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="FireUp.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AuthorVM.cs" />
+    <Compile Include="Models\IEntityVM.cs" />
     <Compile Include="Models\MainMenuVM.cs" />
     <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\Multi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dist\css\app.css" />
+    <Content Include="Content\dist\css\app.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -150,6 +163,7 @@
     <Content Include="Scripts\angular-min.js" />
     <Content Include="Scripts\bootstrap-bundle.min.js" />
     <Content Include="Scripts\jquery-bundle.min.js" />
+    <Content Include="Scripts\librarianApp.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -179,6 +193,17 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\maps\angular-min.js.map" />
     <Content Include="Scripts\maps\bootstrap-bundle.min.js.map" />
+    <Content Include="Views\Author\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Librarian.Data\Librarian.Data.csproj">
+      <Project>{7587f6ae-f0d1-4ef0-a815-ea50777888d0}</Project>
+      <Name>Librarian.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Librarian.Logic\Librarian.Logic.csproj">
+      <Project>{efeedcc9-291a-4bb6-aed4-30936cc18aa9}</Project>
+      <Name>Librarian.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -201,8 +226,7 @@
           <IISUrl>http://localhost:2219/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <CustomServerUrl>http://localhost:7600/</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

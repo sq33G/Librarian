@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Library.Data
+namespace Librarian.Data
 {
     using System;
     using System.Collections.Generic;
