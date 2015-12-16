@@ -11,7 +11,7 @@ namespace Librarian
     {
         public static void RegisterMappings()
         {
-            Mapper.CreateMap<Data.Author, Models.AuthorVM>();
+            Mapper.CreateMap<Data.Author, Models.Author>();
         }
     }
 }

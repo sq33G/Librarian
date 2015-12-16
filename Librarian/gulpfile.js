@@ -17,13 +17,15 @@ var config = {
     jquerysrc: [
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/jquery-validation/dist/jquery.validate.min.js',
-        'bower_components/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js'
+        'bower_components/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js',
+        'bower_components/jquery-ui/dist/jquery-ui.min.js'
     ],
     jquerybundle: 'Scripts/jquery-bundle.min.js',
 
     //JavaScript files that will be combined into a Bootstrap bundle
     bootstrapsrc: [
         'bower_components/bootstrap/dist/js/bootstrap.min.js',
+        'bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js',
         'bower_components/respond/dest/respond.min.js'
     ],
     bootstrapbundle: 'Scripts/bootstrap-bundle.min.js',
@@ -33,7 +35,8 @@ var config = {
     modernizrbundle: 'Scripts/modernizer.min.js',
 
     //Bootstrap CSS and Fonts
-    bootstrapcss: 'bower_components/bootstrap/dist/css/bootstrap.css',
+    bootstrapcss: ['bower_components/bootstrap/dist/css/bootstrap.css',
+                   'bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css'],
     boostrapfonts: 'bower_components/bootstrap/dist/fonts/*.*',
 
     //Angular

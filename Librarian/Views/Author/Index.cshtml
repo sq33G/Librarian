@@ -1,4 +1,4 @@
-﻿@model Librarian.Models.Multi<Librarian.Models.AuthorVM>
+﻿@model Librarian.Models.Multi<Librarian.Models.Author>
 
 
 @{
@@ -27,7 +27,7 @@
         <td>{{ author.FirstName }}</td>
         <td>{{ author.LastName }}</td>
         <td>{{ author.Suffix }}</td>
-        <td>(actions here)</td>
+        <td><a href="#" ng-click="controller.displayAuthor(author)"</td>
     </tr>
 @*@foreach (var item in Model) {
         <tr>
@@ -49,12 +49,18 @@
     }*@
 </table>
 <input class="model-container" type="hidden" value='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.AsEnumerable()))' />
+<div id="authorPopupContainer"></div>
 @section scripts {
 <script>
-    Librarian.app.controller("@Angular.DashedToCamelCase(Model.ControllerName)", function @(Angular.DashedToCamelCase(Model.ControllerName))() {
+    Librarian.app.controller("authorCtrl", function authorCtrl() {
         var that = this;
 
         that.authors = JSON.parse($(".model-container").val());
+
+        that.displayAuthor = function (author) {
+            that.author = author;
+            $("#authorPopupContainer").append($("div")).dialog()
+        };
     });
 </script>
 }

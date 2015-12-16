@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Librarian.Models
 {
-    public class Multi<T> : IEntityVM, IEnumerable<T> where T : IEntityVM
+    public class Multi<T> : IEntity, IEnumerable<T> where T : IEntity
     {
         List<T> _contents;
         string _controllerName;

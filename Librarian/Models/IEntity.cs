@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Librarian.Models
 {
-    public interface IEntityVM
+    public interface IEntity
     {
         RowState RowState { get; set; }
         string ControllerName { get; }

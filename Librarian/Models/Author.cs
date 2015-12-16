@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Librarian.Models
 {
-    public class AuthorVM : IEntityVM
+    public class Author : IEntity
     {
         public const string AUTHOR_CTRL = "author-ctrl";
 
@@ -19,6 +19,7 @@ namespace Librarian.Models
             get; set;
         }
 
+        [Newtonsoft.Json.JsonIgnore]
         public string ControllerName
         {
             get

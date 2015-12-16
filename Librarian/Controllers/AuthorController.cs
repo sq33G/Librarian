@@ -13,13 +13,13 @@ namespace Librarian.Controllers
         // GET: Author
         public ActionResult Index()
         {
-            return View(new Models.Multi<Models.AuthorVM>(Mapper.Map<IEnumerable<Data.Author>, IEnumerable<Models.AuthorVM>>(Authoring.GetAllAuthors())));
+            return View(new Models.Multi<Models.Author>(Mapper.Map<IEnumerable<Data.Author>, IEnumerable<Models.Author>>(Authoring.GetAllAuthors())));
         }
 
         // GET: Author/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(Mapper.Map<Data.Author, Models.Author>(Authoring.GetAuthor(id)));
         }
 
         // GET: Author/Create
