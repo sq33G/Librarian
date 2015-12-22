@@ -1,4 +1,4 @@
-﻿@model Librarian.Models.Multi<Librarian.Models.Author>
+﻿@model Librarian.Models.ModelWithController<IEnumerable<Librarian.Models.Author>>
 
 
 @{
@@ -7,60 +7,211 @@
 
 <h2>Authors</h2>
 
-<p>
-    (create new link)
-</p>
-<table class="table">
-    <tr>
-        <th>
-            First Name
-        </th>
-        <th>
-            Last Name
-        </th>
-        <th>
-            Suffix
-        </th>
-        <th></th>
-    </tr>
-    <tr ng-repeat="author in controller.authors | orderBy : 'LastName'">
-        <td>{{ author.FirstName }}</td>
-        <td>{{ author.LastName }}</td>
-        <td>{{ author.Suffix }}</td>
-        <td><a href="#" ng-click="controller.displayAuthor(author)"</td>
-    </tr>
-@*@foreach (var item in Model) {
+<div class="container">
+    <section class="row">
+        <div class="col-lg-6 col-md-6">
+            <a href="#" ng-click="controller.createAuthor()"><i class="glyphicon glyphicon-asterisk"></i> Add Author</a>
+        </div>
+        <div class="col-lg-2 col-md-6 form-inline">
+            <label for="filter">Search:</label>
+            <input type="text" class="form-control" id="filter" ng-model="controller.filter" />
+        </div>
+    </section>
+    <div class="row"><div class="col-lg-12 col-md-12">&nbsp;</div></div>
+    <table class="table row">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Suffix)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-            </td>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Suffix
+            </th>
+            <th colspan="2"></th>
         </tr>
-    }*@
-</table>
-<input class="model-container" type="hidden" value='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.AsEnumerable()))' />
-<div id="authorPopupContainer"></div>
+        <tr ng-repeat="author in controller.authors | orderBy : 'LastName' | filter : {$: controller.filter} track by author.ID"
+            ng-cloak>
+            <td>{{ author.FirstName }}</td>
+            <td>{{ author.LastName }}</td>
+            <td>{{ author.Suffix }}</td>
+            <td><a href="#" ng-click="controller.displayAuthor(author)"><i class="glyphicon glyphicon-plus-sign"></i> Details</a></td>
+            <td><a href="#" ng-click="controller.displayDeleteAuthor(author)"><i class="glyphicon glyphicon-remove"></i> Delete</a></td>
+        </tr>
+    </table>
+</div>
+<input class="model-container" type="hidden" value='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Contents))' />
+<input class="url-container details" type="hidden" value="@Url.Action("Details")" />
+<input class="url-container create-view" type="hidden" value="@Url.Action("Create")" />
+<input class="url-container create" type="hidden" value="@Url.Action("Add")" />
+<input class="url-container delete" type="hidden" value="@Url.Action("Delete")" />
+<div id="detailPopupContainer">
+    @Html.Partial("Dialog", new Librarian.Models.Dialog
+{
+    Title = "Author Details",
+    IncludeURL = "controller.displayAuthorUrl",
+    Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Edit",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "controller.editAuthor()" }
+                                                }
+                                            }
+                              }
+})
+</div>
+<div id="deletePopupContainer">
+    @Html.Partial("Dialog", new Librarian.Models.Dialog
+{
+    Title = "Delete Author",
+    IncludeURL = "controller.displayAuthorUrl",
+    Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Delete",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "controller.deleteAuthor()" }
+                                                },
+                                                Default = true
+                                            }
+                              }
+})
+</div>
+<div id="createPopupContainer">
+    @Html.Partial("Dialog", new Librarian.Models.Dialog
+                          {
+                              Title = "New Author",
+                              IncludeURL = "controller.createAuthorUrl",
+                              Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Save",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "controller.addAuthor()" }
+                                                },
+                                                Default = true
+                                            }
+                              }
+                          })
+</div>
+<div id="editPopupContainer">
+    @Html.Partial("Dialog", new Librarian.Models.Dialog
+                          {
+                              Title = "Edit Author",
+                              IncludeURL = "controller.createAuthorUrl",
+                              Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Save",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "controller.addAuthor()" }
+                                                },
+                                                Default = true
+                                            }
+                              }
+                          })
+</div>
 @section scripts {
-<script>
-    Librarian.app.controller("authorCtrl", function authorCtrl() {
-        var that = this;
+    <script>
+        Librarian.app.service("authorService", function AuthorService() {
+            var that = this;
 
-        that.authors = JSON.parse($(".model-container").val());
+            that.authors = JSON.parse($(".model-container").val());
+            that.detailsUrl = $(".url-container.details").val();
+            that.createUrl = $(".url-container.create-view").val();
+            that.addUrl = $(".url-container.create").val();
+            that.deleteUrl = $(".url-container.delete").val();
 
-        that.displayAuthor = function (author) {
-            that.author = author;
-            $("#authorPopupContainer").append($("div")).dialog()
-        };
-    });
-</script>
+            that.newAuthorData = { newAuthor: new Author() };
+        })
+
+        .controller("authorCtrl", function AuthorCtrl(authorService, $scope, $http, $filter) {
+            var that = this;
+
+            that.authors = authorService.authors;
+
+            var detailsContent = $("#detailPopupContainer .modal");
+            var createContent = $("#createPopupContainer .modal");
+            var deleteContent = $("#deletePopupContainer .modal");
+
+            var modalByUrl = {};
+            modalByUrl[authorService.createUrl] = createContent;
+            modalByUrl[authorService.detailsUrl] = detailsContent;
+            modalByUrl[authorService.deleteUrl] = deleteContent;
+
+            createContent.on("shown.bs.modal", function () {
+                createContent.find("#firstName").focus();
+            });
+
+            $scope.$on('$includeContentLoaded', function (eventArgs, src) {
+                var defaultButton = modalByUrl[src].find("button.btn-primary");
+                modalByUrl[src].find("input").keypress(function (eventArgs) {
+                    if (eventArgs.which == 13)
+                        defaultButton.click();
+                    if (eventArgs.which == 27)
+                        modalByUrl[src].modal('hide');
+                });
+            });
+
+            that.displayAuthor = function (author) {
+                that.displayAuthorUrl = authorService.detailsUrl + '/' + author.ID;
+                detailsModal = detailsContent.modal();
+            };
+
+            that.createAuthor = function () {
+                that.createAuthorUrl = authorService.createUrl;
+                createContent.modal();
+            }
+
+            that.addAuthor = function () {
+                $http.post(authorService.addUrl,
+                           authorService.newAuthorData.newAuthor)
+                     .then(function (addedAuthor) {
+                         authorService.authors.push(addedAuthor.data);
+                         authorService.newAuthorData.newAuthor = new Author();
+                         createContent.modal('hide');
+                         that.displayAuthor(addedAuthor.data);
+                     });
+            };
+
+            that.displayDeleteAuthor = function (author) {
+                //TODO merge/remove AuthorItem
+                that.displayAuthorUrl = authorService.detailsUrl + '/' + author.ID;
+                deleteContent.modal();
+            };
+
+            that.deleteAuthor = function () {
+                var id = $(".author-id-container").val();
+                $http.post(authorService.deleteUrl,
+                           { id: id })
+                     .then(function (deletedID) {
+                         that.removeByID(deletedID.data);
+                         deleteContent.modal('hide');
+                     })
+            };
+
+            that.removeByID = function (id) {
+                authorService.authors = $filter('filter')(authorService.authors, { ID: '!' + id });
+                that.authors = authorService.authors;
+            };
+        })
+
+        .controller("authorDetailCtrl", function AuthorDetailCtrl(authorService, $filter) {
+            var that = this;
+
+            that.author = $filter('filter')(authorService.authors, { ID: $(".author-id-container").val() })[0];
+        })
+
+        .controller("authorCreateCtrl", function AuthorCreateCtrl(authorService) {
+            var that = this;
+
+            that.authorData = authorService.newAuthorData;
+        });
+
+        function Author() {
+            this.ID = 0;
+            this.FirstName = "";
+            this.LastName = "";
+            this.Suffix = "";
+            this.RowState = 0;
+        }
+    </script>
 }

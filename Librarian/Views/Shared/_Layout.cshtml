@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link rel="stylesheet" type="text/css" href="~/Content/dist/css/app.min.css" /> 
+    <link rel="stylesheet" type="text/css" href="~/Content/dist/css/app.min.css" />
     <script src="~/Scripts/jquery-bundle.min.js"></script>
     <script src="~/Scripts/angular-min.js"></script>
     <script src="~/Scripts/bootstrap-bundle.min.js"></script>
@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="container body-content">
-        <div ng-controller="@Angular.DashedToCamelCase(Model.ControllerName) as controller">
+        <div ng-controller="@Angular.DashedToCamelCase(Model.ClientController) as controller">
             @RenderBody()
         </div>
         <hr />

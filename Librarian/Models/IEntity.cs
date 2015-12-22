@@ -9,7 +9,6 @@ namespace Librarian.Models
     public interface IEntity
     {
         RowState RowState { get; set; }
-        string ControllerName { get; }
     }
 
     public enum RowState

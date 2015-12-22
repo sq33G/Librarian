@@ -1,9 +1,10 @@
-﻿<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
-<!-- EF Runtime content -->
-<edmx:Runtime>
-<!-- SSDL content -->
-<edmx:StorageModels>
-<Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Librarian.Data.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Author">
           <Key>
             <PropertyRef Name="ID" />
@@ -306,25 +307,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="LibraryModelStoreContainer">
-          <EntitySet Name="Author" EntityType="Self.Author" store:Type="Tables" />
-          <EntitySet Name="AuthorItem" EntityType="Self.AuthorItem" store:Type="Tables" />
-          <EntitySet Name="Barcode" EntityType="Self.Barcode" store:Type="Tables" />
-          <EntitySet Name="Card" EntityType="Self.Card" store:Type="Tables" />
-          <EntitySet Name="Copy" EntityType="Self.Copy" store:Type="Tables" />
-          <EntitySet Name="DeletedCopy" EntityType="Self.DeletedCopy" store:Type="Tables" />
-          <EntitySet Name="Edition" EntityType="Self.Edition" store:Type="Tables" />
-          <EntitySet Name="ImmediateReprints" EntityType="Self.ImmediateReprints" store:Type="Tables" />
-          <EntitySet Name="Item" EntityType="Self.Item" store:Type="Tables" />
-          <EntitySet Name="ItemSubject" EntityType="Self.ItemSubject" store:Type="Tables" />
-          <EntitySet Name="Lookup" EntityType="Self.Lookup" store:Type="Tables" />
-          <EntitySet Name="MediaType" EntityType="Self.MediaType" store:Type="Tables" />
-          <EntitySet Name="NewIDs" EntityType="Self.NewIDs" store:Type="Tables" />
-          <EntitySet Name="Patron" EntityType="Self.Patron" store:Type="Tables" />
-          <EntitySet Name="Publisher" EntityType="Self.Publisher" store:Type="Tables" />
-          <EntitySet Name="Reprint" EntityType="Self.Reprint" store:Type="Tables" />
-          <EntitySet Name="Reserve" EntityType="Self.Reserve" store:Type="Tables" />
-          <EntitySet Name="SpineIDs" EntityType="Self.SpineIDs" store:Type="Tables" />
+        <EntityContainer Name="LibrarianDataStoreContainer">
+          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AuthorItem" EntityType="Self.AuthorItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Barcode" EntityType="Self.Barcode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Card" EntityType="Self.Card" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Copy" EntityType="Self.Copy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeletedCopy" EntityType="Self.DeletedCopy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Edition" EntityType="Self.Edition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ImmediateReprints" EntityType="Self.ImmediateReprints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemSubject" EntityType="Self.ItemSubject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lookup" EntityType="Self.Lookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MediaType" EntityType="Self.MediaType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewIDs" EntityType="Self.NewIDs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patron" EntityType="Self.Patron" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Publisher" EntityType="Self.Publisher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reprint" EntityType="Self.Reprint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reserve" EntityType="Self.Reserve" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SpineIDs" EntityType="Self.SpineIDs" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AuthorItem_Author" Association="Self.FK_AuthorItem_Author">
             <End Role="Author" EntitySet="Author" />
             <End Role="AuthorItem" EntitySet="AuthorItem" />
@@ -370,78 +371,20 @@
             <End Role="Reserve" EntitySet="Reserve" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
-<!-- CSDL content -->
-<edmx:ConceptualModels>
-<Schema Namespace="Librarian.Data" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityContainer Name="LibraryDataContext" p1:LazyLoadingEnabled="true">
-          <EntitySet Name="Authors" EntityType="Librarian.Data.Author" />
-          <EntitySet Name="Barcodes" EntityType="Librarian.Data.Barcode" />
-          <EntitySet Name="Cards" EntityType="Librarian.Data.Card" />
-          <EntitySet Name="Copies" EntityType="Librarian.Data.Copy" />
-          <EntitySet Name="DeletedCopies" EntityType="Librarian.Data.DeletedCopy" />
-          <EntitySet Name="Editions" EntityType="Librarian.Data.Edition" />
-          <EntitySet Name="ImmediateReprints" EntityType="Librarian.Data.ImmediateReprint" />
-          <EntitySet Name="Items" EntityType="Librarian.Data.Item" />
-          <EntitySet Name="ItemSubjects" EntityType="Librarian.Data.ItemSubject" />
-          <EntitySet Name="Lookups" EntityType="Librarian.Data.Lookup" />
-          <EntitySet Name="MediaTypes" EntityType="Librarian.Data.MediaType" />
-          <EntitySet Name="NewIDs" EntityType="Librarian.Data.NewID" />
-          <EntitySet Name="Patrons" EntityType="Librarian.Data.Patron" />
-          <EntitySet Name="Publishers" EntityType="Librarian.Data.Publisher" />
-          <EntitySet Name="Reprints" EntityType="Librarian.Data.Reprint" />
-          <EntitySet Name="Reserves" EntityType="Librarian.Data.Reserve" />
-          <EntitySet Name="SpineIDs" EntityType="Librarian.Data.SpineID" />
-          <AssociationSet Name="FK_Copy_Edition" Association="Librarian.Data.FK_Copy_Edition">
-            <End Role="Edition" EntitySet="Editions" />
-            <End Role="Copy" EntitySet="Copies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Copy_Patron" Association="Librarian.Data.FK_Copy_Patron">
-            <End Role="Patron" EntitySet="Patrons" />
-            <End Role="Copy" EntitySet="Copies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DeletedCopy_Copy" Association="Librarian.Data.FK_DeletedCopy_Copy">
-            <End Role="Copy" EntitySet="Copies" />
-            <End Role="DeletedCopy" EntitySet="DeletedCopies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Edition_Item" Association="Librarian.Data.FK_Edition_Item">
-            <End Role="Item" EntitySet="Items" />
-            <End Role="Edition" EntitySet="Editions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Item_MediaType" Association="Librarian.Data.FK_Item_MediaType">
-            <End Role="MediaType" EntitySet="MediaTypes" />
-            <End Role="Item" EntitySet="Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemSubject_Item" Association="Librarian.Data.FK_ItemSubject_Item">
-            <End Role="Item" EntitySet="Items" />
-            <End Role="ItemSubject" EntitySet="ItemSubjects" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Reserve_Item" Association="Librarian.Data.FK_Reserve_Item">
-            <End Role="Item" EntitySet="Items" />
-            <End Role="Reserve" EntitySet="Reserves" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Reserve_Patron" Association="Librarian.Data.FK_Reserve_Patron">
-            <End Role="Patron" EntitySet="Patrons" />
-            <End Role="Reserve" EntitySet="Reserves" />
-          </AssociationSet>
-          <AssociationSet Name="AuthorItem" Association="Librarian.Data.AuthorItem">
-            <End Role="Author" EntitySet="Authors" />
-            <End Role="Item" EntitySet="Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Edition_Publisher" Association="Librarian.Data.FK_Edition_Publisher">
-            <End Role="Publisher" EntitySet="Publishers" />
-            <End Role="Edition" EntitySet="Editions" />
-          </AssociationSet>
-        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Librarian.Data" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Author">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Suffix" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Items" Relationship="Librarian.Data.AuthorItem" FromRole="Author" ToRole="Item" />
+          <NavigationProperty Name="Items" Relationship="Self.AuthorItem" FromRole="Author" ToRole="Item" />
         </EntityType>
         <EntityType Name="Barcode">
           <Key>
@@ -467,9 +410,9 @@
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Num" Type="Int32" />
           <Property Name="Deleted" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Edition" Relationship="Librarian.Data.FK_Copy_Edition" FromRole="Copy" ToRole="Edition" />
-          <NavigationProperty Name="Patron" Relationship="Librarian.Data.FK_Copy_Patron" FromRole="Copy" ToRole="Patron" />
-          <NavigationProperty Name="DeletedCopy" Relationship="Librarian.Data.FK_DeletedCopy_Copy" FromRole="Copy" ToRole="DeletedCopy" />
+          <NavigationProperty Name="Edition" Relationship="Self.FK_Copy_Edition" FromRole="Copy" ToRole="Edition" />
+          <NavigationProperty Name="Patron" Relationship="Self.FK_Copy_Patron" FromRole="Copy" ToRole="Patron" />
+          <NavigationProperty Name="DeletedCopy" Relationship="Self.FK_DeletedCopy_Copy" FromRole="Copy" ToRole="DeletedCopy" />
         </EntityType>
         <EntityType Name="DeletedCopy">
           <Key>
@@ -477,7 +420,7 @@
           </Key>
           <Property Name="ID" Type="Int64" Nullable="false" />
           <Property Name="Withdrawn" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Copy" Relationship="Librarian.Data.FK_DeletedCopy_Copy" FromRole="DeletedCopy" ToRole="Copy" />
+          <NavigationProperty Name="Copy" Relationship="Self.FK_DeletedCopy_Copy" FromRole="DeletedCopy" ToRole="Copy" />
         </EntityType>
         <EntityType Name="Edition">
           <Key>
@@ -491,9 +434,9 @@
           <Property Name="PublisherID" Type="Int64" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LU_Language" Type="Int32" />
-          <NavigationProperty Name="Copies" Relationship="Librarian.Data.FK_Copy_Edition" FromRole="Edition" ToRole="Copy" />
-          <NavigationProperty Name="Item" Relationship="Librarian.Data.FK_Edition_Item" FromRole="Edition" ToRole="Item" />
-          <NavigationProperty Name="Publisher" Relationship="Librarian.Data.FK_Edition_Publisher" FromRole="Edition" ToRole="Publisher" />
+          <NavigationProperty Name="Copies" Relationship="Self.FK_Copy_Edition" FromRole="Edition" ToRole="Copy" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_Edition_Item" FromRole="Edition" ToRole="Item" />
+          <NavigationProperty Name="Publisher" Relationship="Self.FK_Edition_Publisher" FromRole="Edition" ToRole="Publisher" />
         </EntityType>
         <EntityType Name="ImmediateReprint">
           <Key>
@@ -506,9 +449,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MediaTypeID" Type="Int32" Nullable="false" />
-          <Property Name="CallNum" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CallNum" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Location" Type="Int32" Nullable="false" />
           <Property Name="Summary" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="LastCheckedOut" Type="DateTime" Precision="3" />
@@ -516,11 +459,11 @@
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="Reference" Type="Boolean" Nullable="false" />
           <Property Name="Restricted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Editions" Relationship="Librarian.Data.FK_Edition_Item" FromRole="Item" ToRole="Edition" />
-          <NavigationProperty Name="MediaType" Relationship="Librarian.Data.FK_Item_MediaType" FromRole="Item" ToRole="MediaType" />
-          <NavigationProperty Name="ItemSubjects" Relationship="Librarian.Data.FK_ItemSubject_Item" FromRole="Item" ToRole="ItemSubject" />
-          <NavigationProperty Name="Reserves" Relationship="Librarian.Data.FK_Reserve_Item" FromRole="Item" ToRole="Reserve" />
-          <NavigationProperty Name="Authors" Relationship="Librarian.Data.AuthorItem" FromRole="Item" ToRole="Author" />
+          <NavigationProperty Name="Editions" Relationship="Self.FK_Edition_Item" FromRole="Item" ToRole="Edition" />
+          <NavigationProperty Name="MediaType" Relationship="Self.FK_Item_MediaType" FromRole="Item" ToRole="MediaType" />
+          <NavigationProperty Name="ItemSubjects" Relationship="Self.FK_ItemSubject_Item" FromRole="Item" ToRole="ItemSubject" />
+          <NavigationProperty Name="Reserves" Relationship="Self.FK_Reserve_Item" FromRole="Item" ToRole="Reserve" />
+          <NavigationProperty Name="Authors" Relationship="Self.AuthorItem" FromRole="Item" ToRole="Author" />
         </EntityType>
         <EntityType Name="ItemSubject">
           <Key>
@@ -529,7 +472,7 @@
           </Key>
           <Property Name="ItemID" Type="Int64" Nullable="false" />
           <Property Name="LU_Subject" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Item" Relationship="Librarian.Data.FK_ItemSubject_Item" FromRole="ItemSubject" ToRole="Item" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_ItemSubject_Item" FromRole="ItemSubject" ToRole="Item" />
         </EntityType>
         <EntityType Name="Lookup">
           <Key>
@@ -537,19 +480,19 @@
             <PropertyRef Name="LookupName" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="LookupName" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LookupName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="MediaType">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MaxID" Type="Int64" Nullable="false" />
           <Property Name="MinID" Type="Int64" Nullable="false" />
           <Property Name="LastIDPrinted" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Items" Relationship="Librarian.Data.FK_Item_MediaType" FromRole="MediaType" ToRole="Item" />
+          <NavigationProperty Name="Items" Relationship="Self.FK_Item_MediaType" FromRole="MediaType" ToRole="Item" />
         </EntityType>
         <EntityType Name="NewID">
           <Key>
@@ -562,33 +505,33 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="LU_PatronType" Type="Int32" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="StateProvince" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Zip" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StateProvince" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Zip" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Blocked" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Copies" Relationship="Librarian.Data.FK_Copy_Patron" FromRole="Patron" ToRole="Copy" />
-          <NavigationProperty Name="Reserves" Relationship="Librarian.Data.FK_Reserve_Patron" FromRole="Patron" ToRole="Reserve" />
+          <NavigationProperty Name="Copies" Relationship="Self.FK_Copy_Patron" FromRole="Patron" ToRole="Copy" />
+          <NavigationProperty Name="Reserves" Relationship="Self.FK_Reserve_Patron" FromRole="Patron" ToRole="Reserve" />
         </EntityType>
         <EntityType Name="Publisher">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StateProvince" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Zip" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Editions" Relationship="Librarian.Data.FK_Edition_Publisher" FromRole="Publisher" ToRole="Edition" />
+          <NavigationProperty Name="Editions" Relationship="Self.FK_Edition_Publisher" FromRole="Publisher" ToRole="Edition" />
         </EntityType>
         <EntityType Name="Reprint">
           <Key>
@@ -605,8 +548,8 @@
           <Property Name="ItemID" Type="Int64" Nullable="false" />
           <Property Name="PatronID" Type="Int64" Nullable="false" />
           <Property Name="Reserved" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Item" Relationship="Librarian.Data.FK_Reserve_Item" FromRole="Reserve" ToRole="Item" />
-          <NavigationProperty Name="Patron" Relationship="Librarian.Data.FK_Reserve_Patron" FromRole="Reserve" ToRole="Patron" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_Reserve_Item" FromRole="Reserve" ToRole="Item" />
+          <NavigationProperty Name="Patron" Relationship="Self.FK_Reserve_Patron" FromRole="Reserve" ToRole="Patron" />
         </EntityType>
         <EntityType Name="SpineID">
           <Key>
@@ -616,8 +559,8 @@
           <Property Name="Num" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_Copy_Edition">
-          <End Type="Librarian.Data.Edition" Role="Edition" Multiplicity="1" />
-          <End Type="Librarian.Data.Copy" Role="Copy" Multiplicity="*" />
+          <End Role="Edition" Type="Self.Edition" Multiplicity="1" />
+          <End Role="Copy" Type="Self.Copy" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Edition">
               <PropertyRef Name="ID" />
@@ -628,8 +571,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Copy_Patron">
-          <End Type="Librarian.Data.Patron" Role="Patron" Multiplicity="0..1" />
-          <End Type="Librarian.Data.Copy" Role="Copy" Multiplicity="*" />
+          <End Role="Patron" Type="Self.Patron" Multiplicity="0..1" />
+          <End Role="Copy" Type="Self.Copy" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Patron">
               <PropertyRef Name="ID" />
@@ -640,8 +583,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DeletedCopy_Copy">
-          <End Type="Librarian.Data.Copy" Role="Copy" Multiplicity="1" />
-          <End Type="Librarian.Data.DeletedCopy" Role="DeletedCopy" Multiplicity="0..1" />
+          <End Role="Copy" Type="Self.Copy" Multiplicity="1" />
+          <End Role="DeletedCopy" Type="Self.DeletedCopy" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Copy">
               <PropertyRef Name="ID" />
@@ -652,8 +595,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Edition_Item">
-          <End Type="Librarian.Data.Item" Role="Item" Multiplicity="1" />
-          <End Type="Librarian.Data.Edition" Role="Edition" Multiplicity="*" />
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Edition" Type="Self.Edition" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
               <PropertyRef Name="ID" />
@@ -663,9 +606,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Edition_Publisher">
+          <End Role="Publisher" Type="Self.Publisher" Multiplicity="0..1" />
+          <End Role="Edition" Type="Self.Edition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Publisher">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Edition">
+              <PropertyRef Name="PublisherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Item_MediaType">
-          <End Type="Librarian.Data.MediaType" Role="MediaType" Multiplicity="1" />
-          <End Type="Librarian.Data.Item" Role="Item" Multiplicity="*" />
+          <End Role="MediaType" Type="Self.MediaType" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MediaType">
               <PropertyRef Name="ID" />
@@ -676,8 +631,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemSubject_Item">
-          <End Type="Librarian.Data.Item" Role="Item" Multiplicity="1" />
-          <End Type="Librarian.Data.ItemSubject" Role="ItemSubject" Multiplicity="*" />
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemSubject" Type="Self.ItemSubject" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
               <PropertyRef Name="ID" />
@@ -688,8 +643,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Reserve_Item">
-          <End Type="Librarian.Data.Item" Role="Item" Multiplicity="1" />
-          <End Type="Librarian.Data.Reserve" Role="Reserve" Multiplicity="*" />
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Reserve" Type="Self.Reserve" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
               <PropertyRef Name="ID" />
@@ -700,8 +655,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Reserve_Patron">
-          <End Type="Librarian.Data.Patron" Role="Patron" Multiplicity="1" />
-          <End Type="Librarian.Data.Reserve" Role="Reserve" Multiplicity="*" />
+          <End Role="Patron" Type="Self.Patron" Multiplicity="1" />
+          <End Role="Reserve" Type="Self.Reserve" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Patron">
               <PropertyRef Name="ID" />
@@ -712,34 +667,81 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="AuthorItem">
-          <End Type="Librarian.Data.Author" Role="Author" Multiplicity="*" />
-          <End Type="Librarian.Data.Item" Role="Item" Multiplicity="*" />
+          <End Role="Author" Type="Self.Author" Multiplicity="*" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
         </Association>
-        <Association Name="FK_Edition_Publisher">
-          <End Type="Librarian.Data.Publisher" Role="Publisher" Multiplicity="0..1" />
-          <End Type="Librarian.Data.Edition" Role="Edition" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Publisher">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Edition">
-              <PropertyRef Name="PublisherID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-</Schema>
-</edmx:ConceptualModels>
-<!-- C-S mapping content -->
-<edmx:Mappings>
-<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="LibraryModelStoreContainer" CdmEntityContainer="LibraryDataContext">
+        <EntityContainer Name="LibraryDataContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Authors" EntityType="Self.Author" />
+          <EntitySet Name="Barcodes" EntityType="Self.Barcode" />
+          <EntitySet Name="Cards" EntityType="Self.Card" />
+          <EntitySet Name="Copies" EntityType="Self.Copy" />
+          <EntitySet Name="DeletedCopies" EntityType="Self.DeletedCopy" />
+          <EntitySet Name="Editions" EntityType="Self.Edition" />
+          <EntitySet Name="ImmediateReprints" EntityType="Self.ImmediateReprint" />
+          <EntitySet Name="Items" EntityType="Self.Item" />
+          <EntitySet Name="ItemSubjects" EntityType="Self.ItemSubject" />
+          <EntitySet Name="Lookups" EntityType="Self.Lookup" />
+          <EntitySet Name="MediaTypes" EntityType="Self.MediaType" />
+          <EntitySet Name="NewIDs" EntityType="Self.NewID" />
+          <EntitySet Name="Patrons" EntityType="Self.Patron" />
+          <EntitySet Name="Publishers" EntityType="Self.Publisher" />
+          <EntitySet Name="Reprints" EntityType="Self.Reprint" />
+          <EntitySet Name="Reserves" EntityType="Self.Reserve" />
+          <EntitySet Name="SpineIDs" EntityType="Self.SpineID" />
+          <AssociationSet Name="FK_Copy_Edition" Association="Self.FK_Copy_Edition">
+            <End Role="Edition" EntitySet="Editions" />
+            <End Role="Copy" EntitySet="Copies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Copy_Patron" Association="Self.FK_Copy_Patron">
+            <End Role="Patron" EntitySet="Patrons" />
+            <End Role="Copy" EntitySet="Copies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeletedCopy_Copy" Association="Self.FK_DeletedCopy_Copy">
+            <End Role="Copy" EntitySet="Copies" />
+            <End Role="DeletedCopy" EntitySet="DeletedCopies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Edition_Item" Association="Self.FK_Edition_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="Edition" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Edition_Publisher" Association="Self.FK_Edition_Publisher">
+            <End Role="Publisher" EntitySet="Publishers" />
+            <End Role="Edition" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_MediaType" Association="Self.FK_Item_MediaType">
+            <End Role="MediaType" EntitySet="MediaTypes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSubject_Item" Association="Self.FK_ItemSubject_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemSubject" EntitySet="ItemSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reserve_Item" Association="Self.FK_Reserve_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="Reserve" EntitySet="Reserves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reserve_Patron" Association="Self.FK_Reserve_Patron">
+            <End Role="Patron" EntitySet="Patrons" />
+            <End Role="Reserve" EntitySet="Reserves" />
+          </AssociationSet>
+          <AssociationSet Name="AuthorItem" Association="Self.AuthorItem">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LibrarianDataStoreContainer" CdmEntityContainer="LibraryDataContext">
           <EntitySetMapping Name="Authors">
             <EntityTypeMapping TypeName="Librarian.Data.Author">
               <MappingFragment StoreEntitySet="Author">
-                <ScalarProperty Name="Suffix" ColumnName="Suffix" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Suffix" ColumnName="Suffix" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -760,36 +762,36 @@
           <EntitySetMapping Name="Copies">
             <EntityTypeMapping TypeName="Librarian.Data.Copy">
               <MappingFragment StoreEntitySet="Copy">
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="Num" ColumnName="Num" />
-                <ScalarProperty Name="Added" ColumnName="Added" />
-                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
-                <ScalarProperty Name="CheckedOut" ColumnName="CheckedOut" />
-                <ScalarProperty Name="PatronID" ColumnName="PatronID" />
-                <ScalarProperty Name="EditionID" ColumnName="EditionID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EditionID" ColumnName="EditionID" />
+                <ScalarProperty Name="PatronID" ColumnName="PatronID" />
+                <ScalarProperty Name="CheckedOut" ColumnName="CheckedOut" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="Added" ColumnName="Added" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DeletedCopies">
             <EntityTypeMapping TypeName="Librarian.Data.DeletedCopy">
               <MappingFragment StoreEntitySet="DeletedCopy">
-                <ScalarProperty Name="Withdrawn" ColumnName="Withdrawn" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Withdrawn" ColumnName="Withdrawn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Editions">
             <EntityTypeMapping TypeName="Librarian.Data.Edition">
               <MappingFragment StoreEntitySet="Edition">
-                <ScalarProperty Name="LU_Language" ColumnName="LU_Language" />
-                <ScalarProperty Name="Added" ColumnName="Added" />
-                <ScalarProperty Name="PublisherID" ColumnName="PublisherID" />
-                <ScalarProperty Name="Copyright" ColumnName="Copyright" />
-                <ScalarProperty Name="LU_CoverType" ColumnName="LU_CoverType" />
-                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="LU_CoverType" ColumnName="LU_CoverType" />
+                <ScalarProperty Name="Copyright" ColumnName="Copyright" />
+                <ScalarProperty Name="PublisherID" ColumnName="PublisherID" />
+                <ScalarProperty Name="Added" ColumnName="Added" />
+                <ScalarProperty Name="LU_Language" ColumnName="LU_Language" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -803,45 +805,45 @@
           <EntitySetMapping Name="Items">
             <EntityTypeMapping TypeName="Librarian.Data.Item">
               <MappingFragment StoreEntitySet="Item">
-                <ScalarProperty Name="Restricted" ColumnName="Restricted" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="TimesCheckedOut" ColumnName="TimesCheckedOut" />
-                <ScalarProperty Name="LastCheckedOut" ColumnName="LastCheckedOut" />
-                <ScalarProperty Name="Summary" ColumnName="Summary" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="CallNum" ColumnName="CallNum" />
-                <ScalarProperty Name="MediaTypeID" ColumnName="MediaTypeID" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="MediaTypeID" ColumnName="MediaTypeID" />
+                <ScalarProperty Name="CallNum" ColumnName="CallNum" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="LastCheckedOut" ColumnName="LastCheckedOut" />
+                <ScalarProperty Name="TimesCheckedOut" ColumnName="TimesCheckedOut" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="Restricted" ColumnName="Restricted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ItemSubjects">
             <EntityTypeMapping TypeName="Librarian.Data.ItemSubject">
               <MappingFragment StoreEntitySet="ItemSubject">
-                <ScalarProperty Name="LU_Subject" ColumnName="LU_Subject" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="LU_Subject" ColumnName="LU_Subject" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Lookups">
             <EntityTypeMapping TypeName="Librarian.Data.Lookup">
               <MappingFragment StoreEntitySet="Lookup">
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="LookupName" ColumnName="LookupName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LookupName" ColumnName="LookupName" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MediaTypes">
             <EntityTypeMapping TypeName="Librarian.Data.MediaType">
               <MappingFragment StoreEntitySet="MediaType">
-                <ScalarProperty Name="LastIDPrinted" ColumnName="LastIDPrinted" />
-                <ScalarProperty Name="MinID" ColumnName="MinID" />
-                <ScalarProperty Name="MaxID" ColumnName="MaxID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MaxID" ColumnName="MaxID" />
+                <ScalarProperty Name="MinID" ColumnName="MinID" />
+                <ScalarProperty Name="LastIDPrinted" ColumnName="LastIDPrinted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -855,105 +857,89 @@
           <EntitySetMapping Name="Patrons">
             <EntityTypeMapping TypeName="Librarian.Data.Patron">
               <MappingFragment StoreEntitySet="Patron">
-                <ScalarProperty Name="Blocked" ColumnName="Blocked" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="StateProvince" ColumnName="StateProvince" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="LU_PatronType" ColumnName="LU_PatronType" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LU_PatronType" ColumnName="LU_PatronType" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateProvince" ColumnName="StateProvince" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Blocked" ColumnName="Blocked" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Publishers">
             <EntityTypeMapping TypeName="Librarian.Data.Publisher">
               <MappingFragment StoreEntitySet="Publisher">
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="StateProvince" ColumnName="StateProvince" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateProvince" ColumnName="StateProvince" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Reprints">
             <EntityTypeMapping TypeName="Librarian.Data.Reprint">
               <MappingFragment StoreEntitySet="Reprint">
-                <ScalarProperty Name="Now" ColumnName="Now" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Now" ColumnName="Now" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Reserves">
             <EntityTypeMapping TypeName="Librarian.Data.Reserve">
               <MappingFragment StoreEntitySet="Reserve">
-                <ScalarProperty Name="Reserved" ColumnName="Reserved" />
-                <ScalarProperty Name="PatronID" ColumnName="PatronID" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="PatronID" ColumnName="PatronID" />
+                <ScalarProperty Name="Reserved" ColumnName="Reserved" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SpineIDs">
             <EntityTypeMapping TypeName="Librarian.Data.SpineID">
               <MappingFragment StoreEntitySet="SpineIDs">
-                <ScalarProperty Name="Num" ColumnName="Num" />
                 <ScalarProperty Name="CopyID" ColumnName="CopyID" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="AuthorItem" TypeName="Librarian.Data.AuthorItem" StoreEntitySet="AuthorItem">
-            <EndProperty Name="Item">
-              <ScalarProperty Name="ID" ColumnName="ItemID" />
-            </EndProperty>
             <EndProperty Name="Author">
               <ScalarProperty Name="ID" ColumnName="AuthorID" />
             </EndProperty>
+            <EndProperty Name="Item">
+              <ScalarProperty Name="ID" ColumnName="ItemID" />
+            </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
-</Mapping>
-</edmx:Mappings>
-</edmx:Runtime>
-<!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-<edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
-<Connection><DesignerInfoPropertySet><DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" /></DesignerInfoPropertySet></Connection>
-<edmx:Options><DesignerInfoPropertySet><DesignerProperty Name="ValidateOnBuild" Value="True" /><DesignerProperty Name="EnablePluralization" Value="True" /><DesignerProperty Name="IncludeForeignKeysInModel" Value="True" /><DesignerProperty Name="UseLegacyProvider" Value="False" /><DesignerProperty Name="CodeGenerationStrategy" Value="None" /></DesignerInfoPropertySet></edmx:Options>
-<edmx:Diagrams >
-      <Diagram DiagramId="ec008836bea842ffb1f98fa9b6b07487" Name="Diagram1">
-        <EntityTypeShape EntityType="Librarian.Data.Author" Width="1.5" PointX="0.5" PointY="4.375" />
-        <EntityTypeShape EntityType="Librarian.Data.Barcode" Width="1.5" PointX="0.5" PointY="8.5" />
-        <EntityTypeShape EntityType="Librarian.Data.Card" Width="1.5" PointX="2.5" PointY="8.5" />
-        <EntityTypeShape EntityType="Librarian.Data.Copy" Width="1.5" PointX="7.25" PointY="4.75" />
-        <EntityTypeShape EntityType="Librarian.Data.DeletedCopy" Width="1.5" PointX="9.5" PointY="5.5" />
-        <EntityTypeShape EntityType="Librarian.Data.Edition" Width="1.5" PointX="5" PointY="4.75" />
-        <EntityTypeShape EntityType="Librarian.Data.ImmediateReprint" Width="1.5" PointX="9.5" PointY="8.5" />
-        <EntityTypeShape EntityType="Librarian.Data.Item" Width="1.5" PointX="2.75" PointY="3" />
-        <EntityTypeShape EntityType="Librarian.Data.ItemSubject" Width="1.5" PointX="5" PointY="2.5" />
-        <EntityTypeShape EntityType="Librarian.Data.Lookup" Width="1.5" PointX="10.5" PointY="0.5" />
-        <EntityTypeShape EntityType="Librarian.Data.MediaType" Width="1.5" PointX="0.5" PointY="1" />
-        <EntityTypeShape EntityType="Librarian.Data.NewID" Width="1.5" PointX="0.5" PointY="10.5" />
-        <EntityTypeShape EntityType="Librarian.Data.Patron" Width="1.5" PointX="5.75" PointY="9.5" />
-        <EntityTypeShape EntityType="Librarian.Data.Publisher" Width="1.5" PointX="2.5" PointY="10.5" />
-        <EntityTypeShape EntityType="Librarian.Data.Reprint" Width="1.5" PointX="8.5" PointY="10.5" />
-        <EntityTypeShape EntityType="Librarian.Data.Reserve" Width="1.5" PointX="8" PointY="1.125" />
-        <EntityTypeShape EntityType="Librarian.Data.SpineID" Width="1.5" PointX="10.5" PointY="10.5" />
-        <AssociationConnector Association="Librarian.Data.FK_Copy_Edition" />
-        <AssociationConnector Association="Librarian.Data.FK_Copy_Patron" />
-        <AssociationConnector Association="Librarian.Data.FK_DeletedCopy_Copy" />
-        <AssociationConnector Association="Librarian.Data.FK_Edition_Item" />
-        <AssociationConnector Association="Librarian.Data.FK_Item_MediaType" />
-        <AssociationConnector Association="Librarian.Data.FK_ItemSubject_Item" />
-        <AssociationConnector Association="Librarian.Data.FK_Reserve_Item" />
-        <AssociationConnector Association="Librarian.Data.FK_Reserve_Patron" />
-        <AssociationConnector Association="Librarian.Data.AuthorItem" />
-        <AssociationConnector Association="Librarian.Data.FK_Edition_Publisher" />
-      </Diagram>
-    </edmx:Diagrams>
-</edmx:Designer></edmx:Edmx>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

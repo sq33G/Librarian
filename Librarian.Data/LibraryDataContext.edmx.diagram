@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a0cf5c9b3c144916897bd1941affd90d" Name="Diagram1">
+        <EntityTypeShape EntityType="Librarian.Data.Author" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Barcode" Width="1.5" PointX="7.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Card" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Copy" Width="1.5" PointX="10.5" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.DeletedCopy" Width="1.5" PointX="12.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Edition" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.ImmediateReprint" Width="1.5" PointX="9.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Item" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.ItemSubject" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Lookup" Width="1.5" PointX="7.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.MediaType" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.NewID" Width="1.5" PointX="9.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Patron" Width="1.5" PointX="8.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Publisher" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Reprint" Width="1.5" PointX="10.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.Reserve" Width="1.5" PointX="8.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Librarian.Data.SpineID" Width="1.5" PointX="0.75" PointY="12.5" IsExpanded="true" />
+        <AssociationConnector Association="Librarian.Data.FK_Copy_Edition" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.FK_Copy_Patron" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.FK_DeletedCopy_Copy" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.FK_Edition_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.FK_Edition_Publisher" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.FK_Item_MediaType" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.FK_ItemSubject_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.FK_Reserve_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.FK_Reserve_Patron" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.AuthorItem" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

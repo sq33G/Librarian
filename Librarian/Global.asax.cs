@@ -11,12 +11,12 @@ namespace Librarian
     {
         protected void Application_Start()
         {
+            AppDomain.CurrentDomain.SetData("DataDirectory", Server.MapPath("bin"));
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             MappingConfig.RegisterMappings();
-
-            AppDomain.CurrentDomain.SetData("SQLServerCompactEditionUnderWebHosting", true);
         }
     }
 }

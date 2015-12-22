@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Librarian.Logic;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,35 +14,25 @@ namespace Librarian.Controllers
         // GET: Author
         public ActionResult Index()
         {
-            return View(new Models.Multi<Models.Author>(Mapper.Map<IEnumerable<Data.Author>, IEnumerable<Models.Author>>(Authoring.GetAllAuthors())));
+            return View(new Models.ModelWithController<IEnumerable<Models.Author>> { ClientController = "author-ctrl", Contents = Mapper.Map<IEnumerable<Data.Author>, IEnumerable<Models.Author>>(Authoring.GetAllAuthors()) });
         }
 
-        // GET: Author/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(long id)
         {
-            return View(Mapper.Map<Data.Author, Models.Author>(Authoring.GetAuthor(id)));
+            return PartialView(Mapper.Map<Data.Author, Models.Author>(Authoring.GetAuthor(id)));
         }
 
-        // GET: Author/Create
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
-        // POST: Author/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Add(Models.Author author)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            Data.Author persistentAuthor = Mapper.Map<Models.Author, Data.Author>(author);
+            Authoring.AddAuthor(persistentAuthor);
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
         }
 
         // GET: Author/Edit/5
@@ -66,26 +57,10 @@ namespace Librarian.Controllers
             }
         }
 
-        // GET: Author/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: Author/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            Authoring.DeleteAuthor(id);
+            return Json(id);
         }
     }
 }

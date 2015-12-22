@@ -18,14 +18,5 @@ namespace Librarian.Models
         {
             get; set;
         }
-
-        [Newtonsoft.Json.JsonIgnore]
-        public string ControllerName
-        {
-            get
-            {
-                return AUTHOR_CTRL;
-            }
-        }
     }
 }

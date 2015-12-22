@@ -1,15 +1,13 @@
 ﻿@model Librarian.Models.Author
-
-<div>
-    <h4>Author</h4>
-    <hr />
+<input class="author-id-container" type="hidden" value="@Model.ID" />
+<div ng-controller="authorDetailCtrl as detail">
     <dl class="dl-horizontal">
         <dt>
             First Name
         </dt>
 
         <dd>
-            {{ author.FirstName }}
+            {{ detail.author.FirstName }}
         </dd>
 
         <dt>
@@ -17,7 +15,7 @@
         </dt>
 
         <dd>
-            {{ author.LastName }}
+            {{ detail.author.LastName }}
         </dd>
 
         <dt>
@@ -25,12 +23,7 @@
         </dt>
 
         <dd>
-            {{ author.Suffix }}
+            {{ detail.author.Suffix }}
         </dd>
-
     </dl>
 </div>
-<p>
-    (Edit)
-    (Close)
-</p>

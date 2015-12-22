@@ -11,6 +11,7 @@ var cssMin = require('gulp-cssmin');
 var del = require('del');
 var sourcemaps = require('gulp-sourcemaps');
 var bower = require('gulp-bower');
+var print = require('gulp-print');
 
 var config = {
     //JavaScript files that will be combined into a jquery bundle
@@ -25,7 +26,6 @@ var config = {
     //JavaScript files that will be combined into a Bootstrap bundle
     bootstrapsrc: [
         'bower_components/bootstrap/dist/js/bootstrap.min.js',
-        'bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js',
         'bower_components/respond/dest/respond.min.js'
     ],
     bootstrapbundle: 'Scripts/bootstrap-bundle.min.js',
@@ -35,9 +35,8 @@ var config = {
     modernizrbundle: 'Scripts/modernizer.min.js',
 
     //Bootstrap CSS and Fonts
-    bootstrapcss: ['bower_components/bootstrap/dist/css/bootstrap.css',
-                   'bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css'],
-    boostrapfonts: 'bower_components/bootstrap/dist/fonts/*.*',
+    bootstrapcss: ['bower_components/bootstrap/dist/css/bootstrap.css'],
+    boostrapfonts: ['bower_components/bootstrap/dist/fonts/*'],
 
     //Angular
     angularsrc: 'bower_components/angular/angular.min.js',
@@ -105,7 +104,7 @@ gulp.task('clean-styles', function () {
 });
 
 gulp.task('css', ['clean-styles', 'bower-restore'], function () {
-    return gulp.src([config.bootstrapcss, config.appcss])
+    return gulp.src(Array.prototype.concat(config.bootstrapcss, config.appcss))
      .pipe(concat('app.css'))
      .pipe(gulp.dest(config.cssout))
      .pipe(cssMin())
@@ -114,8 +113,7 @@ gulp.task('css', ['clean-styles', 'bower-restore'], function () {
 });
 
 gulp.task('fonts', ['clean-styles', 'bower-restore'], function () {
-    return
-    gulp.src(config.boostrapfonts)
+    return gulp.src(config.boostrapfonts)
         .pipe(gulp.dest(config.fontsout));
 });
 
