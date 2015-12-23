@@ -29,7 +29,7 @@
             <th>
                 Suffix
             </th>
-            <th colspan="2"></th>
+            <th colspan="3"></th>
         </tr>
         <tr ng-repeat="author in controller.authors | orderBy : 'LastName' | filter : {$: controller.filter} track by author.ID"
             ng-cloak>
@@ -38,6 +38,7 @@
             <td>{{ author.Suffix }}</td>
             <td><a href="#" ng-click="controller.displayAuthor(author)"><i class="glyphicon glyphicon-plus-sign"></i> Details</a></td>
             <td><a href="#" ng-click="controller.displayDeleteAuthor(author)"><i class="glyphicon glyphicon-remove"></i> Delete</a></td>
+            <td><a href="#" ng-click="controller.displayEditAuthor(author)"><i class="glyphicon glyphicon-pencil"></i> Edit</a></td>
         </tr>
     </table>
 </div>
@@ -46,6 +47,8 @@
 <input class="url-container create-view" type="hidden" value="@Url.Action("Create")" />
 <input class="url-container create" type="hidden" value="@Url.Action("Add")" />
 <input class="url-container delete" type="hidden" value="@Url.Action("Delete")" />
+<input class="url-container edit" type="hidden" value="@Url.Action("Edit")" />
+<input class="url-container update" type="hidden" value="@Url.Action("Update")" />
 <div id="detailPopupContainer">
     @Html.Partial("Dialog", new Librarian.Models.Dialog
 {
@@ -55,7 +58,7 @@
                                             new Librarian.Models.Dialog.Button {
                                                 Text="Edit",
                                                 Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "controller.editAuthor()" }
+                                                    { "ng-click", "controller.displayEditAuthor()" }
                                                 }
                                             }
                               }
@@ -97,12 +100,12 @@
     @Html.Partial("Dialog", new Librarian.Models.Dialog
                           {
                               Title = "Edit Author",
-                              IncludeURL = "controller.createAuthorUrl",
+                              IncludeURL = "controller.editAuthorUrl",
                               Buttons = new List<Librarian.Models.Dialog.Button> {
                                             new Librarian.Models.Dialog.Button {
                                                 Text="Save",
                                                 Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "controller.addAuthor()" }
+                                                    { "ng-click", "controller.updateAuthor()" }
                                                 },
                                                 Default = true
                                             }
@@ -119,8 +122,13 @@
             that.createUrl = $(".url-container.create-view").val();
             that.addUrl = $(".url-container.create").val();
             that.deleteUrl = $(".url-container.delete").val();
+            that.editUrl = $(".url-container.edit").val();
+            that.updateUrl = $(".url-container.update").val();
 
-            that.newAuthorData = { newAuthor: new Author() };
+            that.authorData = {
+                newAuthor: new Author(),
+                currAuthor: {}
+            };
         })
 
         .controller("authorCtrl", function AuthorCtrl(authorService, $scope, $http, $filter) {
@@ -131,14 +139,16 @@
             var detailsContent = $("#detailPopupContainer .modal");
             var createContent = $("#createPopupContainer .modal");
             var deleteContent = $("#deletePopupContainer .modal");
+            var editContent = $("#editPopupContainer .modal");
 
             var modalByUrl = {};
             modalByUrl[authorService.createUrl] = createContent;
             modalByUrl[authorService.detailsUrl] = detailsContent;
             modalByUrl[authorService.deleteUrl] = deleteContent;
+            modalByUrl[authorService.editUrl] = editContent;
 
-            createContent.on("shown.bs.modal", function () {
-                createContent.find("#firstName").focus();
+            createContent.add(editContent).on("shown.bs.modal", function () {
+                $(this).find("#firstName").focus();
             });
 
             $scope.$on('$includeContentLoaded', function (eventArgs, src) {
@@ -152,8 +162,9 @@
             });
 
             that.displayAuthor = function (author) {
-                that.displayAuthorUrl = authorService.detailsUrl + '/' + author.ID;
-                detailsModal = detailsContent.modal();
+                authorService.authorData.currAuthor = author;
+                that.displayAuthorUrl = authorService.detailsUrl;
+                detailsContent.modal();
             };
 
             that.createAuthor = function () {
@@ -163,23 +174,24 @@
 
             that.addAuthor = function () {
                 $http.post(authorService.addUrl,
-                           authorService.newAuthorData.newAuthor)
+                           authorService.authorData.newAuthor)
                      .then(function (addedAuthor) {
                          authorService.authors.push(addedAuthor.data);
-                         authorService.newAuthorData.newAuthor = new Author();
+                         authorService.authorData.newAuthor = new Author();
+                         authorService.authorData.currAuthor = addedAuthor.data;
                          createContent.modal('hide');
                          that.displayAuthor(addedAuthor.data);
                      });
             };
 
             that.displayDeleteAuthor = function (author) {
+                authorService.authorData.currAuthor = author;
                 //TODO merge/remove AuthorItem
-                that.displayAuthorUrl = authorService.detailsUrl + '/' + author.ID;
                 deleteContent.modal();
             };
 
             that.deleteAuthor = function () {
-                var id = $(".author-id-container").val();
+                var id = authorService.authorData.currAuthor.ID;
                 $http.post(authorService.deleteUrl,
                            { id: id })
                      .then(function (deletedID) {
@@ -192,18 +204,44 @@
                 authorService.authors = $filter('filter')(authorService.authors, { ID: '!' + id });
                 that.authors = authorService.authors;
             };
+
+            that.displayEditAuthor = function (author) {
+                detailsContent.modal('hide');
+
+                if (author)
+                    authorService.authorData.currAuthor = author;
+                //otherwise use currently set currAuthor
+
+                that.editAuthorUrl = authorService.editUrl;
+                editContent.modal();
+            };
+
+            that.updateAuthor = function () {
+                $http.post(authorService.updateUrl,
+                           authorService.authorData.currAuthor)
+                     .then(function (updatedAuthor) {
+                         editContent.modal('hide');
+                         that.displayAuthor(authorService.authorData.currAuthor);
+                     });
+            };
         })
 
         .controller("authorDetailCtrl", function AuthorDetailCtrl(authorService, $filter) {
             var that = this;
 
-            that.author = $filter('filter')(authorService.authors, { ID: $(".author-id-container").val() })[0];
+            that.authorData = authorService.authorData;
         })
 
         .controller("authorCreateCtrl", function AuthorCreateCtrl(authorService) {
             var that = this;
 
-            that.authorData = authorService.newAuthorData;
+            that.authorData = authorService.authorData;
+        })
+
+        .controller("authorEditCtrl", function AuthorEditCtrl(authorService) {
+            var that = this;
+
+            that.authorData = authorService.authorData;
         });
 
         function Author() {

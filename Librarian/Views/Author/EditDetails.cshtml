@@ -1,0 +1,17 @@
+﻿@model Librarian.Models.EditDetails
+
+<div ng-controller="@Model.Controller as ctrl">
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" ng-model="ctrl.authorData.@(Model.Current).FirstName" />
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" ng-model="ctrl.authorData.@(Model.Current).LastName" />
+    </div>
+    <div class="form-group">
+        <label for="suffix">Suffix</label>
+        <input type="text" class="form-control" id="suffix" ng-model="ctrl.authorData.@(Model.Current).Suffix" />
+    </div>
+</div>
+

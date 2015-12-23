@@ -39,5 +39,15 @@ namespace Librarian.Logic
                 ctx.SaveChanges();
             }
         }
+
+        public static void UpdateAuthor(Author author)
+        {
+            using (Data.LibraryDataContext ctx = new LibraryDataContext())
+            {
+                ctx.Authors.Attach(author);
+                ctx.Entry(author).State = System.Data.Entity.EntityState.Modified;
+                ctx.SaveChanges();
+            }
+        }
     }
 }

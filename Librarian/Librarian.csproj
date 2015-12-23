@@ -151,6 +151,7 @@
     </Compile>
     <Compile Include="Models\Author.cs" />
     <Compile Include="Models\Dialog.cs" />
+    <Compile Include="Models\EditDetails.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\MainMenu.cs" />
     <Compile Include="Models\MenuItem.cs" />
@@ -203,7 +204,7 @@
     <Content Include="Views\Author\Index.cshtml" />
     <Content Include="Views\Author\Details.cshtml" />
     <Content Include="Views\Shared\Dialog.cshtml" />
-    <Content Include="Views\Author\Create.cshtml" />
+    <Content Include="Views\Author\EditDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Librarian.Data\Librarian.Data.csproj">

@@ -17,14 +17,18 @@ namespace Librarian.Controllers
             return View(new Models.ModelWithController<IEnumerable<Models.Author>> { ClientController = "author-ctrl", Contents = Mapper.Map<IEnumerable<Data.Author>, IEnumerable<Models.Author>>(Authoring.GetAllAuthors()) });
         }
 
-        public ActionResult Details(long id)
+        public ActionResult Details()
         {
-            return PartialView(Mapper.Map<Data.Author, Models.Author>(Authoring.GetAuthor(id)));
+            return PartialView();
         }
 
         public ActionResult Create()
         {
-            return PartialView();
+            return PartialView("EditDetails", new Models.EditDetails
+            {
+                Controller = "authorCreateCtrl",
+                Current = "newAuthor"
+            });
         }
 
         public ActionResult Add(Models.Author author)
@@ -36,25 +40,21 @@ namespace Librarian.Controllers
         }
 
         // GET: Author/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit()
         {
-            return View();
+            return PartialView("EditDetails", new Models.EditDetails
+            {
+                Controller = "authorEditCtrl",
+                Current = "currAuthor"
+            });
         }
 
-        // POST: Author/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Update(Models.Author author)
         {
-            try
-            {
-                // TODO: Add update logic here
+            Data.Author persistentAuthor = Mapper.Map<Models.Author, Data.Author>(author);
+            Authoring.UpdateAuthor(persistentAuthor);
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
         }
 
         public ActionResult Delete(int id)
