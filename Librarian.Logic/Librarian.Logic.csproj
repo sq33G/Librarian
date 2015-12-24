@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="Authoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Publishing.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Librarian.Data\Librarian.Data.csproj">

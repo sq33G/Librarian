@@ -14,7 +14,11 @@ namespace Librarian.Controllers
         // GET: Author
         public ActionResult Index()
         {
-            return View(new Models.ModelWithController<IEnumerable<Models.Author>> { ClientController = "author-ctrl", Contents = Mapper.Map<IEnumerable<Data.Author>, IEnumerable<Models.Author>>(Authoring.GetAllAuthors()) });
+            return View(new Models.ModelWithController<IEnumerable<Models.Author>>
+            {
+                ClientController = "author-ctrl",
+                Contents = Mapper.Map<IEnumerable<Data.Author>, IEnumerable<Models.Author>>(Authoring.GetAllAuthors())
+            });
         }
 
         public ActionResult Details()
@@ -57,7 +61,7 @@ namespace Librarian.Controllers
             return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
         }
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(long id)
         {
             Authoring.DeleteAuthor(id);
             return Json(id);

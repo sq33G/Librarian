@@ -15,12 +15,6 @@ namespace Librarian.Logic
                 return ctx.Authors.ToList();
         }
 
-        public static Author GetAuthor(long id)
-        {
-            using (Data.LibraryDataContext ctx = new Data.LibraryDataContext())
-                return ctx.Authors.Single(author => author.ID == id);
-        }
-
         public static void AddAuthor(Data.Author author)
         {
             using (Data.LibraryDataContext ctx = new LibraryDataContext())
@@ -30,7 +24,7 @@ namespace Librarian.Logic
             }
         }
 
-        public static void DeleteAuthor(int id)
+        public static void DeleteAuthor(long id)
         {
             using (Data.LibraryDataContext ctx = new LibraryDataContext())
             {

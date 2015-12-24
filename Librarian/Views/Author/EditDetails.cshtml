@@ -1,17 +1,38 @@
 ﻿@model Librarian.Models.EditDetails
 
-<div ng-controller="@Model.Controller as ctrl">
-    <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input type="text" class="form-control" id="firstName" ng-model="ctrl.authorData.@(Model.Current).FirstName" />
+<div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().firstName)">
+        <label class="control-label" for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" ng-model="ctrl.authorData.@(Model.Current).FirstName" ng-maxlength="100" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().firstName)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().firstName.$error.maxlength">
+                Maximum length: 100
+            </span>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="lastName">Last Name</label>
-        <input type="text" class="form-control" id="lastName" ng-model="ctrl.authorData.@(Model.Current).LastName" />
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().lastName)">
+        <label class="control-label" for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" ng-model="ctrl.authorData.@(Model.Current).LastName" ng-required="true" ng-maxlength="100" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().lastName)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().lastName.$error.maxlength">
+                Maximum length: 100
+            </span>
+            <span class="error" ng-show="ctrl.form().lastName.$error.required">
+                Required
+            </span>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="suffix">Suffix</label>
-        <input type="text" class="form-control" id="suffix" ng-model="ctrl.authorData.@(Model.Current).Suffix" />
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().suffix)">
+        <label class="control-label" for="suffix">Suffix</label>
+        <input type="text" class="form-control" id="suffix" name="suffix" ng-model="ctrl.authorData.@(Model.Current).Suffix" ng-maxlength="25" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().suffix)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().suffix.$error.maxlength">
+                Maximum length: 25
+            </span>
+        </div>
     </div>
 </div>
 

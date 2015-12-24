@@ -13,6 +13,10 @@ namespace Librarian
         {
             Mapper.CreateMap<Data.Author, Models.Author>();
             Mapper.CreateMap<Models.Author, Data.Author>();
+
+            Mapper.CreateMap<Data.Publisher, Models.Publisher>();
+            Mapper.CreateMap<Models.Publisher, Data.Publisher>();
         }
+
     }
 }
