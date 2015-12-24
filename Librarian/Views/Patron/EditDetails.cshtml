@@ -1,0 +1,41 @@
+﻿@model Librarian.Models.EditDetails
+
+<div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().title)">
+        <label class="control-label" for="title">Title</label>
+        <input type="text" class="form-control" id="title" name="title" ng-model="ctrl.patronData.@(Model.Current).Title" ng-maxlength="25" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().title)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="crtl.form().title.$error.maxlength">
+                Maximum length: 25
+            </span>
+        </div>
+    </div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().firstName)">
+        <label class="control-label" for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" ng-model="ctrl.patronData.@(Model.Current).FirstName" ng-required="true" ng-maxlength="100" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().firstName)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().firstName.$error.required">
+                Required
+            </span>
+            <span class="error" ng-show="ctrl.form().firstName.$error.maxlength">
+                Maximum length: 100
+            </span>
+        </div>
+    </div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().lastName)">
+        <label class="control-label" for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" ng-model="ctrl.patronData.@(Model.Current).LastName" ng-required="true" ng-maxlength="100" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().lastName)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().lastName.$error.maxlength">
+                Maximum length: 100
+            </span>
+            <span class="error" ng-show="ctrl.form().lastName.$error.required">
+                Required
+            </span>
+        </div>
+    </div>
+</div>
+

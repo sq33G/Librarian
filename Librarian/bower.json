@@ -1,0 +1,25 @@
+{
+  "name": "librarian",
+  "authors": [
+    "Golda Fast <golda.fast@hpe.com>"
+  ],
+  "description": "Remodeling the Worrrrld",
+  "main": "",
+  "moduleType": [],
+  "keywords": [
+    "library"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jquery-validation": "~1.14.0",
+    "jquery-validation-unobtrusive": "~3.2.5",
+    "bootstrap": "~3.3.6",
+    "angular": "~1.4.8",
+    "modernizr": "~3.2.0",
+    "respond": "respondJs#~1.4.2",
+    "jquery-ui": "jquery.ui#~1.11.4"
+  }
+}
