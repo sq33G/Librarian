@@ -19,7 +19,7 @@ Librarian.app.service("authorService", function AuthorService() {
     that.editContent = $("#editPopupContainer .modal");
 
     that.createContent.add(that.editContent).on("shown.bs.modal", function () {
-        $(this).find("#firstName").focus();
+        $(this).find("#firstName").select();
     });
 
     var modalByUrl = {};

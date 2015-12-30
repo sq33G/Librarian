@@ -88,6 +88,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authoring.cs" />
+    <Compile Include="LookingUp.cs" />
+    <Compile Include="Patronizing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publishing.cs" />
   </ItemGroup>

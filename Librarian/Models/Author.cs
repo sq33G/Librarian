@@ -9,7 +9,7 @@ namespace Librarian.Models
     {
         public const string AUTHOR_CTRL = "author-ctrl";
 
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Suffix { get; set; }

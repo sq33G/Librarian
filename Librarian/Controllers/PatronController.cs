@@ -12,12 +12,12 @@ namespace Librarian.Controllers
 {
     public class PatronController : Controller
     {
-        // GET: Author
+        // GET: Patron
         public ActionResult Index()
         {
             return View(new Models.ModelWithController<IEnumerable<Models.Patron>>
             {
-                ClientController = "author-ctrl",
+                ClientController = "patron-ctrl",
                 Contents = Mapper.Map<IEnumerable<Data.Patron>, IEnumerable<Models.Patron>>(Patronizing.GetAllPatrons())
             });
         }
@@ -31,40 +31,40 @@ namespace Librarian.Controllers
         {
             return PartialView("EditDetails", new Models.EditDetails
             {
-                Controller = "authorCreateCtrl",
-                Current = "newAuthor"
+                Controller = "patronCreateCtrl",
+                Current = "newPatron"
             });
         }
 
-        public ActionResult Add(Models.Author author)
+        public ActionResult Add(Models.Patron patron)
         {
-            Data.Author persistentAuthor = Mapper.Map<Models.Author, Data.Author>(author);
-            Authoring.AddAuthor(persistentAuthor);
+            Data.Patron persistentPatron = Mapper.Map<Models.Patron, Data.Patron>(patron);
+            Patronizing.AddPatron(persistentPatron);
 
-            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
+            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Patron, Models.Patron>(persistentPatron)));
         }
 
-        // GET: Author/Edit/5
+        // GET: Patron/Edit/5
         public ActionResult Edit()
         {
             return PartialView("EditDetails", new Models.EditDetails
             {
-                Controller = "authorEditCtrl",
-                Current = "currAuthor"
+                Controller = "patronEditCtrl",
+                Current = "currPatron"
             });
         }
 
-        public ActionResult Update(Models.Author author)
+        public ActionResult Update(Models.Patron patron)
         {
-            Data.Author persistentAuthor = Mapper.Map<Models.Author, Data.Author>(author);
-            Authoring.UpdateAuthor(persistentAuthor);
+            Data.Patron persistentPatron = Mapper.Map<Models.Patron, Data.Patron>(patron);
+            Patronizing.UpdatePatron(persistentPatron);
 
-            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
+            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Patron, Models.Patron>(persistentPatron)));
         }
 
         public ActionResult Delete(long id)
         {
-            Authoring.DeleteAuthor(id);
+            Patronizing.DeletePatron(id);
             return Json(id);
         }
     }

@@ -1,7 +1,120 @@
-﻿
+﻿@model Librarian.Models.ModelWithController<IEnumerable<Librarian.Models.Patron>>
+
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Patrons";
 }
 
-<h2>Index</h2>
+<h2>Patrons</h2>
 
+<div class="container">
+    <section class="row">
+        <div class="col-lg-6 col-md-6">
+            <a href="#" ng-click="controller.createPatron()"><i class="glyphicon glyphicon-asterisk"></i> Add Patron</a>
+        </div>
+        <div class="col-lg-2 col-md-6 form-inline">
+            <label for="filter">Search:</label>
+            <input type="text" class="form-control" id="filter" ng-model="controller.filter" />
+        </div>
+    </section>
+    <div class="row"><div class="col-lg-12 col-md-12">&nbsp;</div></div>
+    <table class="table row">
+        <tr>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Patron Type
+            </th>
+            <th>
+                Blocked?
+            </th>
+            <th colspan="3"></th>
+        </tr>
+        <tr ng-repeat="patron in controller.patrons | orderBy : 'LastName' | filter : {$: controller.filter} track by patron.ID"
+            ng-cloak>
+            <td>{{ patron.FirstName }}</td>
+            <td>{{ patron.LastName }}</td>
+            <td>{{ patron.Title }}</td>
+            <td>{{ patron.PatronType.Text }}</td>
+            <td><i class="glyphicon" ng-class="{ 'glyphicon-remove-circle': patron.Blocked }"></i></td>
+            <td><a href="#" ng-click="controller.displayPatron(patron)"><i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-sm">Details</span></a></td>
+            <td><a href="#" ng-click="controller.displayDeletePatron(patron)"><i class="glyphicon glyphicon-remove"></i> <span class="hidden-sm">Delete</span></a></td>
+            <td><a href="#" ng-click="controller.displayEditPatron(patron)"><i class="glyphicon glyphicon-pencil"></i> <span class="hidden-sm">Edit</span></a></td>
+        </tr>
+    </table>
+</div>
+<div id="detailPopupContainer" ng-controller="patronDetailCtrl as ctrl">
+    @Html.Partial("Dialog", new Librarian.Models.Dialog
+{
+    Title = "Patron Details",
+    IncludeURL = "ctrl.displayPatronUrl",
+    Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Edit",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "ctrl.displayEditPatron()" }
+                                                }
+                                            }
+                              }
+})
+</div>
+<div id="deletePopupContainer" ng-controller="patronDeleteCtrl as ctrl">
+    @Html.Partial("Dialog", new Librarian.Models.Dialog
+{
+    Title = "Delete Patron",
+    IncludeURL = "ctrl.displayPatronUrl",
+    Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Delete",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "ctrl.deletePatron()" }
+                                                },
+                                                Default = true
+                                            }
+                              }
+})
+</div>
+<div id="createPopupContainer" ng-controller="patronCreateCtrl as ctrl">
+    <form name="createForm">
+        @Html.Partial("Dialog", new Librarian.Models.Dialog
+   {
+       Title = "New Patron",
+       IncludeURL = "ctrl.createPatronUrl",
+       Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Save",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "ctrl.addPatron()" }
+                                                },
+                                                Default = true
+                                            }
+                              }
+   })
+    </form>
+</div>
+<div id="editPopupContainer" ng-controller="patronEditCtrl as ctrl">
+    <form name="editForm">
+        @Html.Partial("Dialog", new Librarian.Models.Dialog
+   {
+       Title = "Edit Patron",
+       IncludeURL = "ctrl.editPatronUrl",
+       Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Save",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "ctrl.updatePatron()" }
+                                                },
+                                                Default = true
+                                            }
+                              }
+   })
+    </form>
+</div>
+<input type="hidden" id="lookupPatronType" value='@Lookup.Raw("PatronType")' />

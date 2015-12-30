@@ -142,7 +142,9 @@
     <Compile Include="App_Start\MappingConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Code\AngularHelper.cs" />
+    <Compile Include="Code\Caching.cs" />
     <Compile Include="Code\LibraryViewPage.cs" />
+    <Compile Include="Code\LookupHelper.cs" />
     <Compile Include="Controllers\PatronController.cs" />
     <Compile Include="Controllers\PublisherController.cs" />
     <Compile Include="Controllers\AuthorController.cs" />
@@ -155,6 +157,7 @@
     <Compile Include="Models\Dialog.cs" />
     <Compile Include="Models\EditDetails.cs" />
     <Compile Include="Models\IEntity.cs" />
+    <Compile Include="Models\Lookup.cs" />
     <Compile Include="Models\MainMenu.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\ModelWithController.cs" />
@@ -174,6 +177,7 @@
     <Content Include="gulpfile.js" />
     <Content Include="package.json" />
     <Content Include="Scripts\angular-min.js" />
+    <Content Include="Scripts\patron-ctrl.js" />
     <Content Include="Scripts\author-ctrl.js" />
     <Content Include="Scripts\bootstrap-bundle.min.js" />
     <Content Include="Scripts\jquery-bundle.min.js" />
@@ -217,6 +221,7 @@
     <Content Include="Views\Publisher\EditDetails.cshtml" />
     <Content Include="Views\Patron\Index.cshtml" />
     <Content Include="Views\Patron\EditDetails.cshtml" />
+    <Content Include="Views\Patron\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Librarian.Data\Librarian.Data.csproj">

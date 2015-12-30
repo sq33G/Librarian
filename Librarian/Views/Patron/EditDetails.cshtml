@@ -13,12 +13,9 @@
     </div>
     <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().firstName)">
         <label class="control-label" for="firstName">First Name</label>
-        <input type="text" class="form-control" id="firstName" name="firstName" ng-model="ctrl.patronData.@(Model.Current).FirstName" ng-required="true" ng-maxlength="100" />
+        <input type="text" class="form-control" id="firstName" name="firstName" ng-model="ctrl.patronData.@(Model.Current).FirstName" ng-maxlength="100" />
         <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().firstName)"></span>
         <div role="alert" class="help-block">
-            <span class="error" ng-show="ctrl.form().firstName.$error.required">
-                Required
-            </span>
             <span class="error" ng-show="ctrl.form().firstName.$error.maxlength">
                 Maximum length: 100
             </span>
@@ -37,5 +34,88 @@
             </span>
         </div>
     </div>
+    <div class="form-group">
+        <label class="control-label" for="patronType">Patron Type</label>
+        <select class="form-control" id="patronType" name="patronType" ng-model="ctrl.patronData.@(Model.Current).PatronType" 
+                ng-options="patronType as patronType.Text for patronType in ctrl.patronTypes track by patronType.Value" />
+    </div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().address)">
+        <label class="control-label" for="address">Address</label>
+        <textarea class="form-control" id="address" name="address" ng-model="ctrl.patronData.@(Model.Current).Address" maxlength="256" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().address)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().address.$error.maxlength">
+                Maximum length: 256
+            </span>
+        </div>
+    </div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().city)">
+        <label class="control-label" for="city">City</label>
+        <input type="text" class="form-control" id="city" name="city" ng-model="ctrl.patronData.@(Model.Current).City" required maxlength="50" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().city)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().city.$error.required">
+                Required
+            </span>
+            <span class="error" ng-show="ctrl.form().city.$error.maxlength">
+                Maximum length: 50
+            </span>
+        </div>
+    </div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().stateProvince)">
+        <label class="control-label" for="stateProvince">State / Province</label>
+        <input type="text" class="form-control" id="stateProvince" name="stateProvince" ng-model="ctrl.patronData.@(Model.Current).StateProvince" required maxlength="50" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().stateProvince)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().stateProvince.$error.required">
+                Required
+            </span>
+            <span class="error" ng-show="ctrl.form().stateProvince.$error.maxlength">
+                Maximum length: 50
+            </span>
+        </div>
+    </div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().zip)">
+        <label class="control-label" for="zip">Zip</label>
+        <input type="text" class="form-control" id="zip" name="zip" ng-model="ctrl.patronData.@(Model.Current).Zip" required maxlength="12" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().zip)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().zip.$error.required">
+                Required
+            </span>
+            <span class="error" ng-show="ctrl.form().zip.$error.maxlength">
+                Maximum length: 12
+            </span>
+        </div>
+    </div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().country)">
+        <label class="control-label" for="country">Country</label>
+        <input type="text" class="form-control" id="country" name="country" ng-model="ctrl.patronData.@(Model.Current).Country" required maxlength="50" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().country)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().country.$error.required">
+                Required
+            </span>
+            <span class="error" ng-show="ctrl.form().country.$error.maxlength">
+                Maximum length: 50
+            </span>
+        </div>
+    </div>
+    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().phone)">
+        <label class="control-label" for="phone">Phone</label>
+        <input type="text" class="form-control" id="phone" name="phone" ng-model="ctrl.patronData.@(Model.Current).Phone" maxlength="25" />
+        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().phone)"></span>
+        <div role="alert" class="help-block">
+            <span class="error" ng-show="ctrl.form().phone.$error.maxlength">
+                Maximum length: 25
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>
+            <input type="checkbox" id="blocked" name="blocked" ng-model="ctrl.patronData.@(Model.Current).Blocked" />
+            Blocked
+        </label>
+        </div>
 </div>
 

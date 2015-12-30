@@ -1,0 +1,83 @@
+﻿<dl class="dl-horizontal">
+    <dt>
+        First Name
+    </dt>
+
+    <dd>
+        {{ ctrl.patronData.currPatron.FirstName }}
+    </dd>
+
+    <dt>
+        Last Name
+    </dt>
+
+    <dd>
+        {{ ctrl.patronData.currPatron.LastName }}
+    </dd>
+
+    <dt>
+        Title
+    </dt>
+
+    <dd>
+        {{ ctrl.patronData.currPatron.Title }}
+    </dd>
+
+    <dt>
+        Patron Type
+    </dt>
+
+    <dd>
+        {{ ctrl.patronData.currPatron.PatronType.Text }}
+    </dd>
+
+    <dt>
+        Address
+    </dt>
+
+    <dd>
+        {{ ctrl.patronData.currPatron.Address }}
+    </dd>
+
+    <dt>
+        City
+    </dt>
+
+    <dd>
+        {{ ctrl.patronData.currPatron.City }}
+    </dd>
+
+    <dt>
+        State / Province
+    </dt>
+
+    <dd>
+        {{ ctrl.patronData.currPatron.StateProvince }}
+    </dd>
+
+    <dt>
+        Zip
+    </dt>
+
+    <dd>
+        {{ ctrl.patronData.currPatron.Zip }}
+    </dd>
+
+    <dt>
+        Country
+    </dt>
+
+    <dd>
+        {{ ctrl.patronData.currPatron.Country }}
+    </dd>
+
+    <dt>
+        Status
+    </dt>
+
+    <dd>
+        <i class="glyphicon" ng-class="{ 'glyphicon-remove-circle': ctrl.patronData.currPatron.Blocked }"></i> {{ ctrl.patronData.currPatron.Blocked ? "Blocked" : "" }}
+    </dd>
+
+
+</dl>

@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Librarian Library, Bais Yaakov Seminary</title>
     <link rel="stylesheet" type="text/css" href="~/Content/dist/css/app.min.css" />
     <script src="~/Scripts/jquery-bundle.min.js"></script>
     <script src="~/Scripts/angular-min.js"></script>
     <script src="~/Scripts/bootstrap-bundle.min.js"></script>
     <script src="~/Scripts/librarian-app.js"></script>
     <script src="~/Scripts/validation.js"></script>
-    @if (!String.IsNullOrEmpty(Model.ClientController))
+    @if (Model != null && !String.IsNullOrEmpty(Model.ClientController))
     {
         <script src="~/Scripts/@(Model.ClientController).js"></script>
     }
@@ -24,32 +24,39 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">Librarian Library</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Manage Authors", "Index", "Author")</li>
+                    <li>@Html.ActionLink("Manage Patrons", "Index", "Patron")</li>
+                    <li>@Html.ActionLink("Manage Publishers", "Index", "Publisher")</li>
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
             </div>
         </div>
     </div>
     <div class="container body-content">
-        <div ng-controller="@Angular.DashedToCamelCase(Model.ClientController) as controller">
+        @if (Model != null && !String.IsNullOrEmpty(Model.ClientController))
+        {
+            <div ng-controller="@Angular.DashedToCamelCase(Model.ClientController) as controller">
+                @RenderBody()
+                <input class="model-container" type="hidden" value='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Contents))' />
+                <input class="url-container details" type="hidden" value="@Url.Action("Details")" />
+                <input class="url-container create-view" type="hidden" value="@Url.Action("Create")" />
+                <input class="url-container create" type="hidden" value="@Url.Action("Add")" />
+                <input class="url-container delete" type="hidden" value="@Url.Action("Delete")" />
+                <input class="url-container edit" type="hidden" value="@Url.Action("Edit")" />
+                <input class="url-container update" type="hidden" value="@Url.Action("Update")" />
+            </div>
+        }
+        else
+        {
             @RenderBody()
-            <input class="model-container" type="hidden" value='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Contents))' />
-            <input class="url-container details" type="hidden" value="@Url.Action("Details")" />
-            <input class="url-container create-view" type="hidden" value="@Url.Action("Create")" />
-            <input class="url-container create" type="hidden" value="@Url.Action("Add")" />
-            <input class="url-container delete" type="hidden" value="@Url.Action("Delete")" />
-            <input class="url-container edit" type="hidden" value="@Url.Action("Edit")" />
-            <input class="url-container update" type="hidden" value="@Url.Action("Update")" />
-        </div>
+        }
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; 2015 - Librarian Library</p>
         </footer>
     </div>
     @RenderSection("scripts", false)

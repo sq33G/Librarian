@@ -120,7 +120,6 @@
     <Compile Include="Patron.cs">
       <DependentUpon>LibraryDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Patronizing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publisher.cs">
       <DependentUpon>LibraryDataContext.tt</DependentUpon>
