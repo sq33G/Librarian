@@ -26,7 +26,8 @@ var config = {
     //JavaScript files that will be combined into a Bootstrap bundle
     bootstrapsrc: [
         'bower_components/bootstrap/dist/js/bootstrap.min.js',
-        'bower_components/respond/dest/respond.min.js'
+        'bower_components/respond/dest/respond.min.js',
+        'bower_components/bootstrap3-typeahead/bootstrap3-typeahead.min.js'
     ],
     bootstrapbundle: 'Scripts/bootstrap-bundle.min.js',
 
@@ -39,7 +40,9 @@ var config = {
     boostrapfonts: ['bower_components/bootstrap/dist/fonts/*'],
 
     //Angular
-    angularsrc: 'bower_components/angular/angular.min.js',
+    angularsrc: ['bower_components/angular/angular.min.js',
+                 'bower_components/angular-route/angular-route.min.js',
+                 'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'],
     angularbundle: 'Scripts/angular.min.js',
 
     appcss: 'Content/Site.css',

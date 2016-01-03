@@ -108,6 +108,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LibraryDataContext.edmx</DependentUpon>
     </Compile>
+    <Compile Include="LibraryDataContext_ex.cs" />
     <Compile Include="Lookup.cs">
       <DependentUpon>LibraryDataContext.tt</DependentUpon>
     </Compile>

@@ -145,6 +145,7 @@
     <Compile Include="Code\Caching.cs" />
     <Compile Include="Code\LibraryViewPage.cs" />
     <Compile Include="Code\LookupHelper.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\PatronController.cs" />
     <Compile Include="Controllers\PublisherController.cs" />
     <Compile Include="Controllers\AuthorController.cs" />
@@ -156,13 +157,16 @@
     <Compile Include="Models\Author.cs" />
     <Compile Include="Models\Dialog.cs" />
     <Compile Include="Models\EditDetails.cs" />
+    <Compile Include="Models\Edition.cs" />
     <Compile Include="Models\IEntity.cs" />
+    <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Lookup.cs" />
     <Compile Include="Models\MainMenu.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\ModelWithController.cs" />
     <Compile Include="Models\Patron.cs" />
     <Compile Include="Models\Publisher.cs" />
+    <Compile Include="Models\Reserve.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -171,12 +175,15 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dist\css\app.css" />
     <Content Include="Content\dist\css\app.min.css" />
+    <Content Include="Content\dist\css\magnify.gif" />
+    <Content Include="Content\magnify.gif" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="gulpfile.js" />
     <Content Include="package.json" />
     <Content Include="Scripts\angular-min.js" />
+    <Content Include="Scripts\item-ctrl.js" />
     <Content Include="Scripts\patron-ctrl.js" />
     <Content Include="Scripts\author-ctrl.js" />
     <Content Include="Scripts\bootstrap-bundle.min.js" />
@@ -184,6 +191,7 @@
     <Content Include="Scripts\librarian-app.js" />
     <Content Include="Scripts\publisher-ctrl.js" />
     <Content Include="Scripts\validation.js" />
+    <Content Include="Scripts\virtual-paging.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -222,6 +230,10 @@
     <Content Include="Views\Patron\Index.cshtml" />
     <Content Include="Views\Patron\EditDetails.cshtml" />
     <Content Include="Views\Patron\Details.cshtml" />
+    <Content Include="Views\Item\Index.cshtml" />
+    <Content Include="Views\Item\IndexContent.cshtml" />
+    <Content Include="Views\Item\Details.cshtml" />
+    <Content Include="Views\Item\EditDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Librarian.Data\Librarian.Data.csproj">

@@ -1,0 +1,106 @@
+﻿<dl class="dl-horizontal">
+    <dt>
+        Title
+    </dt>
+
+    <dd>
+        {{ item.Title }}
+    </dd>
+
+    <dt>
+        Author
+    </dt>
+
+    <dd>
+        {{ item.AuthorsDesc }}
+    </dd>
+
+    <dt>
+        Subject(s)
+    </dt>
+
+    <dd>
+        <ul>
+            <li ng-repeat="subject in item.Subjects track by ">
+                <span>{{ subject.Text + (($index < item.Subjects - 1) ? "," : "") }}</span>
+            </li>
+        </ul>
+    </dd>
+
+    <dt>
+        Location
+    </dt>
+
+    <dd>
+        {{ item.Location.Text }}
+    </dd>
+
+    <dt>
+        Call Number
+    </dt>
+
+    <dd>
+        {{ item.CallNum }}
+    </dd>
+
+    <dt>
+        Summary
+    </dt>
+
+    <dd>
+        {{ item.Summary }}
+    </dd>
+
+    <dt>
+        Media Type
+    </dt>
+
+    <dd>
+        {{ item.MediaType.Text }}
+    </dd>
+
+    <dt>
+        Amount Editions
+    </dt>
+
+    <dd>
+        {{ item.EditionsCount }}
+    </dd>
+
+    <dt>
+        Amount Copies
+    </dt>
+
+    <dd>
+        {{ item.CopiesCount }}
+    </dd>
+
+    <dt>
+        Amount Reserves
+    </dt>
+
+    <dd>
+        {{ item.ReservesCount }}
+    </dd>
+
+    <dt>
+        Last Checked Out
+    </dt>
+
+    <dd>
+        {{ item.LastCheckedOut | date }}
+    </dd>
+
+    <dt>
+        Restricted (needs approval for access)
+    </dt>
+
+    <dd>
+        <i class="glyphicon" ng-class="{ 'glyphicon-remove-circle': item.Restricted }"></i> {{ item.Restricted ? "Restricted" : "" }}
+    </dd>
+</dl>
+<div style="text-align: right">
+    <button type="button" class="btn btn-primary" ng-click="ctrl.actionItem()">{{ primaryAction }}</button>
+    <button type="button" class="btn btn-default" ng-click="ctrl.back()">Close</button>
+</div>
+

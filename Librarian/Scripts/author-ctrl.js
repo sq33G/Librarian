@@ -94,7 +94,7 @@ Librarian.app.service("authorService", function AuthorService() {
     that.displayEditAuthor = authorService.displayEditAuthor;
 })
 
-.controller("authorDeleteCtrl", function AuthorDeleteCtrl(authorService, $http, $scope) {
+.controller("authorDeleteCtrl", function AuthorDeleteCtrl(authorService, librarian, $http, $scope) {
     var that = this;
 
     that.authorData = authorService.authorData;
@@ -105,7 +105,7 @@ Librarian.app.service("authorService", function AuthorService() {
         $http.post(authorService.deleteUrl,
                    { id: id })
              .then(function (deletedID) {
-                 Librarian.removeByID(authorService.authors, deletedID.data);
+                 librarian.removeByID(authorService.authors, deletedID.data);
                  authorService.deleteContent.modal('hide');
              })
     };

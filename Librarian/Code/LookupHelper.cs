@@ -18,5 +18,18 @@ namespace Librarian
         {
             return new HtmlString(JsonConvert.SerializeObject(Named(name).Select(p => new Models.Lookup(p))));
         }
+
+        /// <summary>
+        /// Returns cached list of all authors in { name, id } format
+        /// </summary>
+        /// <returns></returns>
+        public HtmlString GetAuthors()
+        {
+            return new HtmlString(JsonConvert.SerializeObject(Caching.GetAuthors().Select(p => new
+            {
+                name = p.Value,
+                id = p.Key
+            })));
+        }
     }
 }

@@ -96,7 +96,7 @@ Librarian.app.service("patronService", function PatronService() {
     that.displayEditPatron = patronService.displayEditPatron;
 })
 
-.controller("patronDeleteCtrl", function PatronDeleteCtrl(patronService, $http, $scope) {
+.controller("patronDeleteCtrl", function PatronDeleteCtrl(patronService, librarian, $http, $scope) {
     var that = this;
 
     that.patronData = patronService.patronData;
@@ -107,7 +107,7 @@ Librarian.app.service("patronService", function PatronService() {
         $http.post(patronService.deleteUrl,
                    { id: id })
              .then(function (deletedID) {
-                 Librarian.removeByID(patronService.patrons, deletedID.data);
+                 librarian.removeByID(patronService.patrons, deletedID.data);
                  patronService.deleteContent.modal('hide');
              })
     };
@@ -188,6 +188,6 @@ function Patron() {
     this.FirstName = "";
     this.LastName = "";
     this.Title = "";
-    this.PatronType = { Key: 4, Value: "Student"},
+    this.PatronType = { value: 4, text: "Student"},
     this.RowState = 0;
 }

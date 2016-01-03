@@ -1,4 +1,5 @@
-﻿using Librarian.Logic;
+﻿using Librarian.Data;
+using Librarian.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,53 @@ namespace Librarian
             }
         }
 
+        private static Dictionary<long, string> cachedAuthors
+        {
+            get
+            {
+                Dictionary<long, string> a = (Dictionary<long, string>)HttpContext.Current.Cache["authors"];
+
+                if (a != null)
+                    return a;
+
+                a = GenerateCachedAuthors();
+                HttpContext.Current.Cache["authors"] = a;
+
+                return a;
+            }
+        }
+
+        private static Dictionary<long, string> GenerateCachedAuthors()
+        {
+            return Authoring.GetAllAuthors().ToDictionary(a => a.ID, a => a.ToString());
+        }
+
+        public static Dictionary<long,string> GetAuthors()
+        {
+            return cachedAuthors;
+        }
+
+        private static Dictionary<int, string> cachedMediaTypes
+        {
+            get
+            {
+                Dictionary<int, string> c = (Dictionary<int, string>)HttpContext.Current.Cache["mediaTypes"];
+
+                if (c != null)
+                    return c;
+
+                c = GenerateCachedMediaTypes();
+                HttpContext.Current.Cache["mediaTypes"] = c;
+
+                return c;
+            }
+        }
+
+        private static Dictionary<int, string> GenerateCachedMediaTypes()
+        {
+            return Mediafying.GetAllMediaTypes().ToDictionary(m => m.ID, m => m.Name);
+        }
+
         private static Dictionary<string, Dictionary<int, string>> GenerateCachedLookups()
         {
             return LookingUp.GetAllLookups()
@@ -35,6 +83,11 @@ namespace Librarian
         public static Dictionary<int,string> GetLookup(string name)
         {
             return cachedLookups[name];
+        }
+
+        internal static string GetMediaType(int mediaTypeID)
+        {
+            return cachedMediaTypes[mediaTypeID];
         }
     }
 }

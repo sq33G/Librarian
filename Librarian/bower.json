@@ -20,6 +20,9 @@
     "angular": "~1.4.8",
     "modernizr": "~3.2.0",
     "respond": "respondJs#~1.4.2",
-    "jquery-ui": "jquery.ui#~1.11.4"
+    "jquery-ui": "jquery.ui#~1.11.4",
+    "angular-route": "~1.4.8",
+    "bootstrap3-typeahead": "~4.0.0",
+    "ngInfiniteScroll": "~1.2.1"
   }
 }
