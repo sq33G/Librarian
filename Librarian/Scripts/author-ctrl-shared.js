@@ -38,7 +38,7 @@ Librarian.app.service("authorService", function AuthorService() {
         currAuthor: {}
     };
 
-    that.createAuthor = function (item) {
+    that.displayAddAuthor = function (item) {
         that.createContent.modal();
         that.itemToUpdate = item;
         that.authorData.newAuthor = new Author();
@@ -79,11 +79,12 @@ Librarian.app.service("authorService", function AuthorService() {
         $http.post(authorService.addUrl,
                    that.authorData.newAuthor)
              .then(function (addedAuthor) {
-                 addedAuthor.RowState = 'Added';
-                 authorService.itemToUpdate.Authors.push(addedAuthor);
+                 var newAuthor = addedAuthor.data;
+                 newAuthor.RowState = 'Added';
+                 authorService.itemToUpdate.Authors.push(newAuthor);
                  authorService.lookup.push({
-                     name: (addedAuthor.FirstName == "" ? "" : addedAuthor.FirstName + " ") + addedAuthor.LastName + (addedAuthor.Suffix == "" ? "" : " " + addedAuthor.Suffix),
-                     id: addedAuthor.ID
+                     name: (newAuthor.FirstName == "" ? "" : newAuthor.FirstName + " ") + newAuthor.LastName + (newAuthor.Suffix == "" ? "" : " " + newAuthor.Suffix),
+                     id: newAuthor.ID
                  });
                  authorService.createContent.modal('hide');
                  that.form().$setPristine(); //not submitted for next use
