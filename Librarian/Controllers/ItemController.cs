@@ -26,11 +26,9 @@ namespace Librarian.Controllers
 
         public ActionResult IndexData(int pageNum, int pageSize, string filter)
         {
-            int totalPages;
             return Content(JsonConvert.SerializeObject(new
             {
-                items = Mapper.Map<IEnumerable<Data.Item>, IEnumerable<Models.Item>>(Itemizing.GetAllItems(filter, pageSize, pageNum, out totalPages)),
-                pages = totalPages,
+                items = Mapper.Map<IEnumerable<Data.Item>, IEnumerable<Models.Item>>(Itemizing.GetAllItems(filter, pageSize, pageNum)),
                 pageNum = pageNum
             }));
         }

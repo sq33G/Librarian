@@ -1,68 +1,112 @@
 ﻿@model Librarian.Models.EditDetails
 
-<div>
-    <div class="row">
-        <div class="form-group col-lg-12" ng-class="ctrl.invalidFieldClass(ctrl.form().title)">
-            <label class="control-label" for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="title" ng-model="item.Title" maxlength="256" required />
-            <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().title)"></span>
-            <div role="alert" class="help-block">
-                <span class="error" ng-show="ctrl.form().title.$error.maxlength">
-                    Maximum length: 256
-                </span>
-                <span class="error" ng-show="ctrl.form().title.$error.required">
-                    Required
-                </span>
+<h2>{{ formDesc }}</h2>
+
+<ng-form name="{{ formName }}">
+    <div>
+        <div class="row">
+            <div class="form-group col-lg-12" ng-class="ctrl.invalidFieldClass(ctrl.form().title)">
+                <label class="control-label" for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" ng-model="item.Title" maxlength="256" required />
+                <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().title)"></span>
+                <div role="alert" class="help-block">
+                    <span class="error" ng-show="ctrl.form().title.$error.maxlength">
+                        Maximum length: 256
+                    </span>
+                    <span class="error" ng-show="ctrl.form().title.$error.required">
+                        Required
+                    </span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-md-8 col-sm-12" ng-class="ctrl.invalidFieldClass(ctrl.form().summary)">
-            <label class="control-label" for="summary">Summary</label>
-            <textarea class="form-control" id="summary" name="summary" ng-model="item.Summary" maxlength="4000" />
-            <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().summary)"></span>
-            <div role="alert" class="help-block">
-                <span class="error" ng-show="ctrl.form().summary.$error.maxlength">
-                    Maximum length: 4000
-                </span>
+        <div class="row">
+            <div class="form-group col-md-8 col-sm-12" ng-class="ctrl.invalidFieldClass(ctrl.form().summary)">
+                <label class="control-label" for="summary">Summary</label>
+                <textarea class="form-control" id="summary" name="summary" ng-model="item.Summary" maxlength="4000" rows="3" />
+                <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().summary)"></span>
+                <div role="alert" class="help-block">
+                    <span class="error" ng-show="ctrl.form().summary.$error.maxlength">
+                        Maximum length: 4000
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-md-4 col-sm-12" ng-class="ctrl.invalidFieldClass(ctrl.form().callNum)">
+                <label class="control-label" for="callNum">Call Number</label>
+                <textarea rows="3" class="form-control" id="callNum" name="callNum" ng-model="item.CallNum" required maxlength="30" />
+                <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().callNum)"></span>
+                <div role="alert" class="help-block">
+                    <span class="error" ng-show="ctrl.form().callNum.$error.maxlength">
+                        Maximum length: 30
+                    </span>
+                    <span class="error" ng-show="ctrl.form().callNum.$error.required">
+                        Required
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="form-group col-md-4 col-sm-12" ng-class="ctrl.invalidFieldClass(ctrl.form().callNum)">
-            <label class="control-label" for="callNum">Call Number</label>
-            <textarea rows="3" class="form-control" id="callNum" name="callNum" ng-model="item.CallNum" required maxlength="30" />
-            <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().callNum)"></span>
-            <div role="alert" class="help-block">
-                <span class="error" ng-show="ctrl.form().callNum.$error.maxlength">
-                    Maximum length: 30
-                </span>
-                <span class="error" ng-show="ctrl.form().callNum.$error.required">
-                    Required
-                </span>
+        <div class="row">
+            <div class="col-md-6 form-group" style="padding-left: 0;">
+                <div class="col-md-12"><label class="control-label" for="authors">Authors</label></div>
+                <div class="col-md-5"><input class="form-control" type="text" autocomplete="off" id="authors" /></div>
+                <ul class="list-unstyled list-striped boxy col-md-7" style="height: 74px; overflow-y: scroll">
+                    <li class="li-actionable" ng-repeat="author in item.Authors">
+                        {{ ((author.FirstName && author.FirstName != "") ? author.FirstName + " " : "") + author.LastName }}
+                        <i class="glyphicon glyphicon-pencil" ng-click="ctrl.editItemAuthor(author)"></i>
+                        <i class="glyphicon glyphicon-remove" ng-click="ctrl.removeItemAuthor(author)"></i>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-lg-6" ng-class="ctrl.invalidFieldClass(ctrl.form().authors)">
-            <label class="control-label col-lg-1" for="authors">Authors</label>
-            <input class="form-control col-lg-2" type="text" data-provide="typeahead" autocomplete="off" 
-                   id="authors" data-source="@Lookup.GetAuthors()" />
-            <ul class="list-unstyled col-lg-2">
-                <li class="li-actionable" ng-repeat="author in item.Authors">
-                {{ (author.FirstName && author.FirstName != "" ? author.FirstName + " " : "") + author.LastName }}
-                </li>
-            </ul>
-            <button type="button" class="btn" ng-click="ctrl.manageAuthors()"><span class="hidden-sm">Manage Authors</span><span class="visible-sm hidden-lg">...</span></button>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="restricted" name="restricted" ng-model="item.Restricted" />
+                Restricted (needs approval for access)
+            </label>
         </div>
     </div>
-    <div class="form-group">
-        <label>
-            <input type="checkbox" id="restricted" name="restricted" ng-model="item.Restricted" />
-            Restricted (needs approval for access)
-        </label>
-        </div>
+    <div style="text-align: right">
+        <button type="button" class="btn btn-primary" ng-click="ctrl.save()">Save</button>
+        <button type="button" class="btn btn-default" ng-click="ctrl.back()">Close</button>
+    </div>
+</ng-form>
+<div id="createAuthorPopupContainer" ng-controller="authorCreateCtrl as ctrl">
+    <form name="createForm">
+        @Html.Partial("Dialog", new Librarian.Models.Dialog
+   {
+       Title = "New Author",
+       IncludeURL = "ctrl.createAuthorUrl",
+       Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Save",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "ctrl.addAuthor()" }
+                                                },
+                                                Default = true
+                                            }
+                              }
+   })
+    </form>
 </div>
-<div style="text-align: right">
-    <button type="button" class="btn btn-primary" ng-click="ctrl.save()">{{ Add Item }}</button>
-    <button type="button" class="btn btn-default" ng-click="ctrl.back()">Close</button>
+<div id="editAuthorPopupContainer" ng-controller="authorEditCtrl as ctrl">
+    <form name="editForm">
+        @Html.Partial("Dialog", new Librarian.Models.Dialog
+   {
+       Title = "Edit Author",
+       IncludeURL = "ctrl.editAuthorUrl",
+       Buttons = new List<Librarian.Models.Dialog.Button> {
+                                            new Librarian.Models.Dialog.Button {
+                                                Text="Save",
+                                                Attributes = new Dictionary<string, string> {
+                                                    { "ng-click", "ctrl.updateAuthor()" }
+                                                },
+                                                Default = true
+                                            }
+                              }
+   })
+    </form>
 </div>
+<input class="url-container create-author-view" type="hidden" value="@Url.Action("Create", "Author")" />
+<input class="url-container edit-author" type="hidden" value="@Url.Action("Edit", "Author")" />
+
+
 

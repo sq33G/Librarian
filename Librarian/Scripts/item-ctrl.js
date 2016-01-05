@@ -14,66 +14,58 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
 
     that.pageSize = 200;
     that.totalPages = 100; //starting estimate
-    var itemPages = [];
-    that.items = [];
-    that.filter = '';
 
-    that.getItems = function (page, filter, scope) {
-        if (filter != that.filter) {
-            itemPages = [];
-            items = [];
+    var items = [];
 
-            scope.$broadcast("itemsReset");
-        }
-
-        if (itemPages[page])
-            return;
+    that.getItems = function ($scope) {
+        if ($scope.gettingOrDone) return; //don't load while already loading
+        $scope.gettingOrDone = true;
+        $scope.items = $filter('filter')($scope.items, function (item) { return !item.$$specialFetch; });
 
         $http.post(that.itemsUrl,
             {
                 pageSize: that.pageSize,
-                pageNum: page,
-                filter: filter
+                pageNum: $scope.page++,
+                filter: $scope.filter
             }).then(function (results) {
-                itemPages[results.data.pageNum] = results.data.items;
-                for (var i = 0; i < that.pageSize; i++) {
-                    that.items[i + (results.data.pageNum * that.pageSize)] = itemPages[results.data.pageNum][i];
-                }
                 that.totalPages = results.data.pages;
-                scope.$broadcast("itemsSet");
+
+                $scope.items = $scope.items.concat(results.data.items);
+                items = $scope.items;
+
+                if (that.pageSize == results.data.items.length)
+                    $scope.gettingOrDone = false;
+                else
+                    $scope.loadedAll = true;
             });
 
-    }
+    };
 
     that.getItemByID = function (id, callback) {
-        var itemsFound = $filter('filter')(that.items, '{ ID: ' + id + ' }', true);
+        var itemsFound = $filter('filter')(items, '{ ID: ' + id + ' }', true);
 
         if (itemsFound.length == 1)
             callback(itemsFound[0]);
 
         $http.post(that.singleItemUrl, { id: id })
             .then(function (found) {
-                that.items.push(found.data);
+                items.push(angular.extend(found.data,{ $$specialFetch: true }));
                 callback(found.data);
             })
     };
 
-    that.addItem = function (item) {
-        itemPages = []; //invalidate all - new item could be anywhere in orderby
-        items.push(item);
+    that.addItem = function (item, $scope) {
+        $scope.items.push(angular.extend(item, { $$specialFetch: true }));
+        $scope.$emit('items:modifiedOrFiltered');
     };
 
-    that.removeItem = function (itemID) {
-        for (var i = 0; i < itemPages.length; i++) {
-            if (!itemPages[i])
-                continue;
-            var match = $filter('filter')(itemPages[i], '{ ID: ' + itemID + '}', true);
-            if (match.length > 0) { //invalidate containing and all successive item pages
-                itemPages.splice(i, itemPages.length);
-                break;
-            }
-        }
-        librarian.removeByID(that.items, itemID);
+    that.modifyItem = function (item, $scope) {
+        $scope.$emit('items:modifiedOrFiltered');
+    };
+
+    that.removeItem = function (itemID, $scope) {
+        $scope.items = $filter('filter')($scope.items, '{ ID: !' + itemID + '}');
+        $scope.$emit("items:modifiedOrFiltered")
     };
 })
 
@@ -121,45 +113,47 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
 .controller("itemIndexCtrl", function ItemIndexCtrl(itemService, $http, $scope) {
     var that = this;
 
-    that.page = 0;
-    that.filter = '';
-    that.virtualPageHeight = 1; //starting nonsense
-    that.headerHeight = $("#itemsTable").first("tr").height();
+    $scope.filter = '';
+    $scope.items = [];
+    $scope.page = 0;
 
-    $scope.$on("itemsReset", function () {
-        $(".virtual-scroll-container").scrollTop(0);
-    });
-
-    $scope.$on("itemsSet", function () {
-        that.items = itemService.items;
-        setTimeout(that.updateVirtualPageHeight, 0);
-    });
-
-    $(window).resize(function () {
-        $(".virtual-scroll-container").height($(window).innerHeight() - $(".virtual-scroll-container").offset().top - 20)
-    });
-
-    itemService.getItems(0, '', $scope);
-
-    that.updateVirtualPageHeight = function () {
-        that.virtualPageHeight = $("#itemsTable tr").eq(1).height() * itemService.pageSize;
-        $(".virtual-height").height(that.headerHeight + (that.virtualPageHeight * itemService.totalPages));
+    $scope.getMoreItems = function () {
+        itemService.getItems($scope);
     };
 
-    that.checkPassedVirtualPage = function () {
-        if ($(".virtual-scroll-container").scrollTop() + $(".virtual-scroll-container").height() > that.headerHeight + that.virtualPageHeight * that.page) {
-            that.page = ($(".virtual-scroll-container").scrollTop() + $(".virtual-scroll-container").height() - that.headerHeight) / that.virtualPageHeight;
-            itemService.getItems(that.page, that.filter, $scope);
-        }
+    //initial set
+    $scope.getMoreItems();
+
+    $scope.filterItems = function (value, index, array) {
+        return true; //server side filtering on
+
+     //client-side filtering 
+       //$scope.$emit("items:modifiedOrFiltered");
+        //if (!$scope.filter || $scope.filter == '') return true;
+        //var expected = $scope.filter.toLowerCase();
+        //return value.Title.toLowerCase().indexOf(expected) !== -1 ||
+        //       value.AuthorsDesc.toLowerCase().indexOf(expected) !== -1 ||
+        //       value.Location.Text.toLowerCase().indexOf(expected) !== -1 ||
+        //       value.CallNum.toLowerCase().indexOf(expected) !== -1;
     };
 
-    $(".virtual-scroll-container").scroll(function () {
-        that.checkPassedVirtualPage();
-    });
+    $scope.sentFilter = '';
+    $scope.setFilter = function () {
+        if ($scope.sentFilter == $scope.filter)
+            return;
+
+        $scope.items = [];
+        $scope.page = 0;
+        $scope.loadedAll = $scope.gettingOrDone = false;
+        itemService.getItems($scope);
+        $scope.sentFilter = $scope.filter;
+    };
 })
 
 .controller("itemDetailCtrl", function ItemDetailCtrl(itemService, $location, $scope, $filter, $routeParams) {
     var that = this;
+
+    $scope.nullDate = new Date(1, 1, 1);
 
     $scope.primaryAction = 'Edit';
     itemService.getItemByID($routeParams.itemID, function (found) {
@@ -214,10 +208,12 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
 
 })
 
-.controller("itemCreateCtrl", function ItemCreateCtrl($scope, $http, $location, itemService, validationService) {
+.controller("itemCreateCtrl", function ItemCreateCtrl($scope, $http, $location, itemService, authorService, validationService) {
     var that = this;
-    that.form = function () { return $scope.createForm; };
+    that.form = function () { return $scope.itemCreateForm; };
 
+    $scope.formDesc = "Add New Item";
+    $scope.formName = "itemCreateForm";
     $scope.item = new Item();
     $("#title").select();
 
@@ -226,6 +222,18 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
             that.save();
         if (eventArgs.which == 27)
             that.close();
+    });
+
+    $("#authors").typeahead({
+        source: authorService.lookup,
+        addItem: { name: 'Add Author...', id: -1 },
+        minLength: 2,
+        updater: function (item) {
+            if (item.id == -1)
+                authorService.displayAddAuthor($scope.item);
+            else
+                $scope.$apply(function () { $scope.item.Authors.push({ LastName: item.name, ID: item.id }); });
+        }
     });
 
     that.invalidFieldClass = function (field) {
@@ -249,9 +257,12 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
     };
 })
 
-.controller("itemEditCtrl", function ItemEditCtrl(itemService, $routeParams, $location, $http, $scope, validationService) {
+.controller("itemEditCtrl", function ItemEditCtrl(itemService, authorService, $routeParams, $location, $http, $scope,
+                                                  validationService) {
     var that = this;
-    that.form = function () { return $scope.editForm; };
+    that.form = function () { return $scope.itemEditForm; };
+    $scope.formName = "itemEditForm";
+    $scope.formDesc = "Edit Item";
 
     var original;
     itemService.getItemByID($routeParams.itemID, function (found) {
@@ -264,6 +275,18 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
             that.save();
         if (eventArgs.which == 27)
             that.close();
+    });
+
+    $("#authors").typeahead({
+        source: authorService.lookup,
+        addItem: { name: 'Add Author...', id: -1 },
+        minLength: 2,
+        updater: function (item) {
+            if (item.id == -1)
+                authorService.displayAddAuthor($scope.item);
+            else
+                $scope.$apply(function () { $scope.item.Authors.push({ LastName: item.name, ID: item.id }); });
+        }
     });
 
     that.invalidFieldClass = function (field) {

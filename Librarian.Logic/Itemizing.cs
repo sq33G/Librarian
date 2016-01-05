@@ -17,14 +17,14 @@ namespace Librarian.Logic
             }
         }
 
-        public static IEnumerable<Item> GetAllItems(string filter, int pageSize, int pageNum, out int pagesTotal)
+        public static IEnumerable<Item> GetAllItems(string filter, int pageSize, int pageNum)
         {
             using (LibraryDataContext ctx = new LibraryDataContext())
                 return Page(Filter(ctx, AllItems(ctx), filter).OrderBy(item => item.Title),
-                    pageSize, pageNum, out pagesTotal).ToList();
+                    pageSize, pageNum).ToList();
         }
 
-        private static IEnumerable<Item> AllItems(LibraryDataContext ctx)
+        private static IQueryable<Item> AllItems(LibraryDataContext ctx)
         {
             return ctx.Items.Include(item => item.Authors)
                             .Include(item => item.Editions.Select(edition => edition.Copies))
@@ -38,30 +38,33 @@ namespace Librarian.Logic
             using (LibraryDataContext ctx = new LibraryDataContext())
             {
                 Item found = ctx.Items.Find(id);
-                ctx.Entry(found).Reference(item => item.Authors).Load();
-                ctx.Entry(found).Reference(item => item.Editions.Select(edition => edition.Copies)).Load();
-                ctx.Entry(found).Reference(item => item.ItemSubjects).Load();
-                ctx.Entry(found).Reference(item => item.Reserves).Load();
+                ctx.Entry(found).Collection(item => item.Authors).Load();
+                ctx.Entry(found).Collection(item => item.Editions).Load();
+                foreach (Edition ed in found.Editions)
+                    ctx.Entry(ed).Collection(edi => edi.Copies).Load();
+                ctx.Entry(found).Collection(item => item.ItemSubjects).Load();
+                ctx.Entry(found).Collection(item => item.Reserves).Load();
 
                 return found;
             }
         }
 
-        private static IEnumerable<Item> Page(IEnumerable<Item> items, int pageSize, int pageNum, out int pagesTotal)
+        private static IQueryable<Item> Page(IQueryable<Item> items, int pageSize, int pageNum)
         {
-            pagesTotal = (int)Math.Ceiling((float)items.Count() / (float)pageSize);
+            //pagesTotal = (int)Math.Ceiling((float)items.Count() / (float)pageSize);
             return items.Skip(pageSize * pageNum).Take(pageSize);
         }
 
-        private static IEnumerable<Item> Filter(LibraryDataContext ctx, IEnumerable<Item> items, string filter)
+        private static IQueryable<Item> Filter(LibraryDataContext ctx, IQueryable<Item> items, string filter)
         {
             if (String.IsNullOrWhiteSpace(filter))
                 return items;
 
-            return items.Where(item => item.Title.Contains(filter) ||
-                                       item.ItemSubjects.Select(itemSubj => ctx.Lookups.Single(lookup => lookup.LookupName == "Subject" &&
-                                                                                                         lookup.ID == itemSubj.LU_Subject).Value)
-                                                        .Any(subj => subj.Contains(filter)) ||
+            return items.Where(item => item.Title.Contains(filter)
+                                       ||
+                                       item.ItemSubjects.Any(itemSubj => ctx.Lookups.FirstOrDefault(lookup => lookup.LookupName == "Subject" &&
+                                                                                                              lookup.ID == itemSubj.LU_Subject).Value.Contains(filter)) 
+                                       ||
                                        item.Authors.Any(author => (author.FirstName + " " + author.LastName + " " + author.Suffix).Contains(filter)));
         }
     }

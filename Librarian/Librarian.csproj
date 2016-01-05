@@ -175,7 +175,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dist\css\app.css" />
     <Content Include="Content\dist\css\app.min.css" />
-    <Content Include="Content\dist\css\magnify.gif" />
     <Content Include="Content\magnify.gif" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -183,6 +182,7 @@
     <Content Include="gulpfile.js" />
     <Content Include="package.json" />
     <Content Include="Scripts\angular-min.js" />
+    <Content Include="Scripts\author-ctrl-shared.js" />
     <Content Include="Scripts\item-ctrl.js" />
     <Content Include="Scripts\patron-ctrl.js" />
     <Content Include="Scripts\author-ctrl.js" />

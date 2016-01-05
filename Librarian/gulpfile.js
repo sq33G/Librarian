@@ -46,8 +46,11 @@ var config = {
     angularbundle: 'Scripts/angular.min.js',
 
     appcss: 'Content/Site.css',
+    appimages: 'Content/*.gif',
+
     fontsout: 'Content/dist/fonts',
-    cssout: 'Content/dist/css'
+    cssout: 'Content/dist/css',
+    imagesout: 'Content/dist/images'
 
 }
 
@@ -120,8 +123,13 @@ gulp.task('fonts', ['clean-styles', 'bower-restore'], function () {
         .pipe(gulp.dest(config.fontsout));
 });
 
+gulp.task('images', ['clean-styles', 'bower-restore'], function () {
+    return gulp.src(config.appimages)
+        .pipe(gulp.dest(config.imagesout));
+});
+
 // Combine and minify css files and output fonts
-gulp.task('styles', ['css', 'fonts'], function () {
+gulp.task('styles', ['css', 'fonts', 'images'], function () {
 
 });
 

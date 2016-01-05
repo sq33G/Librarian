@@ -1,4 +1,6 @@
-﻿<dl class="dl-horizontal">
+﻿<h2>Item Details</h2>
+
+<dl class="dl-horizontal">
     <dt>
         Title
     </dt>
@@ -15,13 +17,13 @@
         {{ item.AuthorsDesc }}
     </dd>
 
-    <dt>
-        Subject(s)
+    <dt class="ul-like">
+        Subject(s)<br ng-repeat="subject in item.Subjects track by subject.Value" />
     </dt>
 
     <dd>
-        <ul>
-            <li ng-repeat="subject in item.Subjects track by ">
+        <ul class="list-unstyled">
+            <li ng-repeat="subject in item.Subjects track by subject.Value">
                 <span>{{ subject.Text + (($index < item.Subjects - 1) ? "," : "") }}</span>
             </li>
         </ul>
@@ -60,7 +62,7 @@
     </dd>
 
     <dt>
-        Amount Editions
+        Editions
     </dt>
 
     <dd>
@@ -68,7 +70,7 @@
     </dd>
 
     <dt>
-        Amount Copies
+        Copies
     </dt>
 
     <dd>
@@ -76,7 +78,7 @@
     </dd>
 
     <dt>
-        Amount Reserves
+        Reserves
     </dt>
 
     <dd>
@@ -88,19 +90,21 @@
     </dt>
 
     <dd>
-        {{ item.LastCheckedOut | date }}
+        {{ item.LastCheckedOut > nullDate ? item.LastCheckedOut : null | date }}
     </dd>
 
     <dt>
-        Restricted (needs approval for access)
     </dt>
 
     <dd>
-        <i class="glyphicon" ng-class="{ 'glyphicon-remove-circle': item.Restricted }"></i> {{ item.Restricted ? "Restricted" : "" }}
+        <i class="glyphicon" ng-class="{ 'glyphicon-lock': item.Reference }"></i>
+        {{ item.Reference ? 'Reference (in library use only)\n' : '' }}
+        <i class="glyphicon" ng-class="{ 'glyphicon-remove-circle': item.Restricted }"></i>
+        {{ item.Restricted ? "Restricted (needs approval for access)" : "" }}
     </dd>
 </dl>
 <div style="text-align: right">
     <button type="button" class="btn btn-primary" ng-click="ctrl.actionItem()">{{ primaryAction }}</button>
-    <button type="button" class="btn btn-default" ng-click="ctrl.back()">Close</button>
+    <button type="button" class="btn btn-default" ng-click="ctrl.close()">Close</button>
 </div>
 

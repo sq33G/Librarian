@@ -10,10 +10,6 @@
     <script src="~/Scripts/bootstrap-bundle.min.js"></script>
     <script src="~/Scripts/librarian-app.js"></script>
     <script src="~/Scripts/validation.js"></script>
-    @if (Model != null && !String.IsNullOrEmpty(Model.ClientController))
-    {
-        <script src="~/Scripts/@(Model.ClientController).js"></script>
-    }
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -28,7 +24,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Manage Items","Index","Item")</li>
+                    <li><a href="@Url.Action("Index","Item")/#/">Manage Items</a></li>
                     <li>@Html.ActionLink("Manage Authors", "Index", "Author")</li>
                     <li>@Html.ActionLink("Manage Patrons", "Index", "Patron")</li>
                     <li>@Html.ActionLink("Manage Publishers", "Index", "Publisher")</li>
@@ -60,6 +56,10 @@
             <p>&copy; 2015 - Librarian Library</p>
         </footer>
     </div>
-    @RenderSection("scripts", false)
+    @RenderSection("scripts", false) @* render possible dependencies before rendering controller ref *@
+    @if (Model != null && !String.IsNullOrEmpty(Model.ClientController))
+    {
+        <script src="~/Scripts/@(Model.ClientController).js"></script>
+    }
 </body>
 </html>

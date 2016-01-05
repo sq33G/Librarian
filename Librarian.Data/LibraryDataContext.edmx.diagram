@@ -32,6 +32,7 @@
         <AssociationConnector Association="Librarian.Data.FK_Reserve_Item" ManuallyRouted="false" />
         <AssociationConnector Association="Librarian.Data.FK_Reserve_Patron" ManuallyRouted="false" />
         <AssociationConnector Association="Librarian.Data.AuthorItem" ManuallyRouted="false" />
+        <AssociationConnector Association="Librarian.Data.ItemSubjectLookup" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

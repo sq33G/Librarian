@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "Items";
+}
+
+<ng-view></ng-view>
+<input class="url-container retrieve-model" type="hidden" value="@Url.Action("IndexData")" />
+<input class="url-container retrieve-single" type="hidden" value="@Url.Action("Single")" />
+<input class="url-container index" type="hidden" value="@Url.Action("IndexContent")" />
+<input type="hidden" id="authorList" value='@Lookup.GetAuthors()' />
+@section scripts {
+    <script src="~/Scripts/author-ctrl-shared.js"></script>
+    }

@@ -14,18 +14,18 @@ namespace Librarian
             return Caching.GetLookup(name);
         }
 
-        public HtmlString Raw(string name)
+        public MvcHtmlString Raw(string name)
         {
-            return new HtmlString(JsonConvert.SerializeObject(Named(name).Select(p => new Models.Lookup(p))));
+            return new MvcHtmlString(JsonConvert.SerializeObject(Named(name).Select(p => new Models.Lookup(p))));
         }
 
         /// <summary>
         /// Returns cached list of all authors in { name, id } format
         /// </summary>
         /// <returns></returns>
-        public HtmlString GetAuthors()
+        public MvcHtmlString GetAuthors()
         {
-            return new HtmlString(JsonConvert.SerializeObject(Caching.GetAuthors().Select(p => new
+            return new MvcHtmlString(JsonConvert.SerializeObject(Caching.GetAuthors().Select(p => new
             {
                 name = p.Value,
                 id = p.Key
