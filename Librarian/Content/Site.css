@@ -54,6 +54,12 @@ ul.list-striped li:nth-child(odd) {
     background-color: #f9f9f9;
 }
 
+ul.list-striped li.li-actionable span.actions {
+    float: right;
+    background-color: inherit;
+    width: auto;
+}
+
 ul.list-striped li {
     padding-left: 15px;
     padding-right: 15px;
@@ -63,11 +69,21 @@ ul.list-striped li {
     background-color: #f5f5f5;
 }
 
+.li-actionable span {
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+.li-actionable:hover span {
+    width: 60%;
+}
+
 .li-actionable i {
-    visibility: hidden;
-    float: right;
+    display: none;
 }
 
 .li-actionable:hover i {
-    visibility:  visible;
+    display: inline;
 }

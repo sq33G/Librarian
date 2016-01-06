@@ -52,6 +52,15 @@ namespace Librarian
             return cachedAuthors;
         }
 
+        internal static void AddAuthor(Author author)
+        {
+            Dictionary<long, string> fromCache = cachedAuthors;
+            if (fromCache.ContainsKey(author.ID))
+                return;
+
+            fromCache.Add(author.ID, author.ToString());
+        }
+
         private static Dictionary<int, string> cachedMediaTypes
         {
             get

@@ -53,9 +53,11 @@
                 <label class="control-label">&nbsp;</label>
                 <ul class="list-unstyled list-striped boxy" style="height: 74px; overflow-y: scroll">
                     <li class="li-actionable" ng-repeat="author in item.Authors">
-                        {{ ((author.FirstName && author.FirstName != "") ? author.FirstName + " " : "") + author.LastName }}
-                        <i class="glyphicon glyphicon-pencil" ng-click="ctrl.editItemAuthor(author)"></i>
-                        <i class="glyphicon glyphicon-remove" ng-click="ctrl.removeItemAuthor(author)"></i>
+                        <span>{{ ((author.FirstName && author.FirstName != "") ? author.FirstName + " " : "") + author.LastName + ((author.Suffix && author.Suffix != "") ? " " + author.Suffix : "") }}</span>
+                        <span class="actions">
+                            <i class="glyphicon glyphicon-pencil" ng-click="ctrl.editItemAuthor(author)"></i>
+                            <i class="glyphicon glyphicon-remove" ng-click="ctrl.removeItemAuthor(author)"></i>
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -112,6 +114,7 @@
 <input class="url-container create-author" type="hidden" value="@Url.Action("Add", "Author")" />
 <input class="url-container edit-author" type="hidden" value="@Url.Action("Edit", "Author")" />
 <input class="url-container update-author" type="hidden" value="@Url.Action("Update", "Author")" />
+<input class="url-container get-author" type="hidden" value="@Url.Action("ByID", "Author")" />
 
 
 

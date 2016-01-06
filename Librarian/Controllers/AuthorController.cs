@@ -21,6 +21,11 @@ namespace Librarian.Controllers
             });
         }
 
+        public ActionResult ByID(long id)
+        {
+            return Content(JsonConvert.SerializeObject(Mapper.Map<Models.Author>(Authoring.GetAuthorByID(id))));
+        }
+
         public ActionResult Details()
         {
             return PartialView();
@@ -39,6 +44,8 @@ namespace Librarian.Controllers
         {
             Data.Author persistentAuthor = Mapper.Map<Models.Author, Data.Author>(author);
             Authoring.AddAuthor(persistentAuthor);
+
+            Caching.AddAuthor(persistentAuthor);
 
             return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
         }

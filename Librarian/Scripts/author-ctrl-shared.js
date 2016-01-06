@@ -2,11 +2,12 @@
 
 Librarian.app = Librarian.app || angular.module('librarianApp', []);
 
-Librarian.app.service("authorService", function AuthorService() {
+Librarian.app.service("authorService", function AuthorService($http, $filter) {
     var that = this;
 
     that.lookup = angular.fromJson($("#authorList").val());
 
+    that.getUrl = $(".url-container.get-author").val();
     that.createUrl = $(".url-container.create-author-view").val();
     that.addUrl = $(".url-container.create-author").val();
     that.editUrl = $(".url-container.edit-author").val();
@@ -36,6 +37,27 @@ Librarian.app.service("authorService", function AuthorService() {
     that.authorData = {
         newAuthor: new Author(),
         currAuthor: {}
+    };
+
+    that.getTypeahead = function ($scope) {
+        return {
+            source: that.lookup,
+            addItem: { name: 'Add Author...', id: -1 },
+            minLength: 2,
+            updater: function (author) {
+                if (author.id == -1)
+                    that.displayAddAuthor($scope.item);
+                else {
+                    if ($filter('filter')($scope.item.Authors, { ID: author.id }).length > 0)
+                        return;
+
+                    $http.post(that.getUrl, { id: author.id })
+                         .then(function (fullAuthor) {
+                             $scope.item.Authors.push(fullAuthor.data);
+                         });
+                }
+            }
+        }
     };
 
     that.displayAddAuthor = function (item) {
@@ -80,7 +102,7 @@ Librarian.app.service("authorService", function AuthorService() {
                    that.authorData.newAuthor)
              .then(function (addedAuthor) {
                  var newAuthor = addedAuthor.data;
-                 newAuthor.RowState = 'Added';
+                 newAuthor.RowState = 1; // 'Added';
                  authorService.itemToUpdate.Authors.push(newAuthor);
                  authorService.lookup.push({
                      name: (newAuthor.FirstName == "" ? "" : newAuthor.FirstName + " ") + newAuthor.LastName + (newAuthor.Suffix == "" ? "" : " " + newAuthor.Suffix),
@@ -123,7 +145,6 @@ Librarian.app.service("authorService", function AuthorService() {
                  angular.copy(updatedAuthor.data, authorService.authorData.currAuthor);
                  authorService.editContent.modal('hide');
                  that.form().$setPristine(); //not submitted for next use
-                 authorService.displayAuthor();
              });
     };
 });

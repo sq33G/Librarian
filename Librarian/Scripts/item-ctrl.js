@@ -49,7 +49,7 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
 
         $http.post(that.singleItemUrl, { id: id })
             .then(function (found) {
-                items.push(angular.extend(found.data,{ $$specialFetch: true }));
+                items.push(angular.extend(found.data, { $$specialFetch: true }));
                 callback(found.data);
             })
     };
@@ -127,8 +127,8 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
     $scope.filterItems = function (value, index, array) {
         return true; //server side filtering on
 
-     //client-side filtering 
-       //$scope.$emit("items:modifiedOrFiltered");
+        //client-side filtering 
+        //$scope.$emit("items:modifiedOrFiltered");
         //if (!$scope.filter || $scope.filter == '') return true;
         //var expected = $scope.filter.toLowerCase();
         //return value.Title.toLowerCase().indexOf(expected) !== -1 ||
@@ -208,108 +208,86 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
 
 })
 
-.controller("itemCreateCtrl", function ItemCreateCtrl($scope, $http, $location, itemService, authorService, validationService) {
-    var that = this;
-    that.form = function () { return $scope.itemCreateForm; };
+.factory("ItemBaseCtrl", function (authorService, validationService, librarian) {
+    return function ItemBaseCtrl($scope, formFinder, formDesc, formName, afterValidate) {
+        var that = this;
+        that.form = formFinder;
 
-    $scope.formDesc = "Add New Item";
-    $scope.formName = "itemCreateForm";
-    $scope.item = new Item();
-    $("#title").select();
+        $scope.formDesc = formDesc;
+        $scope.formName = formName;
 
-    $("input").keypress(function (eventArgs) {
-        if (eventArgs.which == 13)
-            that.save();
-        if (eventArgs.which == 27)
-            that.close();
-    });
+        $("#title").select();
 
-    $("#authors").typeahead({
-        source: authorService.lookup,
-        addItem: { name: 'Add Author...', id: -1 },
-        minLength: 2,
-        updater: function (item) {
-            if (item.id == -1)
-                authorService.displayAddAuthor($scope.item);
-            else
-                $scope.$apply(function () { $scope.item.Authors.push({ LastName: item.name, ID: item.id }); });
-        }
-    });
+        $("input").keypress(function (eventArgs) {
+            if (eventArgs.which == 13)
+                that.save();
+            if (eventArgs.which == 27)
+                that.close();
+        });
 
-    that.invalidFieldClass = function (field) {
-        return validationService.invalidFieldClass(that.form(), field);
-    };
+        $("#authors").typeahead(authorService.getTypeahead($scope));
 
-    that.invalidIconClass = function (field) {
-        return validationService.invalidIconClass(that.form(), field);
-    };
+        that.invalidFieldClass = function (field) {
+            return validationService.invalidFieldClass(that.form(), field);
+        };
 
-    that.save = function () {
-        if (!validationService.validateForm(that.form()))
-            return;
+        that.invalidIconClass = function (field) {
+            return validationService.invalidIconClass(that.form(), field);
+        };
 
-        $http.post(itemService.addUrl,
-                   $scope.item)
-             .then(function (addedItem) {
-                 itemService.addItem(addedItem);
-                 $location.path('/Detail/' + addedItem.ID);
-             });
+        that.save = function () {
+            if (!validationService.validateForm(that.form()))
+                return;
+
+            afterValidate();
+        };
+
+        that.editItemAuthor = function (author) {
+            authorService.displayEditAuthor(author);
+        };
+
+        that.removeItemAuthor = function (author) {
+            librarian.removeByID($scope.item.Authors, author.ID);
+        };
     };
 })
 
-.controller("itemEditCtrl", function ItemEditCtrl(itemService, authorService, $routeParams, $location, $http, $scope,
-                                                  validationService) {
-    var that = this;
-    that.form = function () { return $scope.itemEditForm; };
-    $scope.formName = "itemEditForm";
-    $scope.formDesc = "Edit Item";
+.controller("itemCreateCtrl", function ItemCreateCtrl(ItemBaseCtrl, $scope, itemService, $location) {
+    $scope.item = new Item();
 
+    return new ItemBaseCtrl($scope,
+                            function () { return $scope.itemCreateForm; },
+                            "Add New Item",
+                            "itemCreateForm",
+                            function () {
+                                $http.post(itemService.addUrl,
+                                           $scope.item)
+                                .then(function (addedItem) {
+                                    itemService.addItem(addedItem);
+                                    $location.path('/Detail/' + addedItem.ID);
+                                });
+                            });
+})
+
+.controller("itemEditCtrl", function ItemEditCtrl(ItemBaseCtrl, $scope, itemService, $location, $routeParams) {
     var original;
     itemService.getItemByID($routeParams.itemID, function (found) {
         original = found;
         $scope.item = angular.copy(found);
     });
 
-    $("input").keypress(function (eventArgs) {
-        if (eventArgs.which == 13)
-            that.save();
-        if (eventArgs.which == 27)
-            that.close();
-    });
-
-    $("#authors").typeahead({
-        source: authorService.lookup,
-        addItem: { name: 'Add Author...', id: -1 },
-        minLength: 2,
-        updater: function (item) {
-            if (item.id == -1)
-                authorService.displayAddAuthor($scope.item);
-            else
-                $scope.$apply(function () { $scope.item.Authors.push({ LastName: item.name, ID: item.id }); });
-        }
-    });
-
-    that.invalidFieldClass = function (field) {
-        if (!field) return '';
-        return validationService.invalidFieldClass(that.form(), field);
-    };
-
-    that.invalidIconClass = function (field) {
-        if (!field) return '';
-        return validationService.invalidIconClass(that.form(), field);
-    };
-
-    that.save = function () {
-        if (!validationService.validateForm(that.form()))
-            return;
-
-        $http.post(itemService.updateUrl,
-                   $scope.item)
-             .then(function (updatedItem) {
-                 angular.copy(updatedItem.data, original);
-                 $location.path('/Detail/' + $routeParams.itemID)
-             });
-    };
+    return new ItemBaseCtrl($scope,
+                            function () { return $scope.itemEditForm; },
+                            "Edit Item",
+                            "itemEditForm",
+                            function () {
+                                $http.post(itemService.updateUrl,
+                                           $scope.item)
+                                     .then(function (updatedItem) {
+                                         angular.copy(updatedItem.data, original);
+                                         $location.path('/Detail/' + $routeParams.itemID)
+                                     });
+                            });
 });
 
 function Item() {

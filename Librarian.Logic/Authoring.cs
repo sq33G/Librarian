@@ -34,6 +34,12 @@ namespace Librarian.Logic
             }
         }
 
+        public static object GetAuthorByID(long id)
+        {
+            using (Data.LibraryDataContext ctx = new LibraryDataContext())
+                return ctx.Authors.Find(id);
+        }
+
         public static void UpdateAuthor(Author author)
         {
             using (Data.LibraryDataContext ctx = new LibraryDataContext())
