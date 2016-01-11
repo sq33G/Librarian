@@ -2,7 +2,7 @@
 
 <h2>{{ formDesc }}</h2>
 
-<ng-form name="{{ formName }}">
+<ng-form name="{{ formName }}" default-buttons default-action="ctrl.save()" cancel-action="ctrl.back()">
     <div>
         <div class="row">
             <div class="form-group col-lg-12" ng-class="ctrl.invalidFieldClass(ctrl.form().title)">
@@ -46,21 +46,25 @@
         </div>
         <div class="row">
             <div class="col-sm-3 form-group">
-                <label class="control-label" for="authors">Authors</label>
+                <label class="control-label">Authors</label>
                 <input class="form-control" type="text" autocomplete="off" id="authors" />
             </div>
             <div class="col-sm-3">
                 <label class="control-label">&nbsp;</label>
-                <ul class="list-unstyled list-striped boxy" style="height: 74px; overflow-y: scroll">
+                <ul class="list-unstyled list-striped boxy list-actionable" style="height: 74px">
                     <li class="li-actionable" ng-repeat="author in item.Authors">
-                        <span>{{ ((author.FirstName && author.FirstName != "") ? author.FirstName + " " : "") + author.LastName + ((author.Suffix && author.Suffix != "") ? " " + author.Suffix : "") }}</span>
-                        <span class="actions">
-                            <i class="glyphicon glyphicon-pencil" ng-click="ctrl.editItemAuthor(author)"></i>
-                            <i class="glyphicon glyphicon-remove" ng-click="ctrl.removeItemAuthor(author)"></i>
-                        </span>
-                    </li>
+                        <div>
+                            <span class="li-content">{{ ((author.FirstName && author.FirstName != "") ? author.FirstName + " " : "") + author.LastName + ((author.Suffix && author.Suffix != "") ? " " + author.Suffix : "") }}</span>
+                            <span class="actions">
+                                <i class="glyphicon glyphicon-pencil" ng-click="ctrl.editItemAuthor(author)"></i>
+                                <i class="glyphicon glyphicon-remove" ng-click="ctrl.removeItemAuthor(author)"></i>
+                            </span>
+                        </div>                    </li>
                 </ul>
             </div>
+            <multi-typeahead label-text="Subjects" add-new-text="New Subject..." height="74px" mt-lookup="subjects"
+                             mt-selected-list="item.Subjects" mt-text-for="ctrl.textForSubject"
+                             mt-add-new="ctrl.addNewSubject" mt-add="ctrl.addSubject" mt-edit="ctrl.editSubject" mt-remove="ctrl.removeSubject"></multi-typeahead>
         </div>
         <div class="form-group">
             <label>
@@ -75,7 +79,7 @@
     </div>
 </ng-form>
 <div id="createAuthorPopupContainer" ng-controller="authorCreateCtrl as ctrl">
-    <form name="createForm">
+    <form name="createForm" default-buttons default-action="ctrl.addAuthor()" target-cancel-class="btn-default" >
         @Html.Partial("Dialog", new Librarian.Models.Dialog
    {
        Title = "New Author",
@@ -93,7 +97,7 @@
     </form>
 </div>
 <div id="editAuthorPopupContainer" ng-controller="authorEditCtrl as ctrl">
-    <form name="editForm">
+    <form name="editForm" default-action="ctrl.updateAuthor()" target-cancel-class="btn-default">
         @Html.Partial("Dialog", new Librarian.Models.Dialog
    {
        Title = "Edit Author",
@@ -110,11 +114,62 @@
    })
     </form>
 </div>
+<div id="createLookupPopupContainer" ng-controller="lookupCreateCtrl as ctrl">
+    <form name="createForm" default-action="ctrl.addLookup()" target-cancel-class="btn-default">
+        @Html.Partial("Dialog", new Librarian.Models.Dialog
+{
+    Title = "New Subject",
+    IncludeURL = "ctrl.createLookupUrl",
+    Buttons = new List<Librarian.Models.Dialog.Button>
+       {
+           new Librarian.Models.Dialog.Button
+           {
+               Text = "Save",
+               Attributes = new Dictionary<string, string>
+               { {
+                   "ng-click", "ctrl.addLookup()"
+                   } },
+               Default = true
+           }
+       }
+})
+    </form>
+</div>
+<div id="editLookupPopupContainer" ng-controller="lookupEditCtrl as ctrl">
+    <form name="editForm" default-action="ctrl.updateLookup()" target-cancel-class="btn-default">
+        @Html.Partial("Dialog", new Librarian.Models.Dialog
+{
+    Title = "Edit Subject",
+    IncludeURL = "ctrl.editLookupUrl",
+    Buttons = new List<Librarian.Models.Dialog.Button>
+       {
+           new Librarian.Models.Dialog.Button
+           {
+               Text = "Save",
+               Attributes = new Dictionary<string, string> {
+                   {
+                       "ng-click", "ctrl.updateLookup()"
+                   }
+               },
+               Default = true
+            }
+        }
+})
+    </form>
+</div>
 <input class="url-container create-author-view" type="hidden" value="@Url.Action("Create", "Author")" />
 <input class="url-container create-author" type="hidden" value="@Url.Action("Add", "Author")" />
 <input class="url-container edit-author" type="hidden" value="@Url.Action("Edit", "Author")" />
 <input class="url-container update-author" type="hidden" value="@Url.Action("Update", "Author")" />
 <input class="url-container get-author" type="hidden" value="@Url.Action("ByID", "Author")" />
+<input class="url-container create-lookup-view" type="hidden" value="@Url.Action("Create", "Lookup")" />
+<input class="url-container create-lookup" type="hidden" value="@Url.Action("Add","Lookup")" />
+<input class="url-container edit-lookup" type="hidden" value="@Url.Action("Edit","Lookup")" />
+<input class="url-container update-lookup" type="hidden" value="@Url.Action("Update","Lookup")" />
+
+
+
+
 
 
 

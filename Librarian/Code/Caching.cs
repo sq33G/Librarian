@@ -47,18 +47,58 @@ namespace Librarian
             return Authoring.GetAllAuthors().ToDictionary(a => a.ID, a => a.ToString());
         }
 
+        public static void AddLookupValue(Lookup lookupValue)
+        {
+            Dictionary<int, string> whole = cachedLookups[lookupValue.LookupName];
+            if (whole.ContainsKey(lookupValue.ID))
+                return;
+            whole.Add(lookupValue.ID, lookupValue.Value);
+        }
+
+        public static void UpdateLookupValue(Lookup lookupValue)
+        {
+            Dictionary<int, string> whole = cachedLookups[lookupValue.LookupName];
+            if (whole.ContainsKey(lookupValue.ID))
+                whole[lookupValue.ID] = lookupValue.Value;
+            else
+                whole.Add(lookupValue.ID, lookupValue.Value);
+        }
+
+        public static void RemoveLookupValue(string name, int id)
+        {
+            Dictionary<int, string> whole = cachedLookups[name];
+            if (whole.ContainsKey(id))
+                whole.Remove(id);
+        }
+
         public static Dictionary<long,string> GetAuthors()
         {
             return cachedAuthors;
         }
 
-        internal static void AddAuthor(Author author)
+        public static void AddAuthor(Author author)
         {
             Dictionary<long, string> fromCache = cachedAuthors;
             if (fromCache.ContainsKey(author.ID))
                 return;
 
             fromCache.Add(author.ID, author.ToString());
+        }
+
+        public static void UpdateAuthor(Author author)
+        {
+            Dictionary<long, string> fromCache = cachedAuthors;
+            if (fromCache.ContainsKey(author.ID))
+                fromCache[author.ID] = author.ToString();
+            else
+                fromCache.Add(author.ID, author.ToString());
+        }
+
+        public static void RemoveAuthor(long id)
+        {
+            Dictionary<long, string> fromCache = cachedAuthors;
+            if (fromCache.ContainsKey(id))
+                fromCache.Remove(id);
         }
 
         private static Dictionary<int, string> cachedMediaTypes

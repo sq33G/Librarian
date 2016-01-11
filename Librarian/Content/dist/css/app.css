@@ -6759,6 +6759,11 @@ button.close {
 }
 /*# sourceMappingURL=bootstrap.css.map */
 
+/* get rid of yellow background for autofill on chrome */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+
 body {
     padding-top: 50px;
     padding-bottom: 20px;
@@ -6795,6 +6800,7 @@ dt:nth-of-type(odd),dd:nth-of-type(odd) {
 ul.boxy {
     border: solid 1px rgb(221,221,221);
     border-radius: 4px;
+    overflow-y: scroll;
 }
 
 ul.list-striped {
@@ -6811,14 +6817,30 @@ ul.list-striped li:last-child {
     border-bottom-right-radius: 4px;
 }
 
+li.li-actionable:hover div,.li-actionable:hover span {
+    background-color: #f5f5f5;
+}
+
+ul.list-striped li.li-actionable:nth-child(odd):hover {
+    background-color: #f5f5f5;
+}
+
 ul.list-striped li:nth-child(odd) {
     background-color: #f9f9f9;
 }
 
-ul.list-striped li.li-actionable span.actions {
+li.li-actionable:hover span.actions {
     float: right;
-    background-color: inherit;
-    width: auto;
+    display: block;
+    width: 25%;
+}
+
+.li-actionable span.actions {
+    display: none;
+}
+
+ul.list-actionable {
+    white-space: nowrap;   
 }
 
 ul.list-striped li {
@@ -6826,25 +6848,15 @@ ul.list-striped li {
     padding-right: 15px;
 }
 
-.li-actionable:hover {
-    background-color: #f5f5f5;
-}
 
-.li-actionable span {
+.li-actionable span.li-content {
     width: 100%;
-    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
-    display: inline-block;
+    display: block;
 }
 
-.li-actionable:hover span {
-    width: 60%;
-}
-
-.li-actionable i {
-    display: none;
-}
-
-.li-actionable:hover i {
-    display: inline;
+.li-actionable:hover span.li-content {
+    width: 75%;
+    float: left;
 }

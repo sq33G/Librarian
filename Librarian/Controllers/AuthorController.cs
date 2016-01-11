@@ -65,12 +65,17 @@ namespace Librarian.Controllers
             Data.Author persistentAuthor = Mapper.Map<Models.Author, Data.Author>(author);
             Authoring.UpdateAuthor(persistentAuthor);
 
+            Caching.UpdateAuthor(persistentAuthor);
+
             return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
         }
 
         public ActionResult Delete(long id)
         {
             Authoring.DeleteAuthor(id);
+
+            Caching.RemoveAuthor(id);
+
             return Json(id);
         }
     }

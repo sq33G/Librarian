@@ -16,7 +16,11 @@ namespace Librarian
 
         public MvcHtmlString Raw(string name)
         {
-            return new MvcHtmlString(JsonConvert.SerializeObject(Named(name).Select(p => new Models.Lookup(p))));
+            return new MvcHtmlString(JsonConvert.SerializeObject(Named(name).Select(p => new
+            {
+                name = p.Value,
+                id = p.Key
+            })));
         }
 
         /// <summary>

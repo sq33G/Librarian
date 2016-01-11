@@ -1,0 +1,15 @@
+﻿@model Librarian.Models.EditDetails
+
+<div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().text)">
+    <label class="control-label" for="text">{{ ctrl.lookupData.lookupToUpdate }}</label>
+    <input type="text" class="form-control" id="text" name="text" ng-model="ctrl.lookupData.@(Model.Current).Text" required maxlength="100" />
+    <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().text)"></span>
+    <div role="alert" class="help-block">
+        <span class="error" ng-show="ctrl.form().text.$error.required">
+            Required
+        </span>
+        <span class="error" ng-show="ctrl.form().text.$error.maxlength">
+            Maximum length: 100
+        </span>
+    </div>
+</div>

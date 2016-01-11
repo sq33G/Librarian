@@ -13,7 +13,6 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
     that.updateUrl = $(".url-container.update").val();
 
     that.pageSize = 200;
-    that.totalPages = 100; //starting estimate
 
     var items = [];
 
@@ -28,8 +27,6 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
                 pageNum: $scope.page++,
                 filter: $scope.filter
             }).then(function (results) {
-                that.totalPages = results.data.pages;
-
                 $scope.items = $scope.items.concat(results.data.items);
                 items = $scope.items;
 
@@ -106,6 +103,23 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
     });
 })
 
+.factory("Item", function itemFactory() {
+    return function Item() {
+        this.ID = 0;
+        this.MediaType = { value: 1, text: "Book" },
+        this.Authors = [];
+        this.Deleted = false;
+        this.Reference = false;
+        this.Restricted = false;
+        this.Subjects = [];
+        this.Location = { value: 91, text: 'New' };
+        this.TimesCheckedOut = 0;
+        this.CopiesCount = 0;
+        this.EditionsCount = 0;
+        this.Editions = [];
+    };
+})
+
 
 .controller("itemCtrl", function ItemCtrl() {
 })
@@ -160,14 +174,6 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
         $scope.item = found;
     });
 
-    $("input").keypress(function (eventArgs) {
-        if (eventArgs.which == 13)
-            that.actionItem();
-        if (eventArgs.which == 27)
-            that.close();
-    });
-
-
     that.actionItem = function () {
         $location.path('/Edit/' + $routeParams.itemID);
     };
@@ -183,13 +189,6 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
     $scope.primaryAction = 'Delete';
     itemService.getItemByID($routeParams.itemID, function (found) {
         $scope.item = found;
-    });
-
-    $("input").keypress(function (eventArgs) {
-        if (eventArgs.which == 13)
-            that.actionItem();
-        if (eventArgs.which == 27)
-            that.close();
     });
 
     that.actionItem = function () {
@@ -208,7 +207,7 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
 
 })
 
-.factory("ItemBaseCtrl", function (authorService, validationService, librarian) {
+.factory("ItemBaseCtrl", function (authorService, lookupService, validationService, librarian, $filter) {
     return function ItemBaseCtrl($scope, formFinder, formDesc, formName, afterValidate) {
         var that = this;
         that.form = formFinder;
@@ -216,16 +215,31 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
         $scope.formDesc = formDesc;
         $scope.formName = formName;
 
+        lookupService.init("Subject", "#subjectList");
+        $scope.subjects = lookupService.lookup["Subject"];
+
         $("#title").select();
 
-        $("input").keypress(function (eventArgs) {
-            if (eventArgs.which == 13)
-                that.save();
-            if (eventArgs.which == 27)
-                that.close();
-        });
-
         $("#authors").typeahead(authorService.getTypeahead($scope));
+
+        that.textForSubject = function (subj) {
+            return subj.Text;
+        };
+
+        that.addNewSubject = function () {
+            lookupService.selectedListToUpdate = $scope.item.Subjects;
+            lookupService.displayAddLookup("Subject");
+        };
+
+        that.addSubject = function (subj) {
+            if ($filter('filter')($scope.item.Subjects, { Value: subj.id }).length > 0)
+                return;
+
+            $scope.$apply(function () { $scope.item.Subjects.push({ Text: subj.name, Value: subj.id }); });
+        };
+
+        that.editSubject = function (subj) { lookupService.displayEditLookup("Subject", subj); };
+        that.removeSubject = function (subj) { librarian.removeByID($scope.item.Subjects, subj.Value, 'Value'); };
 
         that.invalidFieldClass = function (field) {
             return validationService.invalidFieldClass(that.form(), field);
@@ -252,7 +266,7 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
     };
 })
 
-.controller("itemCreateCtrl", function ItemCreateCtrl(ItemBaseCtrl, $scope, itemService, $location) {
+.controller("itemCreateCtrl", function ItemCreateCtrl(ItemBaseCtrl, $scope, itemService, $location, Item) {
     $scope.item = new Item();
 
     return new ItemBaseCtrl($scope,
@@ -269,11 +283,12 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
                             });
 })
 
-.controller("itemEditCtrl", function ItemEditCtrl(ItemBaseCtrl, $scope, itemService, $location, $routeParams) {
+.controller("itemEditCtrl", function ItemEditCtrl(ItemBaseCtrl, $scope, itemService, $location, $routeParams, lookupService) {
     var original;
     itemService.getItemByID($routeParams.itemID, function (found) {
         original = found;
         $scope.item = angular.copy(found);
+        lookupService.selectedListToUpdate = $scope.item.Subjects;
     });
 
     return new ItemBaseCtrl($scope,
@@ -289,18 +304,3 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
                                      });
                             });
 });
-
-function Item() {
-    this.ID = 0;
-    this.MediaType = { value: 1, text: "Book" },
-    this.Authors = [];
-    this.Deleted = false;
-    this.Reference = false;
-    this.Restricted = false;
-    this.Subjects = [];
-    this.Location = { value: 91, text: 'New' };
-    this.TimesCheckedOut = 0;
-    this.CopiesCount = 0;
-    this.EditionsCount = 0;
-    this.Editions = [];
-}

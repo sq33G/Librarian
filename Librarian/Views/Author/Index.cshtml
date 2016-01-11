@@ -43,69 +43,18 @@
     </table>
 </div>
 <div id="detailPopupContainer" ng-controller="authorDetailCtrl as ctrl">
-    @Html.Partial("Dialog", new Librarian.Models.Dialog
-{
-    Title = "Author Details",
-    IncludeURL = "ctrl.displayAuthorUrl",
-    Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Edit",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.displayEditAuthor()" }
-                                                }
-                                            }
-                              }
-})
+    <bootstrap-dialog include="ctrl.displayAuthorUrl" primary-text="Edit" primary-action="ctrl.displayEditAuthor()" close-action="ctrl.close()" title="Author Details"></bootstrap-dialog>
 </div>
 <div id="deletePopupContainer" ng-controller="authorDeleteCtrl as ctrl">
-    @Html.Partial("Dialog", new Librarian.Models.Dialog
-{
-    Title = "Delete Author",
-    IncludeURL = "ctrl.displayAuthorUrl",
-    Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Delete",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.deleteAuthor()" }
-                                                },
-                                                Default = true
-                                            }
-                              }
-})
+    <bootstrap-dialog include="ctrl.displayAuthorUrl" primary-text="Delete" primary-action="ctrl.deleteAuthor()" title="Delete Author"></bootstrap-dialog>
 </div>
 <div id="createPopupContainer" ng-controller="authorCreateCtrl as ctrl">
     <form name="createForm">
-        @Html.Partial("Dialog", new Librarian.Models.Dialog
-                          {
-                              Title = "New Author",
-                              IncludeURL = "ctrl.createAuthorUrl",
-                              Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Save",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.addAuthor()" }
-                                                },
-                                                Default = true
-                                            }
-                              }
-                          })
+        <bootstrap-dialog include="ctrl.createAuthorUrl" primary-text="Save" primary-action="ctrl.addAuthor()" close-action="ctrl.close()" title="New Author"></bootstrap-dialog>
     </form>
 </div>
 <div id="editPopupContainer" ng-controller="authorEditCtrl as ctrl">
     <form name="editForm">
-        @Html.Partial("Dialog", new Librarian.Models.Dialog
-                          {
-                              Title = "Edit Author",
-                              IncludeURL = "ctrl.editAuthorUrl",
-                              Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Save",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.updateAuthor()" }
-                                                },
-                                                Default = true
-                                            }
-                              }
-                          })
+        <bootstrap-dialog include="ctrl.editAuthorUrl" primary-text="Save" primary-action="ctrl.updateAuthor()" title="Edit Author"></bootstrap-dialog>
     </form>
 </div>

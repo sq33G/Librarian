@@ -17,27 +17,6 @@ Librarian.app.service("authorService", function AuthorService() {
     that.createContent = $("#createPopupContainer .modal");
     that.deleteContent = $("#deletePopupContainer .modal");
     that.editContent = $("#editPopupContainer .modal");
-
-    that.createContent.add(that.editContent).on("shown.bs.modal", function () {
-        $(this).find("#firstName").select();
-    });
-
-    var modalByUrl = {};
-    modalByUrl[that.createUrl] = that.createContent;
-    modalByUrl[that.detailsUrl] = that.detailsContent;
-    modalByUrl[that.deleteUrl] = that.deleteContent;
-    modalByUrl[that.editUrl] = that.editContent;
-
-    that.setDefaultButton = function (url) {
-        var defaultButton = modalByUrl[url].find("button.btn-primary");
-        modalByUrl[url].find("input").keypress(function (eventArgs) {
-            if (eventArgs.which == 13)
-                defaultButton.click();
-            if (eventArgs.which == 27)
-                modalByUrl[url].modal('hide');
-        });
-    };
-
     that.authorData = {
         newAuthor: new Author(),
         currAuthor: {}
@@ -80,10 +59,6 @@ Librarian.app.service("authorService", function AuthorService() {
     that.createAuthor = authorService.createAuthor;
     that.displayDeleteAuthor = authorService.displayDeleteAuthor;
     that.displayEditAuthor = authorService.displayEditAuthor;
-
-    $scope.$on('$includeContentLoaded', function (eventArgs, src) {
-        authorService.setDefaultButton(src);
-    });
 })
 
 .controller("authorDetailCtrl", function AuthorDetailCtrl(authorService) {
@@ -126,6 +101,12 @@ Librarian.app.service("authorService", function AuthorService() {
         return validationService.invalidIconClass(that.form(), field);
     };
 
+    that.close = function () {
+        authorService.createContent.modal('hide');
+        authorService.authorData.newAuthor = new Author();
+        that.form().$setPristine(); //not submitted for next use
+    };
+
     that.addAuthor = function () {
         if (!validationService.validateForm(that.form()))
             return;
@@ -162,6 +143,11 @@ Librarian.app.service("authorService", function AuthorService() {
     that.invalidIconClass = function (field) {
         if (!field) return '';
         return validationService.invalidIconClass(that.form(), field);
+    };
+
+    that.close = function () {
+        that.form().$setPristine;
+        authorService.editContent.modal('hide');
     };
 
     that.updateAuthor = function () {

@@ -8,6 +8,9 @@
 <input class="url-container retrieve-single" type="hidden" value="@Url.Action("Single")" />
 <input class="url-container index" type="hidden" value="@Url.Action("IndexContent")" />
 <input type="hidden" id="authorList" value='@Lookup.GetAuthors()' />
+<input type="hidden" id="subjectList" value='@Lookup.Raw("Subject")' />
 @section scripts {
     <script src="~/Scripts/author-ctrl-shared.js"></script>
+    <script src="~/Scripts/lookup-ctrl.js"></script>
+    <script src="~/Scripts/multi-typeahead.js"></script>
     }

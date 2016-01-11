@@ -51,7 +51,6 @@ namespace Librarian.Logic
 
         private static IQueryable<Item> Page(IQueryable<Item> items, int pageSize, int pageNum)
         {
-            //pagesTotal = (int)Math.Ceiling((float)items.Count() / (float)pageSize);
             return items.Skip(pageSize * pageNum).Take(pageSize);
         }
 

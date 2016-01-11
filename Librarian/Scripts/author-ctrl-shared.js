@@ -2,7 +2,7 @@
 
 Librarian.app = Librarian.app || angular.module('librarianApp', []);
 
-Librarian.app.service("authorService", function AuthorService($http, $filter) {
+Librarian.app.service("authorService", function AuthorService($http, $filter, $rootScope) {
     var that = this;
 
     that.lookup = angular.fromJson($("#authorList").val());
@@ -60,10 +60,17 @@ Librarian.app.service("authorService", function AuthorService($http, $filter) {
         }
     };
 
+    var $addScope;
+    that.registerAddItemScope = function ($scope) {
+        $addScope = $scope;
+    };
+
     that.displayAddAuthor = function (item) {
         that.createContent.modal();
         that.itemToUpdate = item;
-        that.authorData.newAuthor = new Author();
+        $addScope.$apply(function () {
+            that.authorData.newAuthor = new Author();
+        });
     }
 
     that.displayEditAuthor = function (author) {
@@ -81,6 +88,8 @@ Librarian.app.service("authorService", function AuthorService($http, $filter) {
 
     that.authorData = authorService.authorData;
     that.createAuthorUrl = authorService.createUrl;
+
+    authorService.registerAddItemScope($scope);
 
     $scope.$on('$includeContentLoaded', function (eventArgs, src) {
         authorService.setDefaultButton(src);

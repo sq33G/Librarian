@@ -146,6 +146,7 @@
     <Compile Include="Code\LibraryViewPage.cs" />
     <Compile Include="Code\LookupHelper.cs" />
     <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\PatronController.cs" />
     <Compile Include="Controllers\PublisherController.cs" />
     <Compile Include="Controllers\AuthorController.cs" />
@@ -183,15 +184,18 @@
     <Content Include="package.json" />
     <Content Include="Scripts\angular-min.js" />
     <Content Include="Scripts\author-ctrl-shared.js" />
+    <Content Include="Scripts\default-buttons.js" />
+    <Content Include="Scripts\dialog.js" />
     <Content Include="Scripts\item-ctrl.js" />
+    <Content Include="Scripts\multi-typeahead.js" />
     <Content Include="Scripts\patron-ctrl.js" />
     <Content Include="Scripts\author-ctrl.js" />
     <Content Include="Scripts\bootstrap-bundle.min.js" />
     <Content Include="Scripts\jquery-bundle.min.js" />
     <Content Include="Scripts\librarian-app.js" />
     <Content Include="Scripts\publisher-ctrl.js" />
+    <Content Include="Scripts\lookup-ctrl.js" />
     <Content Include="Scripts\validation.js" />
-    <Content Include="Scripts\virtual-paging.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -222,7 +226,6 @@
     <Content Include="Scripts\maps\bootstrap-bundle.min.js.map" />
     <Content Include="Views\Author\Index.cshtml" />
     <Content Include="Views\Author\Details.cshtml" />
-    <Content Include="Views\Shared\Dialog.cshtml" />
     <Content Include="Views\Author\EditDetails.cshtml" />
     <Content Include="Views\Publisher\Index.cshtml" />
     <Content Include="Views\Publisher\Details.cshtml" />
@@ -234,6 +237,7 @@
     <Content Include="Views\Item\IndexContent.cshtml" />
     <Content Include="Views\Item\Details.cshtml" />
     <Content Include="Views\Item\EditDetails.cshtml" />
+    <Content Include="Views\Lookup\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Librarian.Data\Librarian.Data.csproj">

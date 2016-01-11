@@ -7,7 +7,7 @@ using Librarian;
 
 namespace Librarian
 {
-    public class MappingConfig
+    public static class MappingConfig
     {
         public static void RegisterMappings()
         {
@@ -19,6 +19,7 @@ namespace Librarian
 
             Mapper.CreateMap<Data.Edition, Models.Edition>();
             Mapper.CreateMap<Models.Edition, Data.Edition>();
+            
 
             CreateMapForPatron();
 
@@ -40,7 +41,7 @@ namespace Librarian
         {
             Mapper.CreateMap<Data.Item, Models.Item>()
                 .ForMember(model => model.AuthorsDesc,
-                           map => map.MapFrom(data => String.Join(",", data.Authors.Select((auth, i) => i == 0 ? auth.ToAlphebetizable() : auth.ToString()))))
+                           map => map.MapFrom(data => String.Join(", ", data.Authors.Select((auth, i) => i == 0 ? auth.ToAlphebetizable() : auth.ToString()))))
                 .ForMember(model => model.CopiesCount,
                            map => map.MapFrom(data => data.Editions.SelectMany(e => e.Copies).Count()))
                 .ForMember(model => model.EditionsCount,
