@@ -1,29 +1,32 @@
 ﻿@model Librarian.Models.EditDetails
 
 <div>
-    <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().name)">
+   <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().name)">
         <label class="control-label" for="name">Name</label>
-        <input type="text" class="form-control" id="name" name="name" ng-model="ctrl.publisherData.@(Model.Current).Name" ng-required="true" ng-maxlength="50" />
+        <input type="text" class="form-control" id="name" name="name" ng-model="ctrl.publisherData.@(Model.Current).Name" required maxlength="50" />
         <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().name)"></span>
         <div role="alert" class="help-block">
             <span class="error" ng-show="ctrl.form().name.$error.required">
                 Required
             </span>
+            <span class="error" ng-show="ctrl.form().name.$error.maxlength">
+                Maximum length: 50
+            </span>
         </div>
     </div>
     <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().address)">
         <label class="control-label" for="address">Address</label>
-        <textarea class="form-control" id="address" name="address" ng-model="ctrl.publisherData.@(Model.Current).Address" ng-maxlength="512" />
-        <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().address)"></span>
-        <div role="alert" class="help-block">
-            <span class="error" ng-show="ctrl.form().address.$error.maxlength">
-                Maximum length: 512
-            </span>
-        </div>
+    <textarea class="form-control" name="address" id="address" ng-model="ctrl.publisherData.@(Model.Current).Address" maxlength="512"></textarea>
+    <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().address)"></span>
+    <div role="alert" class="help-block">
+        <span class="error" ng-show="ctrl.form().address.$error.maxlength">
+            Maximum length: 512
+        </span>
+    </div>
     </div>
     <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().city)">
         <label class="control-label" for="city">City</label>
-        <input type="text" class="form-control" id="city" name="city" ng-model="ctrl.publisherData.@(Model.Current).City" ng-maxlength="50" />
+        <input type="text" class="form-control" id="city" name="city" ng-model="ctrl.publisherData.@(Model.Current).City" maxlength="50" />
         <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().city)"></span>
         <div role="alert" class="help-block">
             <span class="error" ng-show="ctrl.form().city.$error.maxlength">
@@ -33,7 +36,7 @@
     </div>
     <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().stateProvince)">
         <label class="control-label" for="stateProvince">State / Province</label>
-        <input type="text" class="form-control" id="stateProvince" name="stateProvince" ng-model="ctrl.publisherData.@(Model.Current).StateProvince" ng-maxlength="50" />
+        <input type="text" class="form-control" id="stateProvince" name="stateProvince" ng-model="ctrl.publisherData.@(Model.Current).StateProvince" maxlength="50" />
         <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().stateProvince)"></span>
         <div role="alert" class="help-block">
             <span class="error" ng-show="ctrl.form().stateProvince.$error.maxlength">
@@ -43,7 +46,7 @@
     </div>
     <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().zip)">
         <label class="control-label" for="zip">Zip</label>
-        <input type="text" class="form-control" id="zip" name="zip" ng-model="ctrl.publisherData.@(Model.Current).Zip" ng-maxlength="12" />
+        <input type="text" class="form-control" id="zip" name="zip" ng-model="ctrl.publisherData.@(Model.Current).Zip" maxlength="12" />
         <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().zip)"></span>
         <div role="alert" class="help-block">
             <span class="error" ng-show="ctrl.form().zip.$error.maxlength">
@@ -53,7 +56,7 @@
     </div>
     <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().country)">
         <label class="control-label" for="country">Country</label>
-        <input type="text" class="form-control" id="country" name="country" ng-model="ctrl.publisherData.@(Model.Current).Country" ng-maxlength="50" />
+        <input type="text" class="form-control" id="country" name="country" ng-model="ctrl.publisherData.@(Model.Current).Country" maxlength="50" />
         <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().country)"></span>
         <div role="alert" class="help-block">
             <span class="error" ng-show="ctrl.form().country.$error.maxlength">
@@ -63,7 +66,7 @@
     </div>
     <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().phone)">
         <label class="control-label" for="phone">Phone</label>
-        <input type="tel" class="form-control" id="phone" name="phone" ng-model="ctrl.publisherData.@(Model.Current).Phone" ng-maxlength="25" />
+        <input type="tel" class="form-control" id="phone" name="phone" ng-model="ctrl.publisherData.@(Model.Current).Phone" maxlength="25" />
         <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().phone)"></span>
         <div role="alert" class="help-block">
             <span class="error" ng-show="ctrl.form().phone.$error.maxlength">

@@ -2,41 +2,26 @@
 
 Librarian.app = Librarian.app || angular.module('librarianApp', []);
 
-Librarian.app.service("publisherService", function PublisherService() {
-    var that = this;
+Librarian.app
+.factory("Publisher", function publisherFactory() {
+    return function Publisher() {
+        this.ID = 0;
+        this.Name = "";
+        this.Address = "";
+        this.City = "";
+        this.StateProvince = "";
+        this.Country = "";
+        this.Zip = "";
+        this.RowState = 0;
+    };
+})
+.service("publisherService", function PublisherService(Publisher, ServiceWithDialogs) {
+    var that = new ServiceWithDialogs();
 
     that.publishers = JSON.parse($(".model-container").val());
-    that.detailsUrl = $(".url-container.details").val();
-    that.createUrl = $(".url-container.create-view").val();
     that.addUrl = $(".url-container.create").val();
     that.deleteUrl = $(".url-container.delete").val();
-    that.editUrl = $(".url-container.edit").val();
     that.updateUrl = $(".url-container.update").val();
-
-    that.detailsContent = $("#detailPopupContainer .modal");
-    that.createContent = $("#createPopupContainer .modal");
-    that.deleteContent = $("#deletePopupContainer .modal");
-    that.editContent = $("#editPopupContainer .modal");
-
-    that.createContent.add(that.editContent).on("shown.bs.modal", function () {
-        $(this).find("#name").select();
-    });
-
-    var modalByUrl = {};
-    modalByUrl[that.createUrl] = that.createContent;
-    modalByUrl[that.detailsUrl] = that.detailsContent;
-    modalByUrl[that.deleteUrl] = that.deleteContent;
-    modalByUrl[that.editUrl] = that.editContent;
-
-    that.setDefaultButton = function (url) {
-        var defaultButton = modalByUrl[url].find("button.btn-primary");
-        modalByUrl[url].find("input").keypress(function (eventArgs) {
-            if (eventArgs.which == 13)
-                defaultButton.click();
-            if (eventArgs.which == 27)
-                modalByUrl[url].modal('hide');
-        });
-    };
 
     that.publisherData = {
         newPublisher: new Publisher(),
@@ -47,31 +32,33 @@ Librarian.app.service("publisherService", function PublisherService() {
         if (publisher)
             that.publisherData.currPublisher = publisher;
 
-        that.detailsContent.modal();
+        that.showDetails();
     };
 
     that.createPublisher = function () {
-        that.createContent.modal();
+        that.showCreate();
     }
 
     that.displayDeletePublisher = function (publisher) {
         that.publisherData.currPublisher = publisher;
         //TODO merge/remove PublisherItem
-        that.deleteContent.modal();
+        that.showDelete();
     };
 
     that.displayEditPublisher = function (publisher) {
-        that.detailsContent.modal('hide');
+        that.hideDetails();
 
         if (publisher)
             that.publisherData.currPublisher = publisher;
         //otherwise use currently set currPublisher
 
-        that.editContent.modal();
+        that.showEdit();
     };
+
+    return that;
 })
 
-.controller("publisherCtrl", function PublisherCtrl(publisherService, $scope, $http, $filter) {
+.controller("publisherCtrl", function PublisherCtrl(publisherService, $scope) {
     var that = this;
 
     that.publishers = publisherService.publishers;
@@ -80,17 +67,12 @@ Librarian.app.service("publisherService", function PublisherService() {
     that.createPublisher = publisherService.createPublisher;
     that.displayDeletePublisher = publisherService.displayDeletePublisher;
     that.displayEditPublisher = publisherService.displayEditPublisher;
-
-    $scope.$on('$includeContentLoaded', function (eventArgs, src) {
-        publisherService.setDefaultButton(src);
-    });
 })
 
 .controller("publisherDetailCtrl", function PublisherDetailCtrl(publisherService, $filter) {
     var that = this;
 
     that.publisherData = publisherService.publisherData;
-    that.displayPublisherUrl = publisherService.detailsUrl;
     that.displayEditPublisher = publisherService.displayEditPublisher;
 })
 
@@ -98,95 +80,87 @@ Librarian.app.service("publisherService", function PublisherService() {
     var that = this;
 
     that.publisherData = publisherService.publisherData;
-    that.displayPublisherUrl = publisherService.detailsUrl;
 
     that.deletePublisher = function () {
         var id = that.publisherData.currPublisher.ID;
+
+        $scope.notifyDialogSending();
         $http.post(publisherService.deleteUrl,
                    { id: id })
              .then(function (deletedID) {
+                 $scope.notifyDialogSendComplete();
                  librarian.removeByID(publisherService.publishers, deletedID.data);
-                 publisherService.deleteContent.modal('hide');
+                 $scope.hideDialog();
              })
     };
 })
 
 
-.controller("publisherCreateCtrl", function PublisherCreateCtrl(publisherService, $scope, $http, validationService) {
-    var that = this;
+.controller("publisherCreateCtrl", function PublisherCreateCtrl(publisherService, $scope, $http, Publisher, ValidatingForm) {
+    var that = new ValidatingForm();
     that.form = function () { return $scope.createForm; };
 
     that.publisherData = publisherService.publisherData;
-    that.createPublisherUrl = publisherService.createUrl;
 
-    that.invalidFieldClass = function (field) {
-        return validationService.invalidFieldClass(that.form(), field);
-    };
-
-    that.invalidIconClass = function (field) {
-        return validationService.invalidIconClass(that.form(), field);
+    that.close = function () {
+        $scope.hideDialog();
+        publisherService.publisherData.newPublisher = new Publisher();
+        that.form().$setPristine();
     };
 
     that.addPublisher = function () {
-        if (!validationService.validateForm(that.form()))
+        if (!that.isValid())
             return;
 
+        $scope.notifyDialogSending();
         $http.post(publisherService.addUrl,
                    publisherService.publisherData.newPublisher)
              .then(function (addedPublisher) {
+                 $scope.notifyDialogSendComplete();
                  publisherService.publishers.push(addedPublisher.data);
                  publisherService.publisherData.newPublisher = new Publisher();
                  publisherService.publisherData.currPublisher = addedPublisher.data;
-                 publisherService.createContent.modal('hide');
+                 $scope.hideDialog();
                  that.form().$setPristine();
                  publisherService.displayPublisher();
              });
     };
+
+    return that;
 })
 
-.controller("publisherEditCtrl", function PublisherEditCtrl(publisherService, $scope, $http, validationService) {
-    var that = this;
+.controller("publisherEditCtrl", function PublisherEditCtrl(publisherService, $scope, $http, ValidatingForm) {
+    var that = new ValidatingForm();
     that.form = function () { return $scope.editForm; };
 
-    that.editPublisherUrl = publisherService.editUrl;
     that.publisherData = {};
 
-    publisherService.editContent.on("show.bs.modal", function () {
+    that.dialogShow = function () {
         that.publisherData.currPublisher = angular.copy(publisherService.publisherData.currPublisher);
-    });
-
-    that.invalidFieldClass = function (field) {
-        if (!field) return '';
-        return validationService.invalidFieldClass(that.form(), field);
     };
 
-    that.invalidIconClass = function (field) {
-        if (!field) return '';
-        return validationService.invalidIconClass(that.form(), field);
+    that.close = function () {
+        that.form().$setPristine();
+        $scope.hideDialog();
     };
 
     that.updatePublisher = function () {
-        if (!validationService.validateForm(that.form()))
+        if (!that.isValid())
             return;
 
+        $scope.notifyDialogSending();
         $http.post(publisherService.updateUrl,
                    that.publisherData.currPublisher)
              .then(function (updatedPublisher) {
+                 $scope.notifyDialogSendComplete();
                  angular.copy(updatedPublisher.data, publisherService.publisherData.currPublisher);
-                 publisherService.editContent.modal('hide');
+                 $scope.hideDialog();
                  that.form().$setPristine(); //not submitted for next use
                  publisherService.displayPublisher();
              });
     };
+
+    return that;
 });
 
-function Publisher() {
-    this.ID = 0;
-    this.Name = "";
-    this.Address = "";
-    this.City = "";
-    this.StateProvince = "";
-    this.Country = "";
-    this.Zip = "";
-    this.RowState = 0;
-}
+

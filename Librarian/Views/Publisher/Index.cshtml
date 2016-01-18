@@ -42,70 +42,28 @@
         </tr>
     </table>
 </div>
-<div id="detailPopupContainer" ng-controller="publisherDetailCtrl as ctrl">
-    @Html.Partial("Dialog", new Librarian.Models.Dialog
-{
-    Title = "Publisher Details",
-    IncludeURL = "ctrl.displayPublisherUrl",
-    Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Edit",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.displayEditPublisher()" }
-                                                }
-                                            }
-                              }
-})
+<div id="detailPopupContainer" ng-controller="publisherDetailCtrl as ctrl" ng-cloak>
+    <bootstrap-dialog primary-text="Edit" primary-action="ctrl.displayEditPublisher()" title="Publisher Details">
+        @Html.Partial("Details")
+    </bootstrap-dialog>
 </div>
-<div id="deletePopupContainer" ng-controller="publisherDeleteCtrl as ctrl">
-    @Html.Partial("Dialog", new Librarian.Models.Dialog
-{
-    Title = "Delete Publisher",
-    IncludeURL = "ctrl.displayPublisherUrl",
-    Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Delete",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.deletePublisher()" }
-                                                },
-                                                Default = true
-                                            }
-                              }
-})
-</div>
-<div id="createPopupContainer" ng-controller="publisherCreateCtrl as ctrl">
-    <form name="createForm">
-        @Html.Partial("Dialog", new Librarian.Models.Dialog
-   {
-       Title = "New Publisher",
-       IncludeURL = "ctrl.createPublisherUrl",
-       Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Save",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.addPublisher()" }
-                                                },
-                                                Default = true
-                                            }
-                              }
-   })
-    </form>
-</div>
-<div id="editPopupContainer" ng-controller="publisherEditCtrl as ctrl">
-    <form name="editForm">
-        @Html.Partial("Dialog", new Librarian.Models.Dialog
-   {
-       Title = "Edit Publisher",
-       IncludeURL = "ctrl.editPublisherUrl",
-       Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Save",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.updatePublisher()" }
-                                                },
-                                                Default = true
-                                            }
-                              }
-   })
-    </form>
-</div>
+<div id="deletePopupContainer" ng-controller="publisherDeleteCtrl as ctrl" ng-cloak>
+        <bootstrap-dialog primary-text="Delete" loading-text="Deleting..." primary-action="ctrl.deletePublisher()" title="Delete Publisher">
+            @Html.Partial("Details")
+        </bootstrap-dialog>
+    </div>
+   <div id="createPopupContainer" ng-controller="publisherCreateCtrl as ctrl" ng-cloak>
+        <form name="createForm">
+            <bootstrap-dialog primary-text="Save" loading-text="Saving..." primary-action="ctrl.addPublisher()" title="New Publisher">
+                @Html.Partial("EditDetails", new Librarian.Models.EditDetails { Current = "newPublisher" })
+            </bootstrap-dialog>
+        </form>
+    </div>
+    <div id="editPopupContainer" ng-controller="publisherEditCtrl as ctrl" ng-cloak>
+        <form name="editForm">
+            <bootstrap-dialog primary-text="Save" loading-text="Saving..." primary-action="ctrl.updatePublisher()"
+                              close-action="ctrl.close()" title="Edit Publisher" on-show="ctrl.dialogShow()">
+                @Html.Partial("EditDetails", new Librarian.Models.EditDetails { Current = "currPublisher" })
+            </bootstrap-dialog>
+        </form>
+    </div>

@@ -22,20 +22,6 @@ namespace Librarian.Controllers
             });
         }
 
-        public ActionResult Details()
-        {
-            return PartialView();
-        }
-
-        public ActionResult Create()
-        {
-            return PartialView("EditDetails", new Models.EditDetails
-            {
-                Controller = "patronCreateCtrl",
-                Current = "newPatron"
-            });
-        }
-
         public ActionResult Add(Models.Patron patron)
         {
             Data.Patron persistentPatron = Mapper.Map<Models.Patron, Data.Patron>(patron);
@@ -45,15 +31,6 @@ namespace Librarian.Controllers
         }
 
         // GET: Patron/Edit/5
-        public ActionResult Edit()
-        {
-            return PartialView("EditDetails", new Models.EditDetails
-            {
-                Controller = "patronEditCtrl",
-                Current = "currPatron"
-            });
-        }
-
         public ActionResult Update(Models.Patron patron)
         {
             Data.Patron persistentPatron = Mapper.Map<Models.Patron, Data.Patron>(patron);

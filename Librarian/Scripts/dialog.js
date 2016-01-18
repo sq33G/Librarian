@@ -14,6 +14,21 @@ Librarian.app
             $(container).find("bootstrap-dialog").triggerHandler("hideDialog");
         };
     })
+    .factory("ServiceWithDialogs", function serviceWithDialogsFactory(dialogService) {
+        return function ServiceWithDialogs() {
+            var that = this;
+
+            that.showDialog = dialogService.showDialog;
+            that.hideDialog = dialogService.hideDialog;
+
+            that.showDetails = function () { that.showDialog("#detailPopupContainer"); };
+            that.showCreate = function () { that.showDialog("#createPopupContainer"); };
+            that.showDelete = function () { that.showDialog("#deletePopupContainer"); };
+            that.showEdit = function () { that.showDialog("#editPopupContainer"); };
+
+            that.hideDetails = function () { that.hideDialog("#detailPopupContainer"); };
+        };
+    })
     .directive("bootstrapDialog", function () {
         return {
             restrict: 'E',

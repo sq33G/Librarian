@@ -13,8 +13,8 @@ Librarian.app
     };
 })
 
-.service("authorService", function AuthorService(Author, $rootScope, dialogService) {
-    var that = this;
+.service("authorService", function AuthorService(Author, ServiceWithDialogs) {
+    var that = new ServiceWithDialogs();
 
     that.authors = JSON.parse($(".model-container").val());
     that.addUrl = $(".url-container.create").val();
@@ -30,28 +30,30 @@ Librarian.app
         if (author)
             that.authorData.currAuthor = author;
 
-        dialogService.showDialog("#detailPopupContainer");
+        that.showDetails();
     };
 
     that.createAuthor = function () {
-        dialogService.showDialog("#createPopupContainer");
+        that.showCreate();
     }
 
     that.displayDeleteAuthor = function (author) {
         that.authorData.currAuthor = author;
         //TODO merge/remove AuthorItem
-        dialogService.showDialog("#deletePopupContainer");
+        that.showDelete();
     };
 
     that.displayEditAuthor = function (author) {
-        dialogService.hideDialog("#detailPopupContainer");
+        that.hideDetails();
 
         if (author)
             that.authorData.currAuthor = author;
         //otherwise use currently set currAuthor
 
-        dialogService.showDialog("#editPopupContainer")
+        that.showEdit();
     };
+
+    return that;
 })
 
 .controller("authorCtrl", function AuthorCtrl(authorService, $scope) {

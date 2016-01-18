@@ -20,35 +20,12 @@ namespace Librarian.Controllers
             });
         }
 
-        public ActionResult Details()
-        {
-            return PartialView();
-        }
-
-        public ActionResult Create()
-        {
-            return PartialView("EditDetails", new Models.EditDetails
-            {
-                Controller = "publisherCreateCtrl",
-                Current = "newPublisher"
-            });
-        }
-
         public ActionResult Add(Models.Publisher publisher)
         {
             Data.Publisher persistentPublisher = Mapper.Map<Models.Publisher, Data.Publisher>(publisher);
             Publishing.AddPublisher(persistentPublisher);
 
             return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Publisher, Models.Publisher>(persistentPublisher)));
-        }
-
-        public ActionResult Edit()
-        {
-            return PartialView("EditDetails", new Models.EditDetails
-            {
-                Controller = "publisherEditCtrl",
-                Current = "currPublisher"
-            });
         }
 
         public ActionResult Update(Models.Publisher publisher)

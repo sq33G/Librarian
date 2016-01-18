@@ -50,71 +50,29 @@
         </tr>
     </table>
 </div>
-<div id="detailPopupContainer" ng-controller="patronDetailCtrl as ctrl">
-    @Html.Partial("Dialog", new Librarian.Models.Dialog
-{
-    Title = "Patron Details",
-    IncludeURL = "ctrl.displayPatronUrl",
-    Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Edit",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.displayEditPatron()" }
-                                                }
-                                            }
-                              }
-})
+<div id="detailPopupContainer" ng-controller="patronDetailCtrl as ctrl" ng-cloak>
+    <bootstrap-dialog primary-text="Edit" primary-action="ctrl.displayEditPatron()" title="Patron Details">
+        @Html.Partial("Details")
+    </bootstrap-dialog>
 </div>
-<div id="deletePopupContainer" ng-controller="patronDeleteCtrl as ctrl">
-    @Html.Partial("Dialog", new Librarian.Models.Dialog
-{
-    Title = "Delete Patron",
-    IncludeURL = "ctrl.displayPatronUrl",
-    Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Delete",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.deletePatron()" }
-                                                },
-                                                Default = true
-                                            }
-                              }
-})
+<div id="deletePopupContainer" ng-controller="patronDeleteCtrl as ctrl" ng-cloak>
+    <bootstrap-dialog primary-text="Delete" primary-action="ctrl.deletePatron()" title="Delete Patron" title="Delete Patron">
+        @Html.Partial("Details")
+    </bootstrap-dialog>
 </div>
-<div id="createPopupContainer" ng-controller="patronCreateCtrl as ctrl">
+<div id="createPopupContainer" ng-controller="patronCreateCtrl as ctrl" ng-cloak>
     <form name="createForm">
-        @Html.Partial("Dialog", new Librarian.Models.Dialog
-   {
-       Title = "New Patron",
-       IncludeURL = "ctrl.createPatronUrl",
-       Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Save",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.addPatron()" }
-                                                },
-                                                Default = true
-                                            }
-                              }
-   })
+        <bootstrap-dialog primary-text="Save" loading-text="Saving..." primary-action="ctrl.addPatron()" title="Add Patron" title="New Patron">
+            @Html.Partial("EditDetails", new Librarian.Models.EditDetails { Current = "newPatron" })
+        </bootstrap-dialog>
     </form>
 </div>
-<div id="editPopupContainer" ng-controller="patronEditCtrl as ctrl">
+<div id="editPopupContainer" ng-controller="patronEditCtrl as ctrl" ng-cloak>
     <form name="editForm">
-        @Html.Partial("Dialog", new Librarian.Models.Dialog
-   {
-       Title = "Edit Patron",
-       IncludeURL = "ctrl.editPatronUrl",
-       Buttons = new List<Librarian.Models.Dialog.Button> {
-                                            new Librarian.Models.Dialog.Button {
-                                                Text="Save",
-                                                Attributes = new Dictionary<string, string> {
-                                                    { "ng-click", "ctrl.updatePatron()" }
-                                                },
-                                                Default = true
-                                            }
-                              }
-   })
+        <bootstrap-dialog primary-text="Save" loading-text="Saving..." primary-action="ctrl.updatePatron()"
+                          title="Edit Patron" on-show="ctrl.dialogShow()" close-action="ctrl.close()">
+            @Html.Partial("EditDetails", new Librarian.Models.EditDetails { Current = "currPatron" })
+        </bootstrap-dialog>
     </form>
 </div>
 <input type="hidden" id="lookupPatronType" value='@Lookup.Raw("PatronType")' />

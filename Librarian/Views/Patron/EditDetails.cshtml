@@ -6,7 +6,7 @@
         <input type="text" class="form-control" id="title" name="title" ng-model="ctrl.patronData.@(Model.Current).Title" ng-maxlength="25" />
         <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().title)"></span>
         <div role="alert" class="help-block">
-            <span class="error" ng-show="crtl.form().title.$error.maxlength">
+            <span class="error" ng-show="ctrl.form().title.$error.maxlength">
                 Maximum length: 25
             </span>
         </div>
@@ -36,12 +36,12 @@
     </div>
     <div class="form-group">
         <label class="control-label" for="patronType">Patron Type</label>
-        <select class="form-control" id="patronType" name="patronType" ng-model="ctrl.patronData.@(Model.Current).PatronType" 
-                ng-options="patronType as patronType.Text for patronType in ctrl.patronTypes track by patronType.Value" />
+        <select class="form-control" id="patronType" name="patronType" ng-model="ctrl.patronData.@(Model.Current).PatronType.Value"
+                ng-options="patronType as patronType.name for patronType in ctrl.patronTypes track by patronType.id"></select>
     </div>
     <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().address)">
         <label class="control-label" for="address">Address</label>
-        <textarea class="form-control" id="address" name="address" ng-model="ctrl.patronData.@(Model.Current).Address" maxlength="256" />
+        <textarea class="form-control" id="address" name="address" ng-model="ctrl.patronData.@(Model.Current).Address" maxlength="256"></textarea>
         <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().address)"></span>
         <div role="alert" class="help-block">
             <span class="error" ng-show="ctrl.form().address.$error.maxlength">
@@ -117,5 +117,5 @@
             Blocked
         </label>
         </div>
-</div>
+    </div>
 
