@@ -2,7 +2,26 @@
 
 Librarian.app = Librarian.app || angular.module('librarianApp', ['ngRoute']);
 
-Librarian.app.service("itemService", function ItemService($filter, $http, librarian) {
+Librarian.app
+
+.factory("Item", function itemFactory() {
+    return function Item() {
+        this.ID = 0;
+        this.MediaType = { value: 1, text: "Book" },
+        this.Authors = [];
+        this.Deleted = false;
+        this.Reference = false;
+        this.Restricted = false;
+        this.Subjects = [];
+        this.Location = { value: 91, text: 'New' };
+        this.TimesCheckedOut = 0;
+        this.CopiesCount = 0;
+        this.EditionsCount = 0;
+        this.Editions = [];
+    };
+})
+
+.service("itemService", function ItemService($filter, $http, librarian) {
     var that = this;
 
     that.itemsUrl = $(".url-container.retrieve-model").val();
@@ -103,24 +122,6 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
     });
 })
 
-.factory("Item", function itemFactory() {
-    return function Item() {
-        this.ID = 0;
-        this.MediaType = { value: 1, text: "Book" },
-        this.Authors = [];
-        this.Deleted = false;
-        this.Reference = false;
-        this.Restricted = false;
-        this.Subjects = [];
-        this.Location = { value: 91, text: 'New' };
-        this.TimesCheckedOut = 0;
-        this.CopiesCount = 0;
-        this.EditionsCount = 0;
-        this.Editions = [];
-    };
-})
-
-
 .controller("itemCtrl", function ItemCtrl() {
 })
 
@@ -207,9 +208,10 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
 
 })
 
-.factory("ItemBaseCtrl", function (authorService, lookupService, validationService, librarian, $filter) {
-    return function ItemBaseCtrl($scope, formFinder, formDesc, formName, afterValidate) {
-        var that = this;
+.factory("ItemBaseCtrl", function (authorService, lookupService, ValidatingForm, librarian, $filter) {
+    return function ItemBaseCtrl($scope, formFinder, formDesc, formName, save) {
+        var that = new ValidatingForm();
+
         that.form = formFinder;
 
         $scope.formDesc = formDesc;
@@ -217,18 +219,27 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
 
         lookupService.init("Subject", "#subjectList");
         $scope.subjects = lookupService.lookup["Subject"];
+        $scope.authors = authorService.lookup;
 
         $("#title").select();
-
-        $("#authors").typeahead(authorService.getTypeahead($scope));
 
         that.textForSubject = function (subj) {
             return subj.Text;
         };
 
+        that.textForAuthor = function (author) {
+            return ((author.FirstName && author.FirstName != "") ? author.FirstName + " " : "") +
+                   author.LastName +
+                   ((author.Suffix && author.Suffix != "") ? " " + author.Suffix : "");
+        }
+
         that.addNewSubject = function () {
             lookupService.selectedListToUpdate = $scope.item.Subjects;
             lookupService.displayAddLookup("Subject");
+        };
+
+        that.addNewAuthor = function () {
+            authorService.displayAddAuthor($scope.item);
         };
 
         that.addSubject = function (subj) {
@@ -238,31 +249,30 @@ Librarian.app.service("itemService", function ItemService($filter, $http, librar
             $scope.$apply(function () { $scope.item.Subjects.push({ Text: subj.name, Value: subj.id }); });
         };
 
-        that.editSubject = function (subj) { lookupService.displayEditLookup("Subject", subj); };
-        that.removeSubject = function (subj) { librarian.removeByID($scope.item.Subjects, subj.Value, 'Value'); };
-
-        that.invalidFieldClass = function (field) {
-            return validationService.invalidFieldClass(that.form(), field);
-        };
-
-        that.invalidIconClass = function (field) {
-            return validationService.invalidIconClass(that.form(), field);
-        };
-
-        that.save = function () {
-            if (!validationService.validateForm(that.form()))
+        that.addAuthor = function (author) {
+            if ($filter('filter')($scope.item.Authors, { ID: author.id }).length > 0)
                 return;
 
-            afterValidate();
+            $http.post(that.getUrl, { id: author.id })
+                 .then(function (fullAuthor) {
+                     $scope.item.Authors.push(fullAuthor.data);
+                 });
         };
 
-        that.editItemAuthor = function (author) {
-            authorService.displayEditAuthor(author);
+        that.editSubject = function (subj) { lookupService.displayEditLookup("Subject", subj); };
+
+        that.editAuthor = function (author) { authorService.displayEditAuthor(author); };
+
+        that.removeSubject = function (subj) { librarian.removeByID($scope.item.Subjects, subj.Value, 'Value'); };
+
+        that.removeAuthor = function (author) { librarian.removeByID($scope.item.Authors, author.ID); };
+
+        that.save = function () {
+            if (that.isValid())
+                save();
         };
 
-        that.removeItemAuthor = function (author) {
-            librarian.removeByID($scope.item.Authors, author.ID);
-        };
+        return that;
     };
 })
 

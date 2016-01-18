@@ -6832,10 +6832,11 @@ ul.list-striped li:nth-child(odd) {
 li.li-actionable:hover span.actions {
     float: right;
     display: block;
-    width: 25%;
+    width: 20%;
 }
 
 .li-actionable span.actions {
+    text-align: right;
     display: none;
 }
 
@@ -6843,7 +6844,7 @@ ul.list-actionable {
     white-space: nowrap;   
 }
 
-ul.list-striped li {
+ul.list-striped li div {
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -6854,9 +6855,10 @@ ul.list-striped li {
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
+    float: left;
 }
 
 .li-actionable:hover span.li-content {
-    width: 75%;
+    width: 74%;
     float: left;
 }

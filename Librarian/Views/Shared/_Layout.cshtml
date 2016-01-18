@@ -40,11 +40,8 @@
             <div ng-controller="@Angular.DashedToCamelCase(Model.ClientController) as controller">
                 @RenderBody()
                 <input class="model-container" type="hidden" value='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Contents))' />
-                <input class="url-container details" type="hidden" value="@Url.Action("Details")" />
-                <input class="url-container create-view" type="hidden" value="@Url.Action("Create")" />
                 <input class="url-container create" type="hidden" value="@Url.Action("Add")" />
                 <input class="url-container delete" type="hidden" value="@Url.Action("Delete")" />
-                <input class="url-container edit" type="hidden" value="@Url.Action("Edit")" />
                 <input class="url-container update" type="hidden" value="@Url.Action("Update")" />
             </div>
         }

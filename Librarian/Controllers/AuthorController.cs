@@ -35,7 +35,6 @@ namespace Librarian.Controllers
         {
             return PartialView("EditDetails", new Models.EditDetails
             {
-                Controller = "authorCreateCtrl",
                 Current = "newAuthor"
             });
         }
@@ -50,12 +49,10 @@ namespace Librarian.Controllers
             return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
         }
 
-        // GET: Author/Edit/5
         public ActionResult Edit()
         {
             return PartialView("EditDetails", new Models.EditDetails
             {
-                Controller = "authorEditCtrl",
                 Current = "currAuthor"
             });
         }

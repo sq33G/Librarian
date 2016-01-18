@@ -29,4 +29,22 @@ Librarian.app.service("validationService", function ValidationService() {
 
         return '';
     }
+})
+
+.factory("ValidatingForm", function formValidatorFactory(validationService) {
+    return function FormValidator() {
+        var that = this;
+
+        that.invalidFieldClass = function (field) {
+            if (field) return validationService.invalidFieldClass(that.form(), field);
+        };
+
+        that.invalidIconClass = function (field) {
+            if (field) return validationService.invalidIconClass(that.form(), field);
+        };
+
+        that.isValid = function () {
+            return validationService.validateForm(that.form());
+        }
+    };
 });

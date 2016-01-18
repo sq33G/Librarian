@@ -25,13 +25,18 @@ Librarian.app.directive("multiTypeahead", function () {
             '<div class="col-sm-3">' +
                 '<label class="control-label">&nbsp;</label>' +
                 '<ul class="list-unstyled list-striped boxy list-actionable">' + // style=height: 74px;
-                    '<li class="li-actionable" ng-repeat="item in mtSelectedList">' +
-                        '<span class="li-content">{{ mtTextFor(item) }}</span>' +
+                    '<li class="li-actionable" ng-repeat="item in mtSelectedList"><div>' +
+                        '<span class="li-content">{{ mtTextFor(item) }}</span><span>&nbsp;</span>' +
                         '<span class="actions">' +
-                            '<a href="" ng-click="mtEdit(item)"><i class="glyphicon glyphicon-pencil"></i></a>' +
-                            '<a href="" ng-click="mtRemove(item)"><i class="glyphicon glyphicon-remove"></i></a>' +
+                            '<a href="" ng-click="mtEdit(item)">' +
+                                '<i class="glyphicon glyphicon-pencil"></i> ' +
+                                '<span class="hidden-md hidden-lg">Edit</span></a>' +
+                            '<span class="hidden-md hidden-lg">&nbsp;&nbsp;&nbsp;</span>' +
+                            '<a href="" ng-click="mtRemove(item)">' +
+                                '<i class="glyphicon glyphicon-remove"></i> ' +
+                                '<span class="hidden-md hidden-lg">Remove</span></a>' +
                         '</span>' +
-                    '</li>' +
+                    '</div></li>' +
                 '</ul>' +
             '</div>',
         link: function mtlink($scope, $element) {

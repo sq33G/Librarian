@@ -42,19 +42,28 @@
         </tr>
     </table>
 </div>
-<div id="detailPopupContainer" ng-controller="authorDetailCtrl as ctrl">
-    <bootstrap-dialog include="ctrl.displayAuthorUrl" primary-text="Edit" primary-action="ctrl.displayEditAuthor()" close-action="ctrl.close()" title="Author Details"></bootstrap-dialog>
+<div id="detailPopupContainer" ng-controller="authorDetailCtrl as ctrl" ng-cloak>
+    <bootstrap-dialog primary-text="Edit" primary-action="ctrl.displayEditAuthor()" title="Author Details">
+        @Html.Partial("Details")
+    </bootstrap-dialog>
 </div>
-<div id="deletePopupContainer" ng-controller="authorDeleteCtrl as ctrl">
-    <bootstrap-dialog include="ctrl.displayAuthorUrl" primary-text="Delete" primary-action="ctrl.deleteAuthor()" title="Delete Author"></bootstrap-dialog>
+<div id="deletePopupContainer" ng-controller="authorDeleteCtrl as ctrl" ng-cloak>
+    <bootstrap-dialog primary-text="Delete" loading-text="Deleting..." primary-action="ctrl.deleteAuthor()" title="Delete Author">
+        @Html.Partial("Details")
+    </bootstrap-dialog>
 </div>
-<div id="createPopupContainer" ng-controller="authorCreateCtrl as ctrl">
+<div id="createPopupContainer" ng-controller="authorCreateCtrl as ctrl" ng-cloak>
     <form name="createForm">
-        <bootstrap-dialog include="ctrl.createAuthorUrl" primary-text="Save" primary-action="ctrl.addAuthor()" close-action="ctrl.close()" title="New Author"></bootstrap-dialog>
+        <bootstrap-dialog primary-text="Save" loading-text="Saving..." primary-action="ctrl.addAuthor()" close-action="ctrl.close()" title="New Author">
+            @Html.Partial("EditDetails", new Librarian.Models.EditDetails { Current = "newAuthor" })
+        </bootstrap-dialog>
     </form>
 </div>
-<div id="editPopupContainer" ng-controller="authorEditCtrl as ctrl">
+<div id="editPopupContainer" ng-controller="authorEditCtrl as ctrl" ng-cloak>
     <form name="editForm">
-        <bootstrap-dialog include="ctrl.editAuthorUrl" primary-text="Save" primary-action="ctrl.updateAuthor()" title="Edit Author"></bootstrap-dialog>
+        <bootstrap-dialog primary-text="Save" loading-text="Saving..." primary-action="ctrl.updateAuthor()" 
+                          close-action="ctrl.close()" title="Edit Author" on-show="ctrl.dialogShow()">
+            @Html.Partial("EditDetails", new Librarian.Models.EditDetails { Current = "currAuthor" })
+        </bootstrap-dialog>
     </form>
 </div>

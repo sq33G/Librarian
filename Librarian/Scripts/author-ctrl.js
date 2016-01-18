@@ -2,21 +2,25 @@
 
 Librarian.app = Librarian.app || angular.module('librarianApp', []);
 
-Librarian.app.service("authorService", function AuthorService() {
+Librarian.app
+.factory("Author", function authorFactory() {
+    return function Author() {
+        this.ID = 0;
+        this.FirstName = "";
+        this.LastName = "";
+        this.Suffix = "";
+        this.RowState = 0;
+    };
+})
+
+.service("authorService", function AuthorService(Author, $rootScope, dialogService) {
     var that = this;
 
     that.authors = JSON.parse($(".model-container").val());
-    that.detailsUrl = $(".url-container.details").val();
-    that.createUrl = $(".url-container.create-view").val();
     that.addUrl = $(".url-container.create").val();
     that.deleteUrl = $(".url-container.delete").val();
-    that.editUrl = $(".url-container.edit").val();
     that.updateUrl = $(".url-container.update").val();
 
-    that.detailsContent = $("#detailPopupContainer .modal");
-    that.createContent = $("#createPopupContainer .modal");
-    that.deleteContent = $("#deletePopupContainer .modal");
-    that.editContent = $("#editPopupContainer .modal");
     that.authorData = {
         newAuthor: new Author(),
         currAuthor: {}
@@ -26,27 +30,27 @@ Librarian.app.service("authorService", function AuthorService() {
         if (author)
             that.authorData.currAuthor = author;
 
-        that.detailsContent.modal();
+        dialogService.showDialog("#detailPopupContainer");
     };
 
     that.createAuthor = function () {
-        that.createContent.modal();
+        dialogService.showDialog("#createPopupContainer");
     }
 
     that.displayDeleteAuthor = function (author) {
         that.authorData.currAuthor = author;
         //TODO merge/remove AuthorItem
-        that.deleteContent.modal();
+        dialogService.showDialog("#deletePopupContainer");
     };
 
     that.displayEditAuthor = function (author) {
-        that.detailsContent.modal('hide');
+        dialogService.hideDialog("#detailPopupContainer");
 
         if (author)
             that.authorData.currAuthor = author;
         //otherwise use currently set currAuthor
 
-        that.editContent.modal();
+        dialogService.showDialog("#editPopupContainer")
     };
 })
 
@@ -59,13 +63,13 @@ Librarian.app.service("authorService", function AuthorService() {
     that.createAuthor = authorService.createAuthor;
     that.displayDeleteAuthor = authorService.displayDeleteAuthor;
     that.displayEditAuthor = authorService.displayEditAuthor;
+
 })
 
 .controller("authorDetailCtrl", function AuthorDetailCtrl(authorService) {
     var that = this;
 
     that.authorData = authorService.authorData;
-    that.displayAuthorUrl = authorService.detailsUrl;
     that.displayEditAuthor = authorService.displayEditAuthor;
 })
 
@@ -73,102 +77,87 @@ Librarian.app.service("authorService", function AuthorService() {
     var that = this;
 
     that.authorData = authorService.authorData;
-    that.displayAuthorUrl = authorService.detailsUrl;
 
     that.deleteAuthor = function () {
         var id = that.authorData.currAuthor.ID;
+
+        $scope.notifyDialogSending();
         $http.post(authorService.deleteUrl,
                    { id: id })
              .then(function (deletedID) {
+                 $scope.notifyDialogSendComplete();
                  librarian.removeByID(authorService.authors, deletedID.data);
-                 authorService.deleteContent.modal('hide');
+                 $scope.hideDialog();
              })
     };
 })
 
-.controller("authorCreateCtrl", function AuthorCreateCtrl($scope, $http, authorService, validationService) {
-    var that = this;
+.controller("authorCreateCtrl", function AuthorCreateCtrl($scope, $http, authorService, Author, ValidatingForm) {
+    var that = new ValidatingForm();
+
     that.form = function () { return $scope.createForm; };
 
     that.authorData = authorService.authorData;
-    that.createAuthorUrl = authorService.createUrl;
-
-    that.invalidFieldClass = function (field) {
-        return validationService.invalidFieldClass(that.form(), field);
-    };
-
-    that.invalidIconClass = function (field) {
-        return validationService.invalidIconClass(that.form(), field);
-    };
 
     that.close = function () {
-        authorService.createContent.modal('hide');
+        $scope.hideDialog();
         authorService.authorData.newAuthor = new Author();
         that.form().$setPristine(); //not submitted for next use
     };
 
     that.addAuthor = function () {
-        if (!validationService.validateForm(that.form()))
+        if (!that.isValid())
             return;
 
+        $scope.notifyDialogSending();
         $http.post(authorService.addUrl,
                    authorService.authorData.newAuthor)
              .then(function (addedAuthor) {
+                 $scope.notifyDialogSendComplete();
                  authorService.authors.push(addedAuthor.data);
                  authorService.authorData.newAuthor = new Author();
                  authorService.authorData.currAuthor = addedAuthor.data;
-                 authorService.createContent.modal('hide');
+                 $scope.hideDialog();
                  that.form().$setPristine(); //not submitted for next use
                  authorService.displayAuthor();
              });
     };
+
+    return that;
 })
 
-.controller("authorEditCtrl", function AuthorEditCtrl(authorService, $http, $scope, validationService) {
-    var that = this;
+.controller("authorEditCtrl", function AuthorEditCtrl(authorService, $http, $scope, ValidatingForm) {
+    var that = new ValidatingForm();
+
     that.form = function () { return $scope.editForm; };
 
-    that.editAuthorUrl = authorService.editUrl;
     that.authorData = {};
 
-    authorService.editContent.on("show.bs.modal", function () {
+    that.dialogShow = function () {
         that.authorData.currAuthor = angular.copy(authorService.authorData.currAuthor);
-    });
-
-    that.invalidFieldClass = function (field) {
-        if (!field) return '';
-        return validationService.invalidFieldClass(that.form(), field);
-    };
-
-    that.invalidIconClass = function (field) {
-        if (!field) return '';
-        return validationService.invalidIconClass(that.form(), field);
     };
 
     that.close = function () {
         that.form().$setPristine;
-        authorService.editContent.modal('hide');
+        $scope.hideDialog();
     };
 
     that.updateAuthor = function () {
-        if (!validationService.validateForm(that.form()))
+        if (!that.isValid())
             return;
 
+        $scope.notifyDialogSending();
         $http.post(authorService.updateUrl,
                    that.authorData.currAuthor)
              .then(function (updatedAuthor) {
+                 $scope.notifyDialogSendComplete();
                  angular.copy(updatedAuthor.data, authorService.authorData.currAuthor);
-                 authorService.editContent.modal('hide');
+                 $scope.hideDialog();
                  that.form().$setPristine(); //not submitted for next use
                  authorService.displayAuthor();
              });
     };
+
+    return that;
 });
 
-function Author() {
-    this.ID = 0;
-    this.FirstName = "";
-    this.LastName = "";
-    this.Suffix = "";
-    this.RowState = 0;
-}

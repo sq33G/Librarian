@@ -9,7 +9,7 @@ Librarian.app
         this.Value = -1;
     };
 })
-.service("lookupService", function LookupService($http, $filter, $rootScope, Lookup) {
+.service("lookupService", function LookupService($http, $filter, $rootScope, Lookup, dialogService) {
     var that = this;
 
     that.lookup = {};
@@ -21,31 +21,8 @@ Librarian.app
 
     that.selectedListToUpdate = null;
 
-    that.createUrl = $(".url-container.create-lookup-view").val();
     that.addUrl = $(".url-container.create-lookup").val();
-    that.editUrl = $(".url-container.edit-lookup").val();
     that.updateUrl = $(".url-container.update-lookup").val();
-
-    that.createContent = $("#createLookupPopupContainer .modal");
-    that.editContent = $("#editLookupPopupContainer .modal");
-
-    that.createContent.add(that.editContent).on("shown.bs.modal", function () {
-        $(this).find("#text").select();
-    });
-
-    var modalByUrl = {};
-    modalByUrl[that.createUrl] = that.createContent;
-    modalByUrl[that.editUrl] = that.editContent;
-
-    that.setDefaultButton = function (url) {
-        var defaultButton = modalByUrl[url].find("button.btn-primary");
-        modalByUrl[url].find("input").keypress(function (eventArgs) {
-            if (eventArgs.which == 13)
-                defaultButton.click();
-            if (eventArgs.which == 27)
-                modalByUrl[url].modal('hide');
-        });
-    };
 
     that.lookupData = {
         newLookup: new Lookup(),
@@ -59,7 +36,7 @@ Librarian.app
 
     that.displayAddLookup = function (lookupName) {
         that.lookupData.lookupToUpdate = lookupName;
-        that.createContent.modal();
+        dialogService.showDialog("#createLookupPopupContainer");
         $addScope.$apply(function () {
             that.lookupData.newLookup = new Lookup();
         });
@@ -71,12 +48,13 @@ Librarian.app
             that.lookupData.currLookup = lookup;
         //otherwise use currently set currLookup
 
-        that.editContent.modal();
+        dialogService.showDialog("#editLookupPopupContainer");
     };
 })
 
-.controller("lookupCreateCtrl", function LookupCreateCtrl($scope, $http, lookupService, validationService) {
-    var that = this;
+.controller("lookupCreateCtrl", function LookupCreateCtrl($scope, $http, lookupService, ValidatingForm) {
+    var that = new ValidatingForm();
+
     that.form = function () { return $scope.createForm; };
 
     that.lookupData = lookupService.lookupData;
@@ -84,20 +62,8 @@ Librarian.app
 
     lookupService.registerAddItemScope($scope);
 
-    $scope.$on('$includeContentLoaded', function (eventArgs, src) {
-        lookupService.setDefaultButton(src);
-    });
-
-    that.invalidFieldClass = function (field) {
-        return validationService.invalidFieldClass(that.form(), field);
-    };
-
-    that.invalidIconClass = function (field) {
-        return validationService.invalidIconClass(that.form(), field);
-    };
-
     that.addLookup = function () {
-        if (!validationService.validateForm(that.form()))
+        if (!that.isValid())
             return;
         var name = lookupData.lookupToUpdate;
         $http.post(lookupService.addUrl,
@@ -111,35 +77,27 @@ Librarian.app
                      id: newLookup.Value
                  });
                  lookupService.selectedListToUpdate.push(newLookup);
-                 lookupService.createContent.modal('hide');
+                 $scope.hideDialog();
                  that.form().$setPristine(); //not submitted for next use
              });
     };
+
+    return that;
 })
 
-.controller("lookupEditCtrl", function LookupEditCtrl(lookupService, $http, $scope, validationService) {
-    var that = this;
+.controller("lookupEditCtrl", function LookupEditCtrl(lookupService, $http, $scope, ValidatingForm) {
+    var that = new ValidatingForm();
     that.form = function () { return $scope.editForm; };
 
     that.editLookupUrl = lookupService.editUrl;
     that.lookupData = lookupService.lookupData;
 
-    lookupService.editContent.on("show.bs.modal", function () {
+    that.dialogShown = function () {
         that.lookupData.currLookup = angular.copy(lookupService.lookupData.currLookup);
-    });
-
-    that.invalidFieldClass = function (field) {
-        if (!field) return '';
-        return validationService.invalidFieldClass(that.form(), field);
-    };
-
-    that.invalidIconClass = function (field) {
-        if (!field) return '';
-        return validationService.invalidIconClass(that.form(), field);
     };
 
     that.updateLookup = function () {
-        if (!validationService.validateForm(that.form()))
+        if (!that.isValid())
             return;
 
         var name = lookupData.lookupToUpdate;
@@ -153,8 +111,10 @@ Librarian.app
                    })
              .then(function (updatedLookup) {
                  angular.copy(updatedLookup.data, lookupService.lookupData.currLookup);
-                 lookupService.editContent.modal('hide');
+                 $scope.hideDialog();
                  that.form().$setPristine(); //not submitted for next use
              });
     };
+
+    return that;
 });
