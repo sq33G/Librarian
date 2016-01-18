@@ -51,7 +51,7 @@ Librarian.app
 
 .controller("authorCreateCtrl", function AuthorCreateCtrl($scope, $http, authorService, ValidatingForm) {
     var that = new ValidatingForm();
-
+    that.form = function () { return $scope.createForm; };
     that.authorData = authorService.authorData;
 
     authorService.registerAddItemScope($scope);
@@ -81,13 +81,13 @@ Librarian.app
 })
 
 .controller("authorEditCtrl", function AuthorEditCtrl(authorService, $http, $scope, ValidatingForm) {
-    var that = this;
+    var that = new ValidatingForm();
     that.form = function () { return $scope.editForm; };
 
     that.editAuthorUrl = authorService.editUrl;
     that.authorData = {};
 
-    that.dialogShown = function () {
+    that.dialogShow = function () {
         that.authorData.currAuthor = angular.copy(authorService.authorData.currAuthor);
     };
 
@@ -95,12 +95,16 @@ Librarian.app
         if (!that.isValid())
             return;
 
+        $scope.notifyDialogSending();
         $http.post(authorService.updateUrl,
                    that.authorData.currAuthor)
              .then(function (updatedAuthor) {
+                 $scope.notifyDialogSendComplete();
                  angular.copy(updatedAuthor.data, authorService.authorData.currAuthor);
                  $scope.hideDialog();
                  that.form().$setPristine(); //not submitted for next use
              });
     };
+
+    return that;
 });

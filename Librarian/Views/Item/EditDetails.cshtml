@@ -86,32 +86,32 @@
 </ng-form>
 <div id="createAuthorPopupContainer" ng-controller="authorCreateCtrl as ctrl">
     <bootstrap-dialog primary-text="Save" primary-action="ctrl.addAuthor()" loading-text="Saving..." title="New Author">
-        <form name="createForm">
+        <ng-form name="createForm">
             @Html.Partial("../Author/EditDetails", new Librarian.Models.EditDetails { Current = "newAuthor" })
-        </form>
+        </ng-form>
     </bootstrap-dialog>
 </div>
 <div id="editAuthorPopupContainer" ng-controller="authorEditCtrl as ctrl">
     <bootstrap-dialog primary-text="Save" primary-action="ctrl.updateAuthor()" 
-                      loading-text="Saving..." title="Edit Author" on-shown="ctrl.dialogShown()">
-        <form name="editForm">
+                      loading-text="Saving..." title="Edit Author" on-show="ctrl.dialogShow()">
+        <ng-form name="editForm">
             @Html.Partial("../Author/EditDetails", new Librarian.Models.EditDetails { Current = "currAuthor" })
-        </form>
+        </ng-form>
     </bootstrap-dialog>
 </div>
 <div id="createLookupPopupContainer" ng-controller="lookupCreateCtrl as ctrl">
     <bootstrap-dialog primary-text="Save" primary-action="ctrl.addLookup()" loading-text="Saving..." title="New Subject">
-        <form name="createForm">
+        <ng-form name="createForm">
             @Html.Partial("../Lookup/Edit", new Librarian.Models.EditDetails { Current = "newLookup" })
-        </form>
+        </ng-form>
     </bootstrap-dialog>
 </div>
 <div id="editLookupPopupContainer" ng-controller="lookupEditCtrl as ctrl">
     <bootstrap-dialog primary-text="Save" primary-action="ctrl.updateLookup()" loading-text="Saving..." 
-                      title="Edit Subject" on-shown="ctrl.dialogShown()">
-        <form name="editForm">
+                      title="Edit Subject" on-show="ctrl.dialogShow()">
+        <ng-form name="editForm">
             @Html.Partial("../Lookup/Edit", new Librarian.Models.EditDetails {  Current = "currLookup" })
-        </form>
+        </ng-form>
     </bootstrap-dialog>
 </div>
 <input class="url-container create-author" type="hidden" value="@Url.Action("Add", "Author")" />

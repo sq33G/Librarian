@@ -29,12 +29,12 @@ Librarian.app.directive("multiTypeahead", function () {
                         '<span class="li-content">{{ mtTextFor(item) }}</span><span>&nbsp;</span>' +
                         '<span class="actions">' +
                             '<a href="" ng-click="mtEdit(item)">' +
-                                '<i class="glyphicon glyphicon-pencil"></i> ' +
-                                '<span class="hidden-md hidden-lg">Edit</span></a>' +
+                                '<i class="glyphicon glyphicon-pencil"></i>' +
+                                '<span class="hidden-md hidden-lg"> Edit</span></a>' +
                             '<span class="hidden-md hidden-lg">&nbsp;&nbsp;&nbsp;</span>' +
                             '<a href="" ng-click="mtRemove(item)">' +
-                                '<i class="glyphicon glyphicon-remove"></i> ' +
-                                '<span class="hidden-md hidden-lg">Remove</span></a>' +
+                                '<i class="glyphicon glyphicon-remove"></i>' +
+                                '<span class="hidden-md hidden-lg"> Remove</span></a>' +
                         '</span>' +
                     '</div></li>' +
                 '</ul>' +

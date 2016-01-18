@@ -208,7 +208,7 @@ Librarian.app
 
 })
 
-.factory("ItemBaseCtrl", function (authorService, lookupService, ValidatingForm, librarian, $filter) {
+.factory("ItemBaseCtrl", function (authorService, lookupService, ValidatingForm, librarian, $filter, $http) {
     return function ItemBaseCtrl($scope, formFinder, formDesc, formName, save) {
         var that = new ValidatingForm();
 
@@ -253,7 +253,7 @@ Librarian.app
             if ($filter('filter')($scope.item.Authors, { ID: author.id }).length > 0)
                 return;
 
-            $http.post(that.getUrl, { id: author.id })
+            $http.post(authorService.getUrl, { id: author.id })
                  .then(function (fullAuthor) {
                      $scope.item.Authors.push(fullAuthor.data);
                  });

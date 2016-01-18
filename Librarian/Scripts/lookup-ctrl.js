@@ -58,7 +58,6 @@ Librarian.app
     that.form = function () { return $scope.createForm; };
 
     that.lookupData = lookupService.lookupData;
-    that.createLookupUrl = lookupService.createUrl;
 
     lookupService.registerAddItemScope($scope);
 
@@ -66,10 +65,13 @@ Librarian.app
         if (!that.isValid())
             return;
         var name = lookupData.lookupToUpdate;
+
+        $scope.notifyDialogSending();
         $http.post(lookupService.addUrl,
                    { name: name,
                      text: that.lookupData.newLookup.name})
              .then(function (addedLookup) {
+                 $scope.notifyDialogSendComplete();
                  var newLookup = addedLookup.data;
                  newLookup.RowState = 1; // 'Added';
                  lookupService.lookup[name].push({
@@ -90,9 +92,9 @@ Librarian.app
     that.form = function () { return $scope.editForm; };
 
     that.editLookupUrl = lookupService.editUrl;
-    that.lookupData = lookupService.lookupData;
+    that.lookupData = {};
 
-    that.dialogShown = function () {
+    that.dialogShow = function () {
         that.lookupData.currLookup = angular.copy(lookupService.lookupData.currLookup);
     };
 
@@ -100,6 +102,7 @@ Librarian.app
         if (!that.isValid())
             return;
 
+        $scope.notifyDialogSending();
         var name = lookupData.lookupToUpdate;
         $http.post(lookupService.updateUrl,
                    {
@@ -110,6 +113,7 @@ Librarian.app
                        }
                    })
              .then(function (updatedLookup) {
+                 $scope.notifyDialogSendComplete();
                  angular.copy(updatedLookup.data, lookupService.lookupData.currLookup);
                  $scope.hideDialog();
                  that.form().$setPristine(); //not submitted for next use

@@ -51,7 +51,16 @@ Librarian.app
                     '</div><!-- /.modal-dialog -->' +
                 '</div><!-- /.modal -->';
             },
-            link: function dialogLink($scope, $element, $attributes) {
+            link: function dialogLink($scope, $element, $attributes, noSuchController, $transclude, $injector) {
+                //var controllerName = $element.closest('[ng-controller]').attr('ng-controller');
+                //if (!controllerName) {
+                //    if ($injector.has('$route'))
+                //        controllerName = $injector.get('$route').current.controller
+                //}
+                $transclude($scope, function (clone, $innerScope) {
+                    
+                });
+
                 function setDefault() {
                     $element.find("input,textarea,select").keypress(function (eventArgs) {
                         if (eventArgs.which == 13) {
@@ -60,6 +69,12 @@ Librarian.app
                             $element.find(".modal").modal('hide');
                     });
                 }
+
+                //var $transcludedForm = $("form,ng-form");
+                //var formName = $transcludedForm.attr("name");
+                //if ($transcludedForm.length > 0 && formName) {
+                //    $scope[formName] = $transcludedForm.find("input").first().controller(formName);
+                //}
 
                 if ($attributes.include || $element.find("ng-include,[ng-include]").length > 0) {
                     $scope.$on("$includeContentLoaded", function () {

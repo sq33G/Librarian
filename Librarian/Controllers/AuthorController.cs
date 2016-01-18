@@ -26,19 +26,6 @@ namespace Librarian.Controllers
             return Content(JsonConvert.SerializeObject(Mapper.Map<Models.Author>(Authoring.GetAuthorByID(id))));
         }
 
-        public ActionResult Details()
-        {
-            return PartialView();
-        }
-
-        public ActionResult Create()
-        {
-            return PartialView("EditDetails", new Models.EditDetails
-            {
-                Current = "newAuthor"
-            });
-        }
-
         public ActionResult Add(Models.Author author)
         {
             Data.Author persistentAuthor = Mapper.Map<Models.Author, Data.Author>(author);
@@ -47,14 +34,6 @@ namespace Librarian.Controllers
             Caching.AddAuthor(persistentAuthor);
 
             return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
-        }
-
-        public ActionResult Edit()
-        {
-            return PartialView("EditDetails", new Models.EditDetails
-            {
-                Current = "currAuthor"
-            });
         }
 
         public ActionResult Update(Models.Author author)
