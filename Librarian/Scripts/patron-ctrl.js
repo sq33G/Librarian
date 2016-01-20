@@ -9,7 +9,7 @@ Librarian.app
         this.FirstName = "";
         this.LastName = "";
         this.Title = "";
-        this.PatronType = { value: 4, text: "Student" },
+        this.PatronType = { Value: 4, Text: "Student" },
         this.RowState = 0;
     };
 })

@@ -37,7 +37,7 @@
     <div class="form-group">
         <label class="control-label" for="patronType">Patron Type</label>
         <select class="form-control" id="patronType" name="patronType" ng-model="ctrl.patronData.@(Model.Current).PatronType.Value"
-                ng-options="patronType as patronType.name for patronType in ctrl.patronTypes track by patronType.id"></select>
+                ng-options="patronType.id as patronType.name for patronType in ctrl.patronTypes" required></select>
     </div>
     <div class="form-group" ng-class="ctrl.invalidFieldClass(ctrl.form().address)">
         <label class="control-label" for="address">Address</label>

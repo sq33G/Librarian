@@ -23,18 +23,18 @@ Librarian.app.directive("multiTypeahead", function () {
                 '<input class="form-control typeahead" type="text" autocomplete="off" />' +
             '</div>' +
             '<div class="col-sm-3">' +
-                '<label class="control-label">&nbsp;</label>' +
+                '<label class="control-label hidden-xs">&nbsp;</label>' +
                 '<ul class="list-unstyled list-striped boxy list-actionable">' + // style=height: 74px;
                     '<li class="li-actionable" ng-repeat="item in mtSelectedList"><div>' +
                         '<span class="li-content">{{ mtTextFor(item) }}</span><span>&nbsp;</span>' +
                         '<span class="actions">' +
                             '<a href="" ng-click="mtEdit(item)">' +
                                 '<i class="glyphicon glyphicon-pencil"></i>' +
-                                '<span class="hidden-md hidden-lg"> Edit</span></a>' +
-                            '<span class="hidden-md hidden-lg">&nbsp;&nbsp;&nbsp;</span>' +
+                                '<span class="hidden-lg hidden-md hidden-sm"> Edit</span></a>' +
+                            '<span class="hidden-lg hidden-md hidden-sm">&nbsp;&nbsp;&nbsp;</span>' +
                             '<a href="" ng-click="mtRemove(item)">' +
                                 '<i class="glyphicon glyphicon-remove"></i>' +
-                                '<span class="hidden-md hidden-lg"> Remove</span></a>' +
+                                '<span class="hidden-lg hidden-md hidden-sm"> Remove</span></a>' +
                         '</span>' +
                     '</div></li>' +
                 '</ul>' +

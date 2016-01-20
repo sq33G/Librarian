@@ -195,6 +195,7 @@
     <Content Include="Scripts\librarian-app.js" />
     <Content Include="Scripts\publisher-ctrl.js" />
     <Content Include="Scripts\lookup-ctrl.js" />
+    <Content Include="Scripts\single-typeahead.js" />
     <Content Include="Scripts\validation.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">

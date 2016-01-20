@@ -6835,6 +6835,30 @@ li.li-actionable:hover span.actions {
     width: 20%;
 }
 
+@media screen and (max-width: 767px) {
+    .li-actionable span.actions {
+        margin-right: 15px;
+    }
+
+    li.li-actionable:hover span.actions {
+        width: 45%;
+    }
+
+    li.li-actionable:hover span.li-content {
+        width: 45%;
+    }
+
+    .xs-ind {
+        display: block;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .xs-ind {
+        display: none;
+    }
+}
+
 .li-actionable span.actions {
     text-align: right;
     display: none;
@@ -6859,6 +6883,5 @@ ul.list-striped li div {
 }
 
 .li-actionable:hover span.li-content {
-    width: 74%;
-    float: left;
+    width: 75%;
 }
