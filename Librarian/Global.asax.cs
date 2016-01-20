@@ -17,6 +17,7 @@ namespace Librarian
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             MappingConfig.RegisterMappings();
+            SerializingConfig.RegisterSerializerSettings();
         }
     }
 }

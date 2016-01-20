@@ -1,9 +1,9 @@
 ﻿@model Librarian.Models.EditDetails
 
-<h2>{{ formDesc }} <span class="xs-ind">THIS.... is xs</span></h2>
+<h2>{{ formDesc }}</h2>
 
 <ng-form name="{{ formName }}" default-buttons default-action="ctrl.save()" cancel-action="ctrl.back()">
-    <div>
+    <div class="shifty-feedback">
         <div class="row">
             <div class="form-group col-lg-12" ng-class="ctrl.invalidFieldClass(ctrl.form().title)">
                 <label class="control-label" for="title">Title</label>
@@ -45,10 +45,11 @@
             </div>
             <div class="form-group col-md-2 col-xs-8" ng-class="ctrl.invalidFieldClass(ctrl.form().location)">
                 <label class="control-label" for="location">Location</label>
-                <input type="text" class="form-control" single-typeahead ng-model="item.Location" name="location" id="location" required />
+                <input type="text" class="form-control" single-typeahead ng-model="item.Location" name="location" id="location" required
+                       st-lookup="locations" add-new-text="New Location..." st-add-new="ctrl.addNewLocation" />
                 <span class="glyphicon form-control-feedback" ng-class="ctrl.invalidIconClass(ctrl.form().location)"></span>
                 <div role="alert" class="help-block">
-                    <span class="error" ng-show="ctrl.form().location.$error.required">
+                    <span class="error" ng-show="ctrl.form().location.$error.required || ctrl.form().location.$error.parse">
                         Required
                     </span>
                 </div>

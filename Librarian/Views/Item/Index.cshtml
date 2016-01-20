@@ -14,6 +14,7 @@
 
 <input type="hidden" id="authorList" value='@Lookup.GetAuthors()' />
 <input type="hidden" id="subjectList" value='@Lookup.Raw("Subject")' />
+<input type="hidden" id="locationList" value='@Lookup.Raw("Location")' />
 @section scripts {
     <script src="~/Scripts/author-ctrl-shared.js"></script>
     <script src="~/Scripts/lookup-ctrl.js"></script>

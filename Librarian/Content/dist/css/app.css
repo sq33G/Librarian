@@ -6885,3 +6885,7 @@ ul.list-striped li div {
 .li-actionable:hover span.li-content {
     width: 75%;
 }
+
+div.shifty-feedback .form-control-feedback {
+    right: 15px;
+}

@@ -219,6 +219,8 @@ Librarian.app
 
         lookupService.init("Subject", "#subjectList");
         $scope.subjects = lookupService.lookup["Subject"];
+        lookupService.init("Location", "#locationList");
+        $scope.locations = lookupService.lookup["Location"];
         $scope.authors = authorService.lookup;
 
         $("#title").select();
@@ -234,6 +236,7 @@ Librarian.app
         }
 
         that.addNewSubject = function () {
+            lookupService.selectedMemberToUpdate = null;
             lookupService.selectedListToUpdate = $scope.item.Subjects;
             lookupService.displayAddLookup("Subject");
         };
@@ -241,6 +244,12 @@ Librarian.app
         that.addNewAuthor = function () {
             authorService.displayAddAuthor($scope.item);
         };
+
+        that.addNewLocation = function () {
+            lookupService.selectedListToUpdate = null;
+            lookupService.selectedMemberToUpdate = { item: $scope.item, member: 'Location' };
+            lookupService.displayAddLookup("Location");
+        }
 
         that.addSubject = function (subj) {
             if ($filter('filter')($scope.item.Subjects, { Value: subj.id }).length > 0)

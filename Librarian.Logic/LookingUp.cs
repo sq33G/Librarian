@@ -1,6 +1,7 @@
 ﻿using Librarian.Data;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +22,14 @@ namespace Librarian.Logic
         {
             using (LibraryDataContext ctx = new LibraryDataContext())
             {
-                ctx.Lookups.Add(lookup);
-                ctx.SaveChanges();
+                using (DbContextTransaction transaction = ctx.Database.BeginTransaction())
+                {
+                    int nextID = ctx.Lookups.Where(l => l.LookupName == lookup.LookupName).Max(l => l.ID) + 1;
+                    lookup.ID = nextID;
+
+                    ctx.Lookups.Add(lookup);
+                    ctx.SaveChanges();
+                }
             }
         }
 

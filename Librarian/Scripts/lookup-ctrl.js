@@ -20,6 +20,14 @@ Librarian.app
     };
 
     that.selectedListToUpdate = null;
+    that.selectedMemberToUpdate = null;
+
+    that.updateOpener = function (lookupItem) {
+        if (that.selectedListToUpdate)
+            that.selectedListToUpdate.push({ Text: lookupItem.name, Value: lookupItem.id, RowState: 1 });
+        else if (that.selectedMemberToUpdate)
+            that.selectedMemberToUpdate.item[that.selectedMemberToUpdate.member] = { Text: lookupItem.name, Value: lookupItem.id };
+    }
 
     that.addUrl = $(".url-container.create-lookup").val();
     that.updateUrl = $(".url-container.update-lookup").val();
@@ -64,21 +72,22 @@ Librarian.app
     that.addLookup = function () {
         if (!that.isValid())
             return;
-        var name = lookupData.lookupToUpdate;
+        var name = that.lookupData.lookupToUpdate;
 
         $scope.notifyDialogSending();
         $http.post(lookupService.addUrl,
                    { name: name,
-                     text: that.lookupData.newLookup.name})
+                     text: that.lookupData.newLookup.Text})
              .then(function (addedLookup) {
                  $scope.notifyDialogSendComplete();
                  var newLookup = addedLookup.data;
                  newLookup.RowState = 1; // 'Added';
-                 lookupService.lookup[name].push({
+                 newLookupVM = {
                      name: newLookup.Text,
                      id: newLookup.Value
-                 });
-                 lookupService.selectedListToUpdate.push(newLookup);
+                 };
+                 lookupService.lookup[name].push(newLookupVM);
+                 lookupService.updateOpener(newLookupVM);
                  $scope.hideDialog();
                  that.form().$setPristine(); //not submitted for next use
              });
