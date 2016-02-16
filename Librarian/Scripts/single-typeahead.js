@@ -14,8 +14,6 @@ Librarian.app.directive("singleTypeahead", function ($filter) {
             stAddNew: '=',
             ngModel: '='
         },
-        //
-        //    '<input single-typeahead class="form-control* typeahead*" type="text" *autocomplete="off"* ng-model="item.location" />',
         link: function mtlink($scope, $element, $attr, ngModel) {
             $element.addClass("typeahead").attr("autocomplete","off");
 
@@ -24,8 +22,6 @@ Librarian.app.directive("singleTypeahead", function ($filter) {
                 addItem: { id: -1, name: $scope.addNewText },
                 minLength: 2,
                 updater: function (item, e) {
-                    window.clearTimeout(that.notUpdated);
-
                     if (item.id == -1)
                         $scope.stAddNew();
                     else {

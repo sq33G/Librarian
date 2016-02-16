@@ -135,12 +135,18 @@ Librarian.app
 
     that.authorData = {};
 
+    //that.customValidate = function () {
+    //    if (that.authorData.currAuthor.FirstName[0] != 'D') {
+    //        $scope.editForm.firstName.$setValidity("starts-with", false);
+    //    }
+    //};
+
     that.dialogShow = function () {
         that.authorData.currAuthor = angular.copy(authorService.authorData.currAuthor);
     };
 
     that.close = function () {
-        that.form().$setPristine;
+        that.form().$setPristine();
         $scope.hideDialog();
     };
 

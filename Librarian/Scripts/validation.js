@@ -1,15 +1,18 @@
-﻿var Librarian = Librarian || {};
+var Librarian = Librarian || {};
 
 Librarian.app = Librarian.app || angular.module('librarianApp', []);
 
 Librarian.app.service("validationService", function ValidationService() {
     var that = this;
 
-    that.validateForm = function (form) {
+    that.validateForm = function (form, customValidate) {
+        if (customValidate)
+            customValidate();
+
         form.$setPristine();
         form.$setSubmitted();
 
-        return form.$valid;
+       return form.$valid;
     };
 
     that.invalidField = function (form, field) {
@@ -44,7 +47,7 @@ Librarian.app.service("validationService", function ValidationService() {
         };
 
         that.isValid = function () {
-            return validationService.validateForm(that.form());
+            return validationService.validateForm(that.form(), that.customValidate);
         }
     };
 });

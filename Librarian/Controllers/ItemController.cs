@@ -47,17 +47,16 @@ namespace Librarian.Controllers
         {
             return PartialView("EditDetails", new Models.EditDetails
             {
-                Controller = "authorCreateCtrl",
-                Current = "newAuthor"
+                Current = "newItem"
             });
         }
 
-        public ActionResult Add(Models.Author author)
+        public ActionResult Add(Models.Item item)
         {
-            Data.Author persistentAuthor = Mapper.Map<Models.Author, Data.Author>(author);
-            Authoring.AddAuthor(persistentAuthor);
+            Data.Item persistentItem = Mapper.Map<Models.Item, Data.Item>(item);
+            Itemizing.AddItem(persistentItem);
 
-            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
+            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Item, Models.Item>(persistentItem)));
         }
 
         // GET: Author/Edit/5
@@ -65,17 +64,16 @@ namespace Librarian.Controllers
         {
             return PartialView("EditDetails", new Models.EditDetails
             {
-                Controller = "authorEditCtrl",
-                Current = "currAuthor"
+                Current = "currItem"
             });
         }
 
-        public ActionResult Update(Models.Author author)
+        public ActionResult Update(Models.Item item)
         {
-            Data.Author persistentAuthor = Mapper.Map<Models.Author, Data.Author>(author);
-            Authoring.UpdateAuthor(persistentAuthor);
+            Data.Item persistentItem = Mapper.Map<Models.Item, Data.Item>(item);
+            Itemizing.Update(persistentItem);
 
-            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Author, Models.Author>(persistentAuthor)));
+            return Content(JsonConvert.SerializeObject(Mapper.Map<Data.Item, Models.Item>(persistentItem)));
         }
 
         public ActionResult Delete(long id)

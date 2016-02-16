@@ -49,9 +49,19 @@ namespace Librarian.Logic
             }
         }
 
+        public static void AddItem(Item persistentItem)
+        {
+            throw new NotImplementedException();
+        }
+
         private static IQueryable<Item> Page(IQueryable<Item> items, int pageSize, int pageNum)
         {
             return items.Skip(pageSize * pageNum).Take(pageSize);
+        }
+
+        public static void Update(Item persistentItem)
+        {
+            throw new NotImplementedException();
         }
 
         private static IQueryable<Item> Filter(LibraryDataContext ctx, IQueryable<Item> items, string filter)

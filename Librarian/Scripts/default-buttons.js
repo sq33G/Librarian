@@ -15,12 +15,12 @@ Librarian.app.directive("defaultButtons", function () {
             var selected;
             var form;
 
-            if ($element.is("input,select,textarea"))
+            if ($element.is("input,select"))
                 selected = $element;
             else if ($element.is("form,ng-form"))
                 form = $element;
 
-            selected = selected || $element.find("input,textarea,select");
+            selected = selected || $element.find("input,select");
             form = form || $element.closest("form,ngform");
 
             $scope.defaultAction = $scope.defaultAction || form.find("." + $scope.targetDefaultClass).click;
