@@ -186,7 +186,8 @@ UpgradeLog*.XML
 UpgradeLog*.htm
 
 # SQL Server files
-*.mdf
+#  (actually, I want the .mdf file)
+#*.mdf
 *.ldf
 
 # Business Intelligence projects
